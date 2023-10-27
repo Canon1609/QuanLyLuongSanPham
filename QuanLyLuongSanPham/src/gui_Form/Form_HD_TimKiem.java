@@ -119,6 +119,7 @@ public class Form_HD_TimKiem extends JPanel {
 		btn_timTheoTen.setIcon(new ImageIcon(Form_HD_TimKiem.class.getResource("/img/timkiem.png")));
 		btn_timTheoTen.setPreferredSize(new Dimension(100, 35));
 		btn_timTheoTen.setFont(new Font("Arial", Font.BOLD, 12));
+		btn_timTheoTen.setBackground(Color.CYAN);
 		b1.add(btn_timTheoTen);
 		
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
@@ -167,6 +168,7 @@ public class Form_HD_TimKiem extends JPanel {
 		btn_timTheoNV.setIcon(new ImageIcon(Form_HD_TimKiem.class.getResource("/img/timkiem.png")));
 		btn_timTheoNV.setPreferredSize(new Dimension(100, 35));
 		btn_timTheoNV.setFont(new Font("Arial", Font.BOLD, 12));
+		btn_timTheoNV.setBackground(Color.CYAN);
 		b2.add(btn_timTheoNV);
 		
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
@@ -212,6 +214,7 @@ public class Form_HD_TimKiem extends JPanel {
 		btn_timTheoNgay.setPreferredSize(new Dimension(100, 35));
 		btn_timTheoNgay.setFont(new Font("Arial", Font.BOLD, 12));
 		b3.add(btn_timTheoNgay);
+		btn_timTheoNgay.setBackground(Color.CYAN);
 	}
 	public static void main(String[] args) {
 		Form_HD_TimKiem f =new Form_HD_TimKiem();

@@ -205,7 +205,7 @@ public class Form_NV_TinhLuong extends JPanel {
 		pnCenter.add(pnChucNang);
 		
 		JButton btnTinhLuong = new JButton("Tính Lương");
-		btnTinhLuong.setBackground(Color.GREEN);
+		btnTinhLuong.setBackground(Color.ORANGE);
 		btnTinhLuong.setIcon(new ImageIcon(Form_NV_TinhLuong.class.getResource("/img/themChamCong.png")));
 		btnTinhLuong.setFont(new Font("Arial", Font.BOLD, 12));
 		pnChucNang.add(btnTinhLuong);
@@ -217,7 +217,7 @@ public class Form_NV_TinhLuong extends JPanel {
 		pnChucNang.add(btnXoaLuong);
 		
 		JButton btnLamMoi = new JButton("Làm Mới");
-		btnLamMoi.setBackground(Color.LIGHT_GRAY);
+		btnLamMoi.setBackground(Color.CYAN);
 		btnLamMoi.setIcon(new ImageIcon(Form_NV_TinhLuong.class.getResource("/img/reload.png")));
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 12));
 		pnChucNang.add(btnLamMoi);

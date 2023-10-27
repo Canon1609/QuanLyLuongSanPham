@@ -279,6 +279,7 @@ public class Form_HD_CapNhap extends JPanel {
 		btn_Them.setIcon(new ImageIcon(Form_HD_CapNhap.class.getResource("/img/them.png")));
 		btn_Them.setPreferredSize(new Dimension(140, 40));
 		btn_Them.setFont(new Font("Arial", Font.BOLD, 14));
+		btn_Them.setBackground(Color.LIGHT_GRAY);
 		panel_ChucNang.add(btn_Them);
 		
 		Component horizontalStrut_11 = Box.createHorizontalStrut(20);
@@ -290,6 +291,7 @@ public class Form_HD_CapNhap extends JPanel {
 		btn_Sua.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btn_Sua.setPreferredSize(new Dimension(140, 40));
 		btn_Sua.setFont(new Font("Arial", Font.BOLD, 14));
+		btn_Sua.setBackground(Color.MAGENTA);
 		panel_ChucNang.add(btn_Sua);
 		
 		Component horizontalStrut_12 = Box.createHorizontalStrut(20);
@@ -300,6 +302,7 @@ public class Form_HD_CapNhap extends JPanel {
 		btn_Xoa.setIcon(new ImageIcon(Form_HD_CapNhap.class.getResource("/img/xoa.png")));
 		btn_Xoa.setFont(new Font("Arial", Font.BOLD, 14));
 		btn_Xoa.setPreferredSize(new Dimension(140, 40));
+		btn_Xoa.setBackground(Color.ORANGE);
 		panel_ChucNang.add(btn_Xoa);
 		
 		Component horizontalStrut_13 = Box.createHorizontalStrut(20);
@@ -310,6 +313,7 @@ public class Form_HD_CapNhap extends JPanel {
 		btn_In.setIcon(new ImageIcon(Form_HD_CapNhap.class.getResource("/img/in.png")));
 		btn_In.setPreferredSize(new Dimension(140, 40));
 		btn_In.setFont(new Font("Arial", Font.BOLD, 14));
+		btn_In.setBackground(Color.GREEN);
 		panel_ChucNang.add(btn_In);
 		
 		Component horizontalStrut_14 = Box.createHorizontalStrut(20);
@@ -320,6 +324,7 @@ public class Form_HD_CapNhap extends JPanel {
 		btn_lamMoi.setIcon(new ImageIcon(Form_HD_CapNhap.class.getResource("/img/xoa.png")));
 		btn_lamMoi.setFont(new Font("Arial", Font.BOLD, 14));
 		btn_lamMoi.setPreferredSize(new Dimension(140, 40));
+		btn_lamMoi.setBackground(Color.CYAN);
 		panel_ChucNang.add(btn_lamMoi);
 		
 		JPanel panel = new JPanel();

@@ -204,27 +204,31 @@ public class Form_CN_TinhLuong extends JPanel {
 		JButton btnTinhLuong = new JButton("Tính Lương");
 		btnTinhLuong.setIcon(new ImageIcon(Form_CN_TinhLuong.class.getResource("/img/salary.png")));
 		btnTinhLuong.setFont(new Font("Arial", Font.BOLD, 14));
-		btnTinhLuong.setBackground(Color.RED);
+		btnTinhLuong.setBackground(Color.ORANGE);
 		pnChucNang.add(btnTinhLuong);
 		
 		JButton btnXoaLuong = new JButton("Xóa Lương");
 		btnXoaLuong.setIcon(new ImageIcon(Form_CN_TinhLuong.class.getResource("/img/delete.png")));
 		btnXoaLuong.setFont(new Font("Arial", Font.BOLD, 14));
+		btnXoaLuong.setBackground(Color.YELLOW);
 		pnChucNang.add(btnXoaLuong);
 		
 		JButton btnLamMoi = new JButton("Làm Mới");
 		btnLamMoi.setIcon(new ImageIcon(Form_CN_TinhLuong.class.getResource("/img/reload.png")));
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 14));
+		btnLamMoi.setBackground(Color.CYAN);
 		pnChucNang.add(btnLamMoi);
 		
 		JButton btnXuatExcel = new JButton("Xuất Excel");
 		btnXuatExcel.setIcon(new ImageIcon(Form_CN_TinhLuong.class.getResource("/img/excel.png")));
 		btnXuatExcel.setFont(new Font("Arial", Font.BOLD, 14));
+		btnXuatExcel.setBackground(Color.GREEN);
 		pnChucNang.add(btnXuatExcel);
 		
 		JButton btnThoat = new JButton("Thoát");
 		btnThoat.setIcon(new ImageIcon(Form_CN_TinhLuong.class.getResource("/img/exit.png")));
 		btnThoat.setFont(new Font("Arial", Font.BOLD, 14));
+		btnThoat.setBackground(Color.RED);
 		pnChucNang.add(btnThoat);
 		
 		JPanel pnSouth = new JPanel();

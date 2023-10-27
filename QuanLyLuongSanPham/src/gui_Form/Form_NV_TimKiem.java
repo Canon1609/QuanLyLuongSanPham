@@ -190,6 +190,7 @@ public class Form_NV_TimKiem extends JPanel {
 		JButton btnThoat = new JButton("Thoát");
 		btnThoat.setIcon(new ImageIcon(Form_NV_TimKiem.class.getResource("/img/exit.png")));
 		btnThoat.setFont(new Font("Arial", Font.BOLD, 12));
+		btnThoat.setBackground(Color.RED);
 		pnChucNang.add(btnThoat);
 		
 		JPanel pnSouth = new JPanel();

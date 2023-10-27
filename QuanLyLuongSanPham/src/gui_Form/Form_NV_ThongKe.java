@@ -135,6 +135,7 @@ public class Form_NV_ThongKe extends JPanel {
 		btn_thongKe.setIcon(new ImageIcon(Form_NV_ThongKe.class.getResource("/img/thongke.png")));
 		btn_thongKe.setPreferredSize(new Dimension(150, 40));
 		btn_thongKe.setFont(new Font("Arial", Font.BOLD, 14));
+		btn_thongKe.setBackground(Color.ORANGE);
 		b4.add(btn_thongKe);
 		
 		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
@@ -145,6 +146,7 @@ public class Form_NV_ThongKe extends JPanel {
 		btn_in.setIcon(new ImageIcon(Form_NV_ThongKe.class.getResource("/img/in.png")));
 		btn_in.setPreferredSize(new Dimension(140, 40));
 		btn_in.setFont(new Font("Arial", Font.BOLD, 14));
+		btn_in.setBackground(Color.GREEN);
 		b4.add(btn_in);
 		
 		JPanel panel_South = new JPanel();
