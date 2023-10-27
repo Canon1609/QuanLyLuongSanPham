@@ -76,6 +76,48 @@ public class DAO_NhanVien {
 		return n > 0;
 	}
 	
+	 public boolean deleteNV(String maNV) {
+		    Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+	        try {
+	            PreparedStatement stmt = con.prepareStatement("delete from NhanVien where MANHANVIEN = ?");
+	            stmt.setString(1, maNV);
+	            int n = stmt.executeUpdate();
+	            if(n > 0)
+	                return true;
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return false;
+	    }
+	 public boolean update(NhanVien nv) {
+		    Conection_DB.getInstance();
+		    Connection con = Conection_DB.getCon();
+		    PreparedStatement stmt = null;
+		    int n = 0;
+
+		    try {
+		        stmt = con.prepareStatement("UPDATE NhanVien SET HOTEN=?, CCCD=?, NGAYSINH=?, GIOITINH=?, DIACHI=?, SODIENTHOAI=?, LUONGCOBAN=?, PHUCAP=?, PHONGBAN=?, HESOLUONG=? WHERE MANHANVIEN=?");
+		        stmt.setString(1, nv.getHoTen());
+		        stmt.setString(2, nv.getcCCD());
+		        stmt.setString(3, nv.getNgaySinh());
+		        stmt.setString(4, nv.getGioiTinh());
+		        stmt.setString(5, nv.getDiaChi());
+		        stmt.setString(6, nv.getSoDienThoai());
+		        stmt.setDouble(7, nv.getLuongCoBan());
+		        stmt.setDouble(8, nv.getPhuCap());
+		        stmt.setString(9, nv.getPhongBan());
+		        stmt.setDouble(10, nv.getHeSoLuong());
+		        stmt.setString(11, nv.getMaNhanVien());
+		        n = stmt.executeUpdate();
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return n > 0;
+		}
+	 
+	
 	
 	
 	

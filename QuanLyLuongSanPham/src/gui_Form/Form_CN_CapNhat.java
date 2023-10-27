@@ -346,8 +346,9 @@ public class Form_CN_CapNhat extends JPanel {
 
 				// Xử lý ngày sinh
 				Date ngaySinh = (Date) dateChooser.getDate();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				String ngaySinhStr = dateFormat.format(ngaySinh);
+
 
 				String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
 				String diaChi = txtDiaChi.getText().trim();
@@ -356,7 +357,7 @@ public class Form_CN_CapNhat extends JPanel {
 				String tayNghe = cmbTaynghe.getSelectedItem().toString();
 				String phongBan = cmbPhongBan.getSelectedItem().toString();
 
-				CongNhan cn = new CongNhan(ma, ten, gioiTinh, ngaySinhStr, gioiTinh, soDienThoai, phuCap, phongBan, tayNghe, diaChi);
+				CongNhan cn = new CongNhan(ma, ten, gioiTinh, ngaySinhStr,cmnd, soDienThoai, phuCap, phongBan, tayNghe, diaChi);
 				cn_dao.create(cn);
 				tableModel.addRow(new Object[] {cn.getMaCongNhan(),cn.getHoTen(),cn.getcCCD(),cn.getNgaySinh(),cn.getGioiTinh(),
 						cn.getDiaChi(),cn.getSoDienThoai(),cn.getPhuCap(),cn.getTrinhDoTayNghe(),cn.getPhongBan()});

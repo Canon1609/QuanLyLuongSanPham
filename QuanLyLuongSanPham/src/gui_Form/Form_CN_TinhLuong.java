@@ -40,11 +40,11 @@ public class Form_CN_TinhLuong extends JPanel {
 		pnNorth.add(lblLuongCongNhan);
 		
 		JPanel pnCenter = new JPanel();
-		pnCenter.setPreferredSize(new Dimension(1200, 360));
+		pnCenter.setPreferredSize(new Dimension(1800, 360));
 		add(pnCenter, BorderLayout.CENTER);
 		
 		JPanel pnNhap = new JPanel();
-		pnNhap.setPreferredSize(new Dimension(1200, 300));
+		pnNhap.setPreferredSize(new Dimension(1800, 300));
 		pnNhap.setBorder(new TitledBorder(null, "Th\u00F4ng Tin T\u00EDnh L\u01B0\u01A1ng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnCenter.add(pnNhap);
 		
@@ -177,7 +177,7 @@ public class Form_CN_TinhLuong extends JPanel {
 		pnNhap.add(pnDanhSachCongNhan);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(510, 200));
+		scrollPane.setPreferredSize(new Dimension(850, 200));
 		pnDanhSachCongNhan.add(scrollPane);
 		
 		table = new JTable();

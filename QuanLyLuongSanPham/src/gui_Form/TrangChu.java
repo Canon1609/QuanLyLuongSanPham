@@ -37,6 +37,7 @@ public class TrangChu extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -49,6 +50,7 @@ public class TrangChu extends JFrame {
 			}
 		});
 	}
+	private JPanel pnCenter;
 
 	/**
 	 * Create the frame.
@@ -62,7 +64,7 @@ public class TrangChu extends JFrame {
 		setBounds(100, 100, 1222, 795);
 		setVisible(true);
 		setLocationRelativeTo(null); // canh giua man hinh
-		setResizable(false);
+		//setResizable(false);
 
 		JMenuBar mnuChinh = new JMenuBar();
 		mnuChinh.setFont(new Font("Arial", Font.BOLD, 30));
@@ -206,17 +208,18 @@ public class TrangChu extends JFrame {
 		pnSouth.setBackground(Color.LIGHT_GRAY);
 		pnSouth.add(lblTen);
 
-		JPanel pnCenter = new JPanel();
+		pnCenter = new JPanel();
 		// pnCenter.setBounds(100, 100, 1222, 795);
 		cp.add(pnCenter, BorderLayout.CENTER);
 		JLabel lblTieuDe = new JLabel("PHẦN MỀM QUẢN LÝ LƯƠNG");
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 27));
 		lblTieuDe.setForeground(Color.BLUE);
 		JLabel imgLabel = new JLabel(new ImageIcon(TrangChu.class.getResource("/img/trangchu.jpg")));
-		imgLabel.setPreferredSize(new Dimension(1000, 600));
+		imgLabel.setPreferredSize(new Dimension(1200, 600));
 		pnCenter.add(lblTieuDe);
 		pnCenter.add(imgLabel);
 
+		
 		mnTrangChu.addMouseListener(new MouseListener() {
 
 			@Override
@@ -245,17 +248,7 @@ public class TrangChu extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				pnCenter.removeAll();
-				JLabel lblTieuDe = new JLabel("PHẦN MỀM QUẢN LÝ LƯƠNG");
-				lblTieuDe.setFont(new Font("Arial", Font.BOLD, 27));
-				lblTieuDe.setForeground(Color.BLUE);
-				JLabel imgLabel = new JLabel(new ImageIcon(TrangChu.class.getResource("/img/trangchu.jpg")));
-				imgLabel.setPreferredSize(new Dimension(1000, 600));
-				pnCenter.add(lblTieuDe);
-				pnCenter.add(imgLabel);
-				System.out.println("Click");
-				pnCenter.revalidate();
-				pnCenter.repaint();
+				hienThiTrangChu();
 
 			}
 		});
@@ -479,6 +472,7 @@ public class TrangChu extends JFrame {
 
 			}
 		});
+		
 		//THOAT
 		// Thêm phím tắt Ctrl+T để thoát
 		KeyStroke ctrlT = KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
@@ -513,8 +507,21 @@ public class TrangChu extends JFrame {
 
 		
 
-		
-		
+	
 		
 	}
+	public void hienThiTrangChu() {
+	    pnCenter.removeAll();
+	    JLabel lblTieuDe = new JLabel("PHẦN MỀM QUẢN LÝ LƯƠNG");
+	    lblTieuDe.setFont(new Font("Arial", Font.BOLD, 27));
+	    lblTieuDe.setForeground(Color.BLUE);
+	    JLabel imgLabel = new JLabel(new ImageIcon(TrangChu.class.getResource("/img/trangchu.jpg")));
+	    imgLabel.setPreferredSize(new Dimension(1200, 600));
+	    pnCenter.add(lblTieuDe);
+	    pnCenter.add(imgLabel);
+	    pnCenter.revalidate();
+	    pnCenter.repaint();
+	}
+	
 }
+

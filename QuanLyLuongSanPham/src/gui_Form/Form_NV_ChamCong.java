@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.sql.SQLException;
+import java.util.List;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JButton;
@@ -13,6 +15,11 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import java.awt.Component;
 import com.toedter.calendar.JDateChooser;
+
+import connectDB.Conection_DB;
+import dao.DAO_NhanVien;
+import entity.NhanVien;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
@@ -28,6 +35,8 @@ public class Form_NV_ChamCong extends JPanel {
 	private JTextField txtLuongCa;
 	private JTable tblDanhSachNV;
 	private JTable tblDanhSachChamCong;
+	private DefaultTableModel tableModel;
+	private DAO_NhanVien nv_dao;
 
 	/**
 	 * Create the panel.
@@ -44,12 +53,12 @@ public class Form_NV_ChamCong extends JPanel {
 		pnNorth.add(lblChamCongNV);
 		
 		JPanel pnCenter = new JPanel();
-		pnCenter.setPreferredSize(new Dimension(1200, 360));
+		pnCenter.setPreferredSize(new Dimension(1800, 360));
 		add(pnCenter, BorderLayout.CENTER);
 		
 		JPanel pnNhap = new JPanel();
 		pnNhap.setBorder(new TitledBorder(null, "Th\u00F4ng tin ch\u1EA5m c\u00F4ng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnNhap.setPreferredSize(new Dimension(1200, 300));
+		pnNhap.setPreferredSize(new Dimension(1800, 300));
 		pnCenter.add(pnNhap);
 		
 		Box boxTrai1 = Box.createVerticalBox();
@@ -198,13 +207,13 @@ public class Form_NV_ChamCong extends JPanel {
 		pnNhap.add(horizontalStrut);
 		
 		JPanel pnDanhSachNhanVien = new JPanel();
-		pnDanhSachNhanVien.setPreferredSize(new Dimension(600, 250));
+		pnDanhSachNhanVien.setPreferredSize(new Dimension(950, 250));
 		pnDanhSachNhanVien.setBorder(new TitledBorder(null, "Danh s\u00E1ch nh\u00E2n vi\u00EAn", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnDanhSachNhanVien.setFont(new Font("Arial", Font.PLAIN, 12));
 		pnNhap.add(pnDanhSachNhanVien);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(570, 220));
+		scrollPane.setPreferredSize(new Dimension(900, 220));
 		pnDanhSachNhanVien.add(scrollPane);
 		
 		tblDanhSachNV = new JTable();
@@ -230,7 +239,20 @@ public class Form_NV_ChamCong extends JPanel {
 				return columnEditables[column];
 			}
 		});
-		
+		/* XỬ LÝ TỪ ĐÂY*/
+		tableModel = (DefaultTableModel) tblDanhSachNV.getModel();
+		String[] columnNames = { "Mã Nhân Viên", "Họ Tên", "CMND/CCCD", "Ngày Sinh", "Giới Tính", "Địa Chỉ",
+				"Số Điện Thoại", "Lương Cơ bản", "Phụ Cấp", "Phòng Ban", "Hệ Số Lương" };
+		tableModel.setColumnIdentifiers(columnNames);
+		// khởi tạo kết nối đến CSDL
+				try {
+					Conection_DB.getInstance().connect();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				nv_dao = new DAO_NhanVien();
+		DocDuLieuDBVaoTable();
 		JPanel pnChucNang = new JPanel();
 		pnChucNang.setPreferredSize(new Dimension(1000, 50));
 		pnCenter.add(pnChucNang);
@@ -285,7 +307,14 @@ public class Form_NV_ChamCong extends JPanel {
 			}
 		});
 		tblDanhSachChamCong.setFont(new Font("Arial", Font.PLAIN, 10));
+		
+	}
+	public void DocDuLieuDBVaoTable() {
+		List<NhanVien> list = DAO_NhanVien.getAlltbNhanVien();
+		for (NhanVien nv : list) {
+			tableModel.addRow(new Object[] {nv.getMaNhanVien(),nv.getHoTen(),nv.getcCCD(),nv.getNgaySinh(),nv.getGioiTinh()
+					,nv.getDiaChi(),nv.getSoDienThoai(),nv.getLuongCoBan(),nv.getPhuCap(),nv.getPhongBan(),nv.getHeSoLuong()});
+		}
 
 	}
-
 }
