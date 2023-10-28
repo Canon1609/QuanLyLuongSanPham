@@ -518,10 +518,7 @@ public class Form_NV_CapNhat extends JPanel {
 		btnThoat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int choice = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn thoát không?", "Xác nhận thoát", JOptionPane.YES_NO_OPTION);
-		        if (choice == JOptionPane.YES_OPTION) {
-		            System.exit(0); // Đóng ứng dụng nếu người dùng chọn "Có"
-		        }
+				setVisible(false);
 			}
 		});
 		// Đưa dữ liệu từ bảng lên các trường nhập liệu khi click vào một dòng trong bảng
