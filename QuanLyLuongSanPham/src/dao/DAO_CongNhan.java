@@ -74,7 +74,27 @@ public class DAO_CongNhan {
 		return n > 0;
 	}
 	
-	
+	public int getCNNumber() {
+		Conection_DB.getInstance();
+		Connection con = Conection_DB.getCon();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			// Truy vấn để lấy ra mã nhân viên lớn nhất
+			String query = "SELECT MAX(CAST(SUBSTRING(MaCongNhan, 3, LEN(MaCongNhan) - 2) AS INT)) FROM CongNhan";
+			stmt = con.prepareStatement(query);
+			// Thực hiện truy vấn
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				int maxCNNumber = rs.getInt(1);
+				return maxCNNumber;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return 0; // Trả về giá trị mặc định nếu có lỗi
+	}
 	
 	
 	

@@ -385,11 +385,12 @@ public class Form_NV_CapNhat extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Lấy thông tin từ các trường nhập liệu
-				// Tăng giá trị số thứ tự lên 1
-		        nextEmployeeNumber++;
-		        
-		        // Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
-		        String ma = String.format("NV%02d", nextEmployeeNumber);
+				// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
+				int maxEmployeeNumber = nv_dao.getMaxEmployeeNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
+				// Tăng giá trị mã nhân viên lớn nhất lên 1
+				int nextEmployeeNumber = maxEmployeeNumber + 1;
+				// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
+				String ma = String.format("NV%02d", nextEmployeeNumber);
 
 		        // Gán mã nhân viên đã tạo vào trường nhập liệu
 		        txtMaNV.setText(ma);

@@ -81,6 +81,7 @@ public class Form_CN_CapNhat extends JPanel {
 		txtMaCongNhan.setPreferredSize(new Dimension(7, 30));
 		boxMaCongNhan.add(txtMaCongNhan);
 		txtMaCongNhan.setColumns(30);
+		txtMaCongNhan.setEditable(false);
 		
 		Component verticalStrut = Box.createVerticalStrut(10);
 		verticalStrut.setPreferredSize(new Dimension(0, 20));
@@ -340,7 +341,12 @@ public class Form_CN_CapNhat extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Lấy thông tin từ các trường nhập liệu
-				String ma = txtMaCongNhan.getText().trim();
+				int maxCNNumber = cn_dao.getCNNumber(); 
+				// Tăng giá trị mã CN lớn nhất lên 1
+				int nextCNNumber = maxCNNumber + 1;
+				// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã CN-
+				String ma = String.format("NV%02d", nextCNNumber);
+				
 				String ten = txtHoTen.getText().trim();
 				String cmnd = txtCMND.getText().trim();
 
