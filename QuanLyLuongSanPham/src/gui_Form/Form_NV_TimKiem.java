@@ -249,7 +249,14 @@ public class Form_NV_TimKiem extends JPanel {
 		            }
 		        }
 		    }
-		});}
+		});
+		btnThoat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+	}
 		
 		//
 		

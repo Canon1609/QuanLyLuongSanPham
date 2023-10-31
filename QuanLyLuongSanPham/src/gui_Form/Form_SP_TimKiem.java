@@ -41,6 +41,7 @@ public class Form_SP_TimKiem extends JPanel {
 	private JTable tblDanhSachSanPham;
 	private DefaultTableModel tableModel;
 	private DAO_SanPham sp_dao;
+	private JTextField txtKieu;
 
 	/**
 	 * Create the panel.
@@ -57,118 +58,90 @@ public class Form_SP_TimKiem extends JPanel {
 		pnNorth.add(lblTimKiemThongTinSanPham);
 		
 		JPanel pnCenter = new JPanel();
-		pnCenter.setPreferredSize(new Dimension(1200, 210));
+		pnCenter.setPreferredSize(new Dimension(1200, 260));
 		add(pnCenter, BorderLayout.CENTER);
 		
 		JPanel pnNhap = new JPanel();
-		pnNhap.setPreferredSize(new Dimension(1200, 150));
+		pnNhap.setPreferredSize(new Dimension(1200, 200));
 		pnNhap.setFont(new Font("Arial", Font.BOLD, 14));
 		pnNhap.setBorder(new TitledBorder(null, "T\u00ECm Ki\u1EBFm S\u1EA3n Ph\u1EA9m Theo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnCenter.add(pnNhap);
 		
-//		Box box1 = Box.createVerticalBox();
-//		pnNhap.add(box1);
-//		
-//		Box boxMaSanPham = Box.createHorizontalBox();
-//		box1.add(boxMaSanPham);
-//		
-//		JRadioButton radMaSanPham = new JRadioButton("Mã Sản Phẩm");
-//		radMaSanPham.setFont(new Font("Arial", Font.BOLD, 14));
-//		boxMaSanPham.add(radMaSanPham);
-//		
-//		txtMaSanPham = new JTextField();
-//		txtMaSanPham.setEditable(false);
-//		txtMaSanPham.setPreferredSize(new Dimension(7, 30));
-//		boxMaSanPham.add(txtMaSanPham);
-//		txtMaSanPham.setColumns(30);
-//		
-//		Component verticalStrut = Box.createVerticalStrut(20);
-//		verticalStrut.setPreferredSize(new Dimension(0, 50));
-//		box1.add(verticalStrut);
-//		
-//		Box boxKieuDang = Box.createHorizontalBox();
-//		box1.add(boxKieuDang);
-//		
-//		JRadioButton radKieuDang = new JRadioButton("Kiểu Dáng");
-//		radKieuDang.setFont(new Font("Arial", Font.BOLD, 14));
-//		boxKieuDang.add(radKieuDang);
-//		
-//		Component horizontalStrut = Box.createHorizontalStrut(20);
-//		boxKieuDang.add(horizontalStrut);
-//		
-//		txtKieuDang = new JTextField();
-//		txtKieuDang.setEditable(false);
-//		txtKieuDang.setPreferredSize(new Dimension(7, 30));
-//		boxKieuDang.add(txtKieuDang);
-//		txtKieuDang.setColumns(30);
-//		
-//		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
-//		horizontalStrut_2.setPreferredSize(new Dimension(100, 0));
-//		pnNhap.add(horizontalStrut_2);
-//		
-//		Box box2 = Box.createVerticalBox();
-//		pnNhap.add(box2);
-//		
-//		Box boxTenSanPham = Box.createHorizontalBox();
-//		box2.add(boxTenSanPham);
-//		
-//		JRadioButton radTenSanPham = new JRadioButton("Tên Sản Phẩm");
-//		radTenSanPham.setFont(new Font("Arial", Font.BOLD, 14));
-//		boxTenSanPham.add(radTenSanPham);
-//		
-//		txtTenSanPham = new JTextField();
-//		txtTenSanPham.setEditable(false);
-//		txtTenSanPham.setPreferredSize(new Dimension(7, 30));
-//		boxTenSanPham.add(txtTenSanPham);
-//		txtTenSanPham.setColumns(30);
-//		
-//		Component verticalStrut_1 = Box.createVerticalStrut(20);
-//		verticalStrut_1.setPreferredSize(new Dimension(0, 50));
-//		box2.add(verticalStrut_1);
-//		
-//		Box boxChatLieu = Box.createHorizontalBox();
-//		box2.add(boxChatLieu);
-//		
-//		JRadioButton radChatLieu = new JRadioButton("Chất Liệu");
-//		radChatLieu.setFont(new Font("Arial", Font.BOLD, 14));
-//		boxChatLieu.add(radChatLieu);
-//		
-//		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-//		horizontalStrut_1.setPreferredSize(new Dimension(35, 0));
-//		boxChatLieu.add(horizontalStrut_1);
-//		
-//		txtChatLieu = new JTextField();
-//		txtChatLieu.setEditable(false);
-//		txtChatLieu.setPreferredSize(new Dimension(7, 30));
-//		boxChatLieu.add(txtChatLieu);
-//		txtChatLieu.setColumns(30);
 		
 		Box b, b1, b2, b3;
-		JLabel lblNhapTimTheo, lblTimKieuDang, lblTenSanPham;
-		JTextField txtTimKieuDang, txtTenSanPham, txtThongBao;
-		b = Box.createVerticalBox();
-		b.add(Box.createVerticalStrut(60));
-		b.add(b2 = Box.createHorizontalBox());
-//		b2.add(lblTimKieuDang = new JLabel("Tìm kiếm theo Kiểu Dáng: "));
-		b2.add(lblTenSanPham = new JLabel("Tìm kiếm theo Tên Sản Phẩm: "));
-		b2.add(txtTenSanPham = new JTextField());
-		txtTenSanPham.setPreferredSize(new Dimension(250, 20));
-		b.add(Box.createVerticalStrut(20)); // Khoảng cách giữa trường nhập kiểu dáng và trường nhập chất liệu
-		b.add(b3 = Box.createHorizontalBox());
-		b3.add(lblTimKieuDang = new JLabel("Tìm kiếm theo Kiểu Dáng: "));
-		b3.add(txtTimKieuDang = new JTextField());
-		txtTimKieuDang.setPreferredSize(new Dimension(250, 20));
+        JLabel lblNhapMa,lblNhapTen;
+        JTextField txtTen,txtThongBao;
+        b = Box.createVerticalBox();
+        b.add(Box.createVerticalStrut(40));
+        b.add(b1 = Box.createHorizontalBox());
+        b1.add(lblNhapMa = new JLabel("Tìm Kiếm Sản Phẩm Theo: "));
+        b1.add(Box.createHorizontalStrut(30));
+        JComboBox<String> cmbMaNV;
+        cmbMaNV = new JComboBox<>();
+            cmbMaNV.addItem("Tên Sản Phẩm");
+            cmbMaNV.addItem("Kiểu dáng");
+        cmbMaNV.setPreferredSize(new Dimension(400,20));
+        b1.add(cmbMaNV);
+        b.add(Box.createVerticalStrut(20));
 
-		pnNhap.add(b);
+        b.add(b2 = Box.createHorizontalBox());
+        b2.add(lblNhapTen = new JLabel());
+        lblNhapTen.setPreferredSize(lblNhapMa.getPreferredSize());
+        b2.add(Box.createHorizontalStrut(30));
+        b2.add(txtTen = new JTextField());
+        txtTen.setPreferredSize(new Dimension(10,20));
+        b.add(Box.createVerticalStrut(10));
 
-		b.add(b3 = Box.createHorizontalBox());
-		b3.add(Box.createHorizontalStrut(200)); // Khoảng cách giữa trường thông báo và biên dưới
-		b3.add(txtThongBao = new JTextField(50));
-		txtThongBao.setBorder(null);
-		txtThongBao.setEditable(false);
-		txtThongBao.setForeground(Color.RED);
-		txtThongBao.setFont(new Font("Arial", Font.ITALIC, 14));
-		b.setPreferredSize(new Dimension(500, 150));
+       
+        b2.add(txtKieu = new JTextField());
+        txtKieu.setVisible(false);
+        pnNhap.add(b);
+        cmbMaNV.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(cmbMaNV.getSelectedItem().equals("Tên Sản Phẩm")){
+                    lblNhapTen.setText("Nhập Tên Sản Phẩm:");
+                    txtTen.setPreferredSize(new Dimension(10,20));
+                    txtTen.setVisible(true);
+                    txtKieu.setVisible(false);
+                }
+                else if(cmbMaNV.getSelectedItem().equals("Kiểu dáng")){
+                    lblNhapTen.setText("Nhập Kiểu Dáng Sản Phẩm:");
+                    lblNhapTen.setPreferredSize(new Dimension(170,0));
+                    txtTen.setVisible(false);
+                    txtKieu.setVisible(true);
+                }
+
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        b.add(b3 = Box.createHorizontalBox());
+        b3.add(Box.createHorizontalStrut(200));
+        b3.add(txtThongBao = new JTextField(50));
+        txtThongBao.setBorder(null);
+        txtThongBao.setEditable(false);
+        txtThongBao.setForeground(Color.RED);
+        txtThongBao.setFont(new Font("Arial",Font.ITALIC,14));
+        b.setPreferredSize(new Dimension(500, 150));
 		
 		
 		JPanel pnChucNang = new JPanel();
@@ -246,8 +219,8 @@ public class Form_SP_TimKiem extends JPanel {
 		btnTimKiem.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		        String timKiemKieuDang = txtTimKieuDang.getText().trim();
-		        String timKiemTheoTenSP = txtTenSanPham.getText().trim();
+		        String timKiemKieuDang = txtKieu.getText().trim();
+		        String timKiemTheoTenSP = txtTen.getText().trim();
 
 		        if (!timKiemKieuDang.isEmpty()) {
 		            // Tìm kiếm theo kiểu dáng và lấy danh sách sản phẩm
@@ -275,7 +248,14 @@ public class Form_SP_TimKiem extends JPanel {
 		            }
 		        }
 		    }
-		}); }
+		}); 
+		btnThoat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		}
 	
 		private void updateTableData(ArrayList<SanPham> danhSachSanPham) {
 		    DefaultTableModel model = (DefaultTableModel) tblDanhSachSanPham.getModel();
