@@ -165,6 +165,7 @@ public class Form_NV_TimKiem extends JPanel {
 		btnThoat.setBackground(Color.RED);
 		pnChucNang.add(btnThoat);
 		
+		// South
 		JPanel pnSouth = new JPanel();
 		pnSouth.setBorder(new TitledBorder(null, "K\u1EBFt qu\u1EA3 t\u00ECm ki\u1EBFm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnSouth.setPreferredSize(new Dimension(1200, 330));

@@ -4,7 +4,18 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.awt.Color;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
@@ -19,12 +30,20 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import com.toedter.components.JSpinField;
 
+import connectDB.Conection_DB;
+import dao.DAO_NhanVien;
+import dao.DAO_SanPham;
+import entity.NhanVien;
+import entity.SanPham;
+
 public class Form_SP_CapNhat extends JPanel {
 	private JTable table;
 	private JTextField txtMaSanPham;
 	private JTextField txtKieuDang;
 	private JTextField txtTenSanPham;
 	private JTextField txtChatLieu;
+	private DefaultTableModel tableModel;
+	private DAO_SanPham sp_dao;
 
 	/**
 	 * Create the panel.
@@ -200,8 +219,163 @@ public class Form_SP_CapNhat extends JPanel {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			
+			boolean[] columnEditables = new boolean[] {false, false, false, false,false};
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
 		});
+		table.setFont(new Font("Arial", Font.PLAIN, 10));
 
+		/* XỬ LÝ TỪ ĐÂY*/
+		tableModel = (DefaultTableModel) table.getModel();
+		String[] columnNames = { "Mã Sản Phẩm", "Tên Sản Phẩm", "Kiểu Dáng", "Chất Liệu", "Số Lượng"};
+		tableModel.setColumnIdentifiers(columnNames);
+		
+		// khởi tạo kết nối đến CSDL
+		try {
+			Conection_DB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sp_dao = new DAO_SanPham();
+		DocDuLieuDBVaoTable();
+		
+		// THÊM NHÂN VIÊN
+		btnThemSanPham.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Lấy thông tin từ các trường nhập liệu
+				// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
+				int maxSPNumber = sp_dao.getMaxProductNumberNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
+				// Tăng giá trị mã nhân viên lớn nhất lên 1
+				int nextSPNumber = maxSPNumber + 1;
+				// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
+				String ma = String.format("SP%02d", nextSPNumber);
+
+		        // Gán mã nhân viên đã tạo vào trường nhập liệu
+		        txtMaSanPham.setText(ma);
+				String tenSanPham = txtTenSanPham.getText().trim();
+				String kieuDang = txtKieuDang.getText().trim();
+				String chatLieu = txtChatLieu.getText().trim();
+				
+				// Xử lý số lượng
+				int soLuong = jsfSoLuong.getValue();
+				
+				SanPham sp = new SanPham(ma, tenSanPham, kieuDang, chatLieu, soLuong);
+				sp_dao.create(sp);
+				tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+				
+				// Xóa nội dung của các trường nhập liệu sau khi thêm
+				txtMaSanPham.setText("");
+				txtMaSanPham.requestFocus();
+				txtTenSanPham.setText("");
+				txtChatLieu.setText("");
+				jsfSoLuong.validate();
+			}
+		});
+		//XÓA NHÂN VIÊN
+		btnXoaSanPham.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+				if(row < 0) {
+					JOptionPane.showMessageDialog(null, "Chọn sản phẩm cần xóa");
+				}else {
+					String maSP = (String) table.getValueAt(row, 0);
+					sp_dao.deleteSP(maSP);
+					tableModel.removeRow(row); 
+					JOptionPane.showMessageDialog(null, "Xóa sản phẩm thành công"); 
+				}
+			} 
+		}); 
+		//SỬA NHÂN VIÊN
+		btnSuaThongTin.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        int selectedRow = table.getSelectedRow();
+		        if (selectedRow < 0) {
+		            JOptionPane.showMessageDialog(null, "Chọn một sản phẩm trong bảng để sửa.");
+		            return;
+		        }
+
+		        // Lấy thông tin sản phẩm từ dòng được chọn trong bảng
+		        String maSP = txtMaSanPham.getText().trim();
+		        String tenSP = txtTenSanPham.getText().trim();
+		        String kieuDang = txtKieuDang.getText().trim();
+		        String chatLieu = txtChatLieu.getText().trim();
+		        // Xử lý số lượng
+		        int soLuong = jsfSoLuong.getValue();
+		        // Tạo đối tượng NhanVien mới
+		        SanPham sp = new SanPham(maSP, tenSP, kieuDang, chatLieu, soLuong);
+		        // Gọi phương thức DAO để cập nhật thông tin nhân viên
+		        boolean updated = sp_dao.update(sp);
+
+		        if (updated) {
+		            // Cập nhật lại thông tin trong bảng
+		            tableModel.setValueAt(tenSP, selectedRow, 1);
+		            tableModel.setValueAt(kieuDang, selectedRow, 2);
+		            tableModel.setValueAt(chatLieu, selectedRow, 3);
+		            tableModel.setValueAt(soLuong, selectedRow, 4);
+		            JOptionPane.showMessageDialog(null, "Cập nhật thông tin sản phẩm thành công");
+		        } else {
+		            JOptionPane.showMessageDialog(null, "Cập nhật thông tin sản phẩm thất bại");
+		        }
+		    }
+		});
+		
+		// XÓA RỖNG
+		btnXoaRong.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Đặt giá trị của các trường nhập liệu về rỗng hoặc giá trị mặc định
+		        txtMaSanPham.setText("");
+		        txtTenSanPham.setText("");
+		        txtKieuDang.setText("");
+		        txtChatLieu.setText("");
+		        jsfSoLuong.setValue(0);
+		    }
+		});
+		
+		//THOÁT
+		btnThoat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		// Đưa dữ liệu từ bảng lên các trường nhập liệu khi click vào một dòng trong bảng
+				table.addMouseListener(new MouseAdapter() {
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        int row = table.getSelectedRow();
+				        if (row >= 0) {
+				            String maSP = (String) table.getValueAt(row, 0);
+				            String tenSP = (String) table.getValueAt(row, 1);
+				            String kieuDang = (String) table.getValueAt(row, 2);
+				            String chatLieu = (String) table.getValueAt(row, 3);
+				            String soLuong = (String) table.getValueAt(row, 4).toString();
+
+				            txtMaSanPham.setText(maSP);
+				            txtTenSanPham.setText(tenSP);
+				            txtKieuDang.setText(kieuDang);
+				            txtChatLieu.setText(chatLieu);
+				            jsfSoLuong.setValue(0);
+
+				        }
+				    }
+				});
+
+				/////////////////
 	}
-
+	
+	public void DocDuLieuDBVaoTable() {
+		List<SanPham> list = DAO_SanPham.getAlltbSanPham();
+		for (SanPham sp : list) {
+			tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getKieuDang(),sp.getSoLuong()});
+		}
+	}
 }
