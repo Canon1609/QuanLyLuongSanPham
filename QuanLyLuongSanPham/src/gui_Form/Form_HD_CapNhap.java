@@ -2,6 +2,7 @@ package gui_Form;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.Box;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -13,14 +14,35 @@ import java.awt.Dimension;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
 
+import connectDB.Conection_DB;
+import dao.DAO_HopDong;
+import dao.DAO_NhanVien;
+import entity.HopDong;
+import entity.NhanVien;
+import entity.SanPham;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.security.PublicKey;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.DefaultComboBoxModel;
 
@@ -31,13 +53,16 @@ public class Form_HD_CapNhap extends JPanel {
 	private JTable tbl_SanPham;
 	private JTextField txtsoLuong;
 	private JTable tbl_Chinh;
-
+	private DefaultTableModel tableM;
+	private DefaultTableModel tableModel;
+	private DAO_HopDong hd_dao;
+	private DAO_NhanVien dao_nv;
 	/**
 	 * Create the panel.
 	 */
 	public Form_HD_CapNhap() {
 
-		
+		dao_nv =new DAO_NhanVien();
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_T = new JPanel();
@@ -121,10 +146,11 @@ public class Form_HD_CapNhap extends JPanel {
 		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
 		b3.add(horizontalStrut_4);
 		
-		JComboBox cmbtenNhanVien = new JComboBox();
-		cmbtenNhanVien.setPreferredSize(new Dimension(30, 30));
-		cmbtenNhanVien.setFont(new Font("Arial", Font.PLAIN, 12));
-		b3.add(cmbtenNhanVien);
+		JTextField txt_tenNhanVien = new JTextField();
+		txt_tenNhanVien.setPreferredSize(new Dimension(30, 30));
+		txt_tenNhanVien.setFont(new Font("Arial", Font.PLAIN, 12));
+		b3.add(txt_tenNhanVien);
+		txt_tenNhanVien.setEditable(false);
 		
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		verticalStrut_2.setMinimumSize(new Dimension(0, 15));
@@ -145,6 +171,7 @@ public class Form_HD_CapNhap extends JPanel {
 		cmbmaSP.setPreferredSize(new Dimension(100, 30));
 		cmbmaSP.setFont(new Font("Arial", Font.PLAIN, 12));
 		b4.add(cmbmaSP);
+		
 		
 		Component horizontalStrut_6 = Box.createHorizontalStrut(20);
 		b4.add(horizontalStrut_6);
@@ -252,22 +279,22 @@ public class Form_HD_CapNhap extends JPanel {
 		panel_table.add(src_tableChinh);
 		
 		tbl_Chinh = new JTable();
-		tbl_Chinh.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"M\u00E3 H\u1EE3p \u0110\u1ED3ng", "T\u00EAn Kh\u00E1ch H\u00E0ng", "M\u00E3 Nh\u00E2n Vi\u00EAn", "T\u00EAn Nh\u00E2n Vi\u00EAn", "Ng\u00E0y L\u1EADp", "Ng\u00E0y Giao", "\u0110\u01A1n Gi\u00E1"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class, String.class, Double.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		src_tableChinh.setViewportView(tbl_Chinh);
 		
+		src_tableChinh.setViewportView(tbl_Chinh);
+		tbl_Chinh.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"M\u00E3 H\u1EE3p \u0110\u1ED3ng", "T\u00EAn Kh\u00E1ch H\u00E0ng", "M\u00E3 Nh\u00E2n Vi\u00EAn", "T\u00EAn Nh\u00E2n Vi\u00EAn", "Ng\u00E0y L\u1EADp", "Ng\u00E0y Giao", "\u0110\u01A1n Gi\u00E1"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					String.class, String.class, String.class, String.class, String.class, String.class, Double.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+			});
 		JPanel panel_ChucNang = new JPanel();
 		panel_ChucNang.setFont(new Font("Arial", Font.PLAIN, 11));
 		panel_ChucNang.setPreferredSize(new Dimension(200, 50));
@@ -334,7 +361,236 @@ public class Form_HD_CapNhap extends JPanel {
 		lblCapNhatHDong.setForeground(new Color(255, 0, 0));
 		lblCapNhatHDong.setFont(new Font("Arial", Font.BOLD, 16));
 		panel.add(lblCapNhatHDong);
-	}
 	
+	//
+	/* XỬ LÝ TỪ ĐÂY*/
+		try {
+			Conection_DB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<NhanVien> dsnv =new ArrayList<>();
+		dsnv =dao_nv.getAlltbNhanVien();
+		for (NhanVien nhanVien : dsnv) {
+			cmbmaNV.addItem(nhanVien.getMaNhanVien());
+		}
+		
+		tableModel = (DefaultTableModel) tbl_Chinh.getModel();
+		String[] columnNames = { "Mã Hợp Đồng", "Tên Khách Hàng", "Mã Nhân Viên",  "Ngày Lập", "Ngày Giao",
+				"Đơn Giá"};
+		tableModel.setColumnIdentifiers(columnNames);
+		
+		hd_dao = new DAO_HopDong();
+		//DocDuLieuDBVaoTable();
+		btn_Them.addActionListener(new ActionListener() {
+			
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Lấy thông tin từ các trường nhập liệu
+				// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
+				int maxEmployeeNumber = hd_dao.getMaxEmployeeNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
+				// Tăng giá trị mã nhân viên lớn nhất lên 1
+				int nextEmployeeNumber = maxEmployeeNumber + 1;
+				// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
+				String ma = String.format("HD%02d", nextEmployeeNumber);
+
+		        // Gán mã nhân viên đã tạo vào trường nhập liệu
+		        txtmaHD.setText(ma);
+				
+				
+
+				// Xử lý ngày sinh
+				Date ngayLap = (Date) dateChooser_ngayLap.getDate();
+				Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				String ngayLap_New = dateFormat.format(ngayLap);
+				String ngayGiao_New = dateFormat.format(ngayGiao);
+				
+				
+				String maSP = cmbmaSP.getSelectedItem().toString();
+				
+				String tenKH = txtkhachHang.getText().trim();
+				
+				String maNV = cmbmaNV.getSelectedItem().toString();
+				
+//				int soLuong =Integer.parseInt(txtsoLuong.getText());
+				int soLuong =1;
+				double donGia = Double.parseDouble(txtdonGia.getText().trim());
+				
+				NhanVien nv =new NhanVien(maNV);
+				SanPham sp =new SanPham(maSP);
+				
+				HopDong hd =new HopDong(ma, tenKH, ngayLap_New, ngayGiao_New, donGia, soLuong, nv, sp);
+				
+				hd_dao.create(hd);
+				tableModel.addRow(new Object[] {hd.getMaHopDong(),hd.getTenKH(),hd.getNhanVien().getMaNhanVien(), hd.getNgayLap(),hd.getNgayGiao(), hd.getDonGia()
+						});
+				
+				// Xóa nội dung của các trường nhập liệu sau khi thêm
+				txtmaHD.setText("");
+				txtmaHD.requestFocus();
+				txtkhachHang.setText("");
+				
+				dateChooser_ngayLap.setDate(null);
+				dateChooser_ngayGiao.setDate(null);
+				cmbmaSP.setSelectedIndex(0);
+				cmbmaNV.setSelectedIndex(0);
+			
+				txtdonGia.setText("");
+				
+				
+			}
+		});
+	
+cmbmaNV.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				ArrayList<NhanVien> ds =new ArrayList<>();
+				String ma =cmbmaNV.getSelectedItem().toString();
+				ds =dao_nv.getmatbNhanVien(ma);
+				for (NhanVien nhanVien : ds) {
+					txt_tenNhanVien.setText(nhanVien.getHoTen());
+				}
+			}});
+		
+		//XÓA NHÂN VIÊN
+		btn_Xoa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = tbl_Chinh.getSelectedRow();
+				if(row < 0) {
+					JOptionPane.showMessageDialog(null, "Chọn hợp đồng cần xóa");
+				}else {
+					String maHD = (String) tbl_Chinh.getValueAt(row, 0);
+					hd_dao.delete(maHD);
+					tableModel.removeRow(row);
+					JOptionPane.showMessageDialog(null, "Xóa hợp đồng thành công");
+				}
+				
+			}
+		});
+		
+		//SỬA NHÂN VIÊN
+		btn_Sua.addActionListener(new ActionListener() {
+		   
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        int selectedRow = tbl_Chinh.getSelectedRow();
+		        if (selectedRow < 0) {
+		            JOptionPane.showMessageDialog(null, "Chọn một hợp đồng trong bảng để sửa.");
+		            return;
+		        }
+
+		        // Lấy thông tin nhân viên từ dòng được chọn trong bảng
+		       String maHD =txtmaHD.getText().trim();
+		        String ten = txtkhachHang.getText().trim();
+		        
+		        // Xử lý ngày sinh
+		        Date ngayLap = (Date) dateChooser_ngayLap.getDate();
+		        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		        String ngayLapStr = dateFormat.format(ngayLap);		
+		        Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
+		        String ngayGiaoStr = dateFormat.format(ngayLap);
+		        
+		        String maNV = cmbmaNV.getSelectedItem().toString();
+		        String maSP = cmbmaSP.getSelectedItem().toString();
+		        NhanVien nv =new NhanVien(maNV);
+		        SanPham sp =new SanPham(maSP);
+		        int soLuong =Integer.parseInt(txtsoLuong.getText().trim());
+		        double donGia = Double.parseDouble(txtdonGia.getText().trim());
+		      
+		        // Tạo đối tượng NhanVien mới
+		      HopDong hd =new HopDong(maHD, ten, ngayLapStr,ngayGiaoStr, donGia, soLuong, nv, sp);
+		        // Gọi phương thức DAO để cập nhật thông tin nhân viên
+		        boolean updated = hd_dao.update(hd);
+
+		        if (updated) {
+		            // Cập nhật lại thông tin trong bảng
+		            tableModel.setValueAt(ten, selectedRow, 1);
+		            tableModel.setValueAt(maNV, selectedRow, 2);
+		            tableModel.setValueAt(ngayLapStr, selectedRow, 3);
+		            tableModel.setValueAt(ngayGiaoStr, selectedRow, 4);
+		            tableModel.setValueAt(donGia, selectedRow, 5);
+		            
+		          
+
+		            JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thành công");
+		        } else {
+		            JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thất bại");
+		        }
+		    }
+		});
+		
+		// XÓA RỖNG
+		btn_lamMoi.addActionListener(new ActionListener() {
+		    
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Đặt giá trị của các trường nhập liệu về rỗng hoặc giá trị mặc định
+		        txtmaHD.setText("");
+		        txtkhachHang.setText("");
+		     
+		        dateChooser_ngayLap.setDate(null);
+		        dateChooser_ngayGiao.setDate(null);
+		        cmbmaNV.setSelectedIndex(0); // Đặt lại giá trị mặc định
+		        cmbmaSP.setSelectedIndex(0);
+		        txtdonGia.setText("");
+		        txtsoLuong.setText("0");
+		       
+		       
+		    }
+		});
+		//THOÁT
+//		btn.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				setVisible(false);
+//			}
+//		});
+		// Đưa dữ liệu từ bảng lên các trường nhập liệu khi click vào một dòng trong bảng
+		tbl_Chinh.addMouseListener(new MouseAdapter() {
+		    
+
+			@Override
+		    public void mouseClicked(MouseEvent e) {
+		        int row = tbl_Chinh.getSelectedRow();
+		        if (row >= 0) {
+		            String ma = (String) tbl_Chinh.getValueAt(row, 0);
+		            String ten = (String) tbl_Chinh.getValueAt(row, 1);
+		            String maNV =(String) tbl_Chinh.getValueAt(row, 2);
+		            String ngayLapStr = (String) tbl_Chinh.getValueAt(row, 3);
+		            String ngayGiaoStr = (String) tbl_Chinh.getValueAt(row, 4);
+		            
+
+		            txtmaHD.setText(ma);
+		            txtkhachHang.setText(ten);
+		           
+		            try {
+		                Date ngayLapDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngayLapStr);
+		                dateChooser_ngayLap.setDate(ngayLapDate);
+		                Date ngayGiaoDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngayGiaoStr);
+		                dateChooser_ngayGiao.setDate(ngayGiaoDate);
+		            } catch (ParseException ex) {
+		                ex.printStackTrace();
+		            }
+		            cmbmaNV.setSelectedItem(maNV);
+		           
+		        }
+		    }
+		});
+		
+		/////////////////
+		
+	}	
+	
 }
+
+
+

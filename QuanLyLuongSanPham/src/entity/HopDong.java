@@ -31,6 +31,17 @@ public class HopDong {
 		this.nhanVien = nhanVien;
 		this.sanPham = sanPham;
 	}
+	
+	
+	public HopDong(String maHopDong, String tenKH, String ngayLap, String ngayGiao, double donGia, NhanVien nhanVien) {
+		super();
+		this.maHopDong = maHopDong;
+		this.tenKH = tenKH;
+		this.ngayLap = ngayLap;
+		this.ngayGiao = ngayGiao;
+		this.donGia = donGia;
+		this.nhanVien = nhanVien;
+	}
 	public String getMaHopDong() {
 		return maHopDong;
 	}

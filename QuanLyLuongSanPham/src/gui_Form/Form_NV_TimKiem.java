@@ -272,4 +272,5 @@ public class Form_NV_TimKiem extends JPanel {
 		            nv.getHeSoLuong()
 		        });
 		    }
-		}}
+		}
+		}

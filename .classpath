@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="gui_Form/" kind="src" path="QuanLyLuongSanPham/src"/>
+	<classpathentry kind="src" path="QuanLyLuongSanPham/src/gui_Form"/>
+	<classpathentry kind="lib" path="QuanLyLuongSanPham/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="QuanLyLuongSanPham/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="QuanLyLuongSanPham/lib/sqljdbc4.jar"/>
+	<classpathentry kind="output" path="QuanLyLuongSanPham/bin"/>
+</classpath>
