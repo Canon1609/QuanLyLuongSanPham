@@ -14,30 +14,25 @@ import java.awt.Color;
 import javax.swing.border.TitledBorder;
 import java.awt.Dimension;
 import javax.swing.Box;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import java.awt.Component;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import connectDB.Conection_DB;
-import dao.DAO_NhanVien;
 import dao.DAO_SanPham;
-import entity.NhanVien;
 import entity.SanPham;
 
 import javax.swing.JScrollPane;
 
 public class Form_SP_TimKiem extends JPanel {
-	private JTextField txtMaSanPham;
-	private JTextField txtKieuDang;
-	private JTextField txtTenSanPham;
-	private JTextField txtChatLieu;
-	private JTable table;
-	private JComboBox cmbGT;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTable tblDanhSachSanPham;
 	private DefaultTableModel tableModel;
 	private DAO_SanPham sp_dao;
@@ -106,9 +101,9 @@ public class Form_SP_TimKiem extends JPanel {
                     txtKieu.setVisible(false);
                 }
                 else if(cmbMaNV.getSelectedItem().equals("Kiểu dáng")){
-                    lblNhapTen.setText("Nhập Kiểu Dáng Sản Phẩm:");
-                    lblNhapTen.setPreferredSize(new Dimension(170,0));
+                    lblNhapTen.setText("Nhập Kiểu Dáng :");
                     txtTen.setVisible(false);
+                    
                     txtKieu.setVisible(true);
                 }
 
@@ -185,13 +180,13 @@ public class Form_SP_TimKiem extends JPanel {
 			 */
 			private static final long serialVersionUID = 1L;
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class, String.class, String.class, Double.class, Double.class, String.class, Double.class
+				String.class, String.class, String.class, String.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false, false, false, false, false, false
+				false, false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -265,8 +260,8 @@ public class Form_SP_TimKiem extends JPanel {
 		        model.addRow(new Object[] {
 		            sp.getMaSanPham(),
 		            sp.getTenSanPham(),
-		            sp.getChatLieu(),
 		            sp.getKieuDang(),
+		            sp.getChatLieu(),
 		            sp.getSoLuong(),
 
 		        });

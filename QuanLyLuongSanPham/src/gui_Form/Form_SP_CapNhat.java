@@ -375,7 +375,7 @@ public class Form_SP_CapNhat extends JPanel {
 	public void DocDuLieuDBVaoTable() {
 		List<SanPham> list = DAO_SanPham.getAlltbSanPham();
 		for (SanPham sp : list) {
-			tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getKieuDang(),sp.getSoLuong()});
+			tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
 		}
 	}
 }
