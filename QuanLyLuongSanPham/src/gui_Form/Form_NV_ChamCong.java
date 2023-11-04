@@ -3,7 +3,11 @@ package gui_Form;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -23,7 +27,9 @@ import java.awt.Component;
 import com.toedter.calendar.JDateChooser;
 
 import connectDB.Conection_DB;
+import dao.DAO_ChamCongNhanVIen;
 import dao.DAO_NhanVien;
+import entity.CongCuaNhanVien;
 import entity.NhanVien;
 
 import javax.swing.JTextField;
@@ -43,6 +49,8 @@ public class Form_NV_ChamCong extends JPanel {
 	private JTable tblDanhSachChamCong;
 	private DefaultTableModel tableModel;
 	private DAO_NhanVien nv_dao;
+	private DefaultTableModel tableModelDSChamCong;
+	private DAO_ChamCongNhanVIen dao_congNV;
 
 	/**
 	 * Create the panel.
@@ -134,7 +142,7 @@ public class Form_NV_ChamCong extends JPanel {
 		boxTrai1.add(boxNghiPhep);
 		
 		JCheckBox chkCoMat = new JCheckBox("Có Mặt");
-		//chkCoMat.setSelected(true);
+		chkCoMat.setSelected(true);
 		chkCoMat.setFont(new Font("Arial", Font.BOLD, 12));
 		boxNghiPhep.add(chkCoMat);
 		
@@ -354,14 +362,11 @@ public class Form_NV_ChamCong extends JPanel {
 				            String heSoLuong = (String) tblDanhSachNV.getValueAt(row, 10).toString();
 
 				            txtPhongBan.setText(phongBan);
-				            txtNhanVien.setText(ten);
+				            txtNhanVien.setText(ma);
 				        }
 				    }
 				});
-				
-				
-				
-				
+					
 		DocDuLieuDBVaoTable();
 		JPanel pnChucNang = new JPanel();
 		pnChucNang.setPreferredSize(new Dimension(1000, 50));
@@ -423,6 +428,67 @@ public class Form_NV_ChamCong extends JPanel {
 			}
 		});
 		tblDanhSachChamCong.setFont(new Font("Arial", Font.PLAIN, 10));
+		tableModelDSChamCong = (DefaultTableModel) tblDanhSachChamCong.getModel();
+		String[] columnNames1 = { "Mã Công", "Mã Nhân Viên", "Ngày Chấm", "Ca Làm", "Giờ Làm", "Lương Ca Làm",
+				"Trạng Thái", "Nghỉ Phép"};
+		tableModelDSChamCong.setColumnIdentifiers(columnNames1);
+		DocDLDanhSachChamCong();
+		dao_congNV = new DAO_ChamCongNhanVIen();
+		//Cham Cong
+		btnChamCongNV.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int maxMaCongNV = dao_congNV.getMaxMaCongNV();
+				int nextMaCongNV = maxMaCongNV +1;
+				String ma = String.format("C%02d", nextMaCongNV);
+				String maNV = txtNhanVien.getText();
+				String caLam = cmbCaLam.getSelectedItem().toString();
+				String gioLam = txtGioLam.getText();
+				Double luongCa = Double.parseDouble(txtLuongCa.getText());
+				String trangThai="";
+				if(chkCoMat.isSelected()) {
+					trangThai = "Có mặt";
+				}else {
+					trangThai = "Nghỉ";
+				}
+				String nghiPhep ="";
+				if(chkCoPhep.isSelected()) {
+					nghiPhep = "Có";
+				}else {
+					nghiPhep ="Không";
+				}
+				
+				Date ngayCham = (Date) dateChooser.getDate();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				String ngayChamStr = dateFormat.format(ngayCham);
+				
+				NhanVien nv = new NhanVien(maNV);
+				CongCuaNhanVien congNV = new CongCuaNhanVien(ma,nv ,ngayChamStr , caLam, gioLam, luongCa, trangThai,nghiPhep);
+				dao_congNV.create(congNV);
+				tableModelDSChamCong.addRow(new Object[] {congNV.getMaCongNV(),
+						congNV.getNhanVien().getMaNhanVien(),
+						congNV.getNgayChamCong(),congNV.getCaLam(),congNV.getGioLam(),congNV.getLuongCaLam(),
+						congNV.getTrangThai(),congNV.getNghiPhep()});
+			}
+		});
+		btnXoaChamCongNV.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = tblDanhSachChamCong.getSelectedRow();
+				if(row<0) {
+					JOptionPane.showMessageDialog(null, "Chọn công cần xóa");
+				}else {
+					String maCongNV = (String) tblDanhSachChamCong.getValueAt(row, 0);
+					dao_congNV.delete(maCongNV);
+					tableModelDSChamCong.removeRow(row);
+					JOptionPane.showMessageDialog(null, "Xóa chấm công thành công");
+				}
+				
+			}
+		});
+		
 		
 	}
 	public void DocDuLieuDBVaoTable() {
@@ -433,4 +499,15 @@ public class Form_NV_ChamCong extends JPanel {
 		}
 
 	}
+	public void DocDLDanhSachChamCong() {
+		List<CongCuaNhanVien> list = DAO_ChamCongNhanVIen.getAlltbCongCuaNhanVien();
+		for (CongCuaNhanVien congNV : list) {
+			tableModelDSChamCong.addRow(new Object[] {congNV.getMaCongNV(),
+				    congNV.getNhanVien().getMaNhanVien(),
+				    congNV.getNgayChamCong(),congNV.getCaLam(),congNV.getGioLam(),congNV.getLuongCaLam(),
+				    congNV.getTrangThai(),congNV.getNghiPhep()});
+
+		}
+	}
+	//
 }

@@ -4,13 +4,14 @@ import java.util.Objects;
 
 public class CongCuaNhanVien {
 	private String maCongNV;
+	private NhanVien nhanVien;
 	private String ngayChamCong;
 	private String caLam;
 	private String gioLam;
 	private double luongCaLam;
 	private String trangThai;
 	private String nghiPhep;
-	private NhanVien nhanVien;
+	
 	public CongCuaNhanVien() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -19,8 +20,8 @@ public class CongCuaNhanVien {
 		super();
 		this.maCongNV = maCongNV;
 	}
-	public CongCuaNhanVien(String maCongNV, String ngayChamCong, String caLam, String gioLam, double luongCaLam,
-			String trangThai, String nghiPhep, NhanVien nhanVien) {
+	public CongCuaNhanVien(String maCongNV, NhanVien nhanVien, String ngayChamCong, String caLam, String gioLam, double luongCaLam,
+			String trangThai, String nghiPhep) {
 		super();
 		this.maCongNV = maCongNV;
 		this.ngayChamCong = ngayChamCong;
