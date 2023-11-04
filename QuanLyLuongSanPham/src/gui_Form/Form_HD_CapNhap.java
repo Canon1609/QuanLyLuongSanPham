@@ -17,6 +17,7 @@ import com.toedter.components.JSpinField;
 import connectDB.Conection_DB;
 import dao.DAO_HopDong;
 import dao.DAO_NhanVien;
+import dao.DAO_SanPham;
 import entity.HopDong;
 import entity.NhanVien;
 import entity.SanPham;
@@ -57,11 +58,18 @@ public class Form_HD_CapNhap extends JPanel {
 	private DefaultTableModel tableModel;
 	private DAO_HopDong hd_dao;
 	private DAO_NhanVien dao_nv;
+	private DAO_SanPham dao_sp;
+	private DefaultTableModel tableModelSanPham;
 	/**
 	 * Create the panel.
 	 */
 	public Form_HD_CapNhap() {
-
+		try {
+			Conection_DB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		dao_nv =new DAO_NhanVien();
 		setLayout(new BorderLayout(0, 0));
 		
@@ -159,7 +167,7 @@ public class Form_HD_CapNhap extends JPanel {
 		Box b4 = Box.createHorizontalBox();
 		b.add(b4);
 		
-		JLabel lblmaSP = new JLabel("Mã Sản Phẩm: ");
+		JLabel lblmaSP = new JLabel("Sản Phẩm: ");
 		lblmaSP.setPreferredSize(new Dimension(100, 14));
 		lblmaSP.setFont(new Font("Arial", Font.PLAIN, 12));
 		b4.add(lblmaSP);
@@ -167,11 +175,11 @@ public class Form_HD_CapNhap extends JPanel {
 		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
 		b4.add(horizontalStrut_5);
 		
-		JComboBox cmbmaSP = new JComboBox();
-		cmbmaSP.setPreferredSize(new Dimension(100, 30));
-		cmbmaSP.setFont(new Font("Arial", Font.PLAIN, 12));
-		b4.add(cmbmaSP);
-		
+		JTextField txt_tenSanPham = new JTextField();
+		txt_tenSanPham.setPreferredSize(new Dimension(100, 30));
+		txt_tenSanPham.setFont(new Font("Arial", Font.PLAIN, 12));
+		b4.add(txt_tenSanPham);
+		txt_tenSanPham.setEditable(false);
 		
 		Component horizontalStrut_6 = Box.createHorizontalStrut(20);
 		b4.add(horizontalStrut_6);
@@ -364,6 +372,7 @@ public class Form_HD_CapNhap extends JPanel {
 	
 	//
 	/* XỬ LÝ TỪ ĐÂY*/
+		
 		try {
 			Conection_DB.getInstance().connect();
 		} catch (SQLException e) {
@@ -375,71 +384,79 @@ public class Form_HD_CapNhap extends JPanel {
 		for (NhanVien nhanVien : dsnv) {
 			cmbmaNV.addItem(nhanVien.getMaNhanVien());
 		}
-		
+		dao_sp =new DAO_SanPham();
+
 		tableModel = (DefaultTableModel) tbl_Chinh.getModel();
 		String[] columnNames = { "Mã Hợp Đồng", "Tên Khách Hàng", "Mã Nhân Viên",  "Ngày Lập", "Ngày Giao",
 				"Đơn Giá"};
 		tableModel.setColumnIdentifiers(columnNames);
-		
+		tableModelSanPham = (DefaultTableModel) tbl_SanPham.getModel();
+		String[] columnNamesSanPham = { "Mã Nhân Viên", "Kiểu Dáng", "Chất Liệu"};
+		tableModelSanPham.setColumnIdentifiers(columnNamesSanPham);
 		hd_dao = new DAO_HopDong();
-		//DocDuLieuDBVaoTable();
+		DocDuLieuDBVaoTable();
+		DocDuLieuDBVaoTableSanPham();
 		btn_Them.addActionListener(new ActionListener() {
 			
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Lấy thông tin từ các trường nhập liệu
-				// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
-				int maxEmployeeNumber = hd_dao.getMaxEmployeeNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
-				// Tăng giá trị mã nhân viên lớn nhất lên 1
-				int nextEmployeeNumber = maxEmployeeNumber + 1;
-				// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
-				String ma = String.format("HD%02d", nextEmployeeNumber);
+				if(valiData())
+				{
+					// Lấy thông tin từ các trường nhập liệu
+					// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
+					int maxEmployeeNumber = hd_dao.getMaxEmployeeNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
+					// Tăng giá trị mã nhân viên lớn nhất lên 1
+					int nextEmployeeNumber = maxEmployeeNumber + 1;
+					// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
+					String ma = String.format("HD%02d", nextEmployeeNumber);
 
-		        // Gán mã nhân viên đã tạo vào trường nhập liệu
-		        txtmaHD.setText(ma);
-				
-				
+			        // Gán mã nhân viên đã tạo vào trường nhập liệu
+			        txtmaHD.setText(ma);
+					
+					
 
-				// Xử lý ngày sinh
-				Date ngayLap = (Date) dateChooser_ngayLap.getDate();
-				Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				String ngayLap_New = dateFormat.format(ngayLap);
-				String ngayGiao_New = dateFormat.format(ngayGiao);
+					// Xử lý ngày sinh
+					Date ngayLap = (Date) dateChooser_ngayLap.getDate();
+					Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					String ngayLap_New = dateFormat.format(ngayLap);
+					String ngayGiao_New = dateFormat.format(ngayGiao);
+					
+					
+					String maSP = txt_tenSanPham.getText().trim();
+					
+					String tenKH = txtkhachHang.getText().trim();
+					
+					String maNV = cmbmaNV.getSelectedItem().toString();
+					
+
+					int soLuong =jsfSoLuong.getValue();
+					double donGia = Double.parseDouble(txtdonGia.getText().trim());
+					
+					NhanVien nv =new NhanVien(maNV);
+					SanPham sp =new SanPham(maSP);
+					
+					HopDong hd =new HopDong(ma, tenKH, ngayLap_New, ngayGiao_New, donGia, soLuong, nv, sp);
+					
+					hd_dao.create(hd);
+					tableModel.addRow(new Object[] {hd.getMaHopDong(),hd.getTenKH(),hd.getNhanVien().getMaNhanVien(), hd.getNgayLap(),hd.getNgayGiao(), hd.getDonGia()
+							});
+					
+					// Xóa nội dung của các trường nhập liệu sau khi thêm
+					txtmaHD.setText("");
+					txtmaHD.requestFocus();
+					txtkhachHang.setText("");
+					
+					dateChooser_ngayLap.setDate(null);
+					dateChooser_ngayGiao.setDate(null);
+					txt_tenSanPham.setText("");;
+					cmbmaNV.setSelectedIndex(0);
 				
-				
-				String maSP = cmbmaSP.getSelectedItem().toString();
-				
-				String tenKH = txtkhachHang.getText().trim();
-				
-				String maNV = cmbmaNV.getSelectedItem().toString();
-				
-//				int soLuong =Integer.parseInt(txtsoLuong.getText());
-				int soLuong =1;
-				double donGia = Double.parseDouble(txtdonGia.getText().trim());
-				
-				NhanVien nv =new NhanVien(maNV);
-				SanPham sp =new SanPham(maSP);
-				
-				HopDong hd =new HopDong(ma, tenKH, ngayLap_New, ngayGiao_New, donGia, soLuong, nv, sp);
-				
-				hd_dao.create(hd);
-				tableModel.addRow(new Object[] {hd.getMaHopDong(),hd.getTenKH(),hd.getNhanVien().getMaNhanVien(), hd.getNgayLap(),hd.getNgayGiao(), hd.getDonGia()
-						});
-				
-				// Xóa nội dung của các trường nhập liệu sau khi thêm
-				txtmaHD.setText("");
-				txtmaHD.requestFocus();
-				txtkhachHang.setText("");
-				
-				dateChooser_ngayLap.setDate(null);
-				dateChooser_ngayGiao.setDate(null);
-				cmbmaSP.setSelectedIndex(0);
-				cmbmaNV.setSelectedIndex(0);
-			
-				txtdonGia.setText("");
-				
+					txtdonGia.setText("");
+					
+					
+				}
 				
 			}
 		});
@@ -499,10 +516,10 @@ cmbmaNV.addActionListener(new ActionListener(){
 		        String ngayGiaoStr = dateFormat.format(ngayLap);
 		        
 		        String maNV = cmbmaNV.getSelectedItem().toString();
-		        String maSP = cmbmaSP.getSelectedItem().toString();
+		        String maSP = txt_tenSanPham.getText();
 		        NhanVien nv =new NhanVien(maNV);
 		        SanPham sp =new SanPham(maSP);
-		        int soLuong =Integer.parseInt(txtsoLuong.getText().trim());
+		        int soLuong =jsfSoLuong.getValue();
 		        double donGia = Double.parseDouble(txtdonGia.getText().trim());
 		      
 		        // Tạo đối tượng NhanVien mới
@@ -535,14 +552,17 @@ cmbmaNV.addActionListener(new ActionListener(){
 		    public void actionPerformed(ActionEvent e) {
 		        // Đặt giá trị của các trường nhập liệu về rỗng hoặc giá trị mặc định
 		        txtmaHD.setText("");
+		        
 		        txtkhachHang.setText("");
-		     
+		       
+		        txt_tenNhanVien.setText("");
+		      
 		        dateChooser_ngayLap.setDate(null);
 		        dateChooser_ngayGiao.setDate(null);
 		        cmbmaNV.setSelectedIndex(0); // Đặt lại giá trị mặc định
-		        cmbmaSP.setSelectedIndex(0);
+		        txt_tenSanPham.setText("");;
 		        txtdonGia.setText("");
-		        txtsoLuong.setText("0");
+		        jsfSoLuong.setValue(0);;
 		       
 		       
 		    }
@@ -571,7 +591,7 @@ cmbmaNV.addActionListener(new ActionListener(){
 
 		            txtmaHD.setText(ma);
 		            txtkhachHang.setText(ten);
-		           
+		            txtdonGia.setText( tbl_Chinh.getValueAt(row, 5)+"");
 		            try {
 		                Date ngayLapDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngayLapStr);
 		                dateChooser_ngayLap.setDate(ngayLapDate);
@@ -585,11 +605,77 @@ cmbmaNV.addActionListener(new ActionListener(){
 		        }
 		    }
 		});
-		
+		tbl_SanPham.addMouseListener(new MouseAdapter() {
+		    
+
+			@Override
+		    public void mouseClicked(MouseEvent e) {
+		        int row = tbl_SanPham.getSelectedRow();
+		        if (row >= 0) {
+		          
+		           
+		           String maSP =(String) tbl_SanPham.getValueAt(row, 0);
+		           txt_tenSanPham.setText(maSP);
+		          
+		           
+		        }
+		    }
+		});
 		/////////////////
 		
 	}	
-	
+	public void DocDuLieuDBVaoTable() {
+		List<HopDong> list =hd_dao.getAllHopDong() ;
+		for (HopDong hd : list) {
+			
+			tableModel.addRow(new Object[] {hd.getMaHopDong(),hd.getTenKH(),hd.getNhanVien().getMaNhanVien(), hd.getNgayLap(),hd.getNgayGiao(), hd.getDonGia()
+			});
+		}
+	}
+	public void DocDuLieuDBVaoTableSanPham() {
+		List<SanPham> list =dao_sp.getAlltbSanPham() ;
+		for (SanPham sp : list) {
+			
+			tableModelSanPham.addRow(new Object[] {sp.getMaSanPham(), sp.getKieuDang(), sp.getChatLieu()
+			});
+		}
+	}
+	public boolean valiData()
+	{
+		
+		if(txtkhachHang.getText().trim().equals(""))
+		{
+			JOptionPane.showMessageDialog(this, "Tên Khách Hàng Không Được Rỗng!!!");
+			txtkhachHang.selectAll();
+			txtkhachHang.requestFocus();
+			return false;
+		}
+		if(txtdonGia.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(this, "Đơn Giá Không Được Rỗng!!!");
+			txtdonGia.selectAll();
+			txtdonGia.requestFocus();
+			return false;
+		}
+		String tenKH =txtkhachHang.getText().trim();
+		double donGia =Double.parseDouble(txtdonGia.getText().trim());
+		if(!tenKH.matches("[a-zA-Z' ]+"))
+		{
+			JOptionPane.showMessageDialog(this, "Tên Khách Hàng Không Hợp Lệ!!!");
+			txtkhachHang.selectAll();
+			txtkhachHang.requestFocus();
+			return false;
+		}
+		if(donGia<=0)
+		{
+			JOptionPane.showMessageDialog(this, "Đơn Giá Phải Lớn Hơn 0!!!");
+			txtdonGia.selectAll();
+			txtdonGia.requestFocus();
+			return false;
+		}
+			
+		return true;
+	}
 }
 
 

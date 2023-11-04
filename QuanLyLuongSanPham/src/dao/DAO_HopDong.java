@@ -11,6 +11,7 @@ import java.util.List;
 import connectDB.Conection_DB;
 import entity.HopDong;
 import entity.NhanVien;
+import entity.SanPham;
 
 public class DAO_HopDong {
 	public DAO_HopDong() {
@@ -111,32 +112,151 @@ public class DAO_HopDong {
 		return n > 0;
 	}
 	//Tim kiem theo ten
-	public List<NhanVien> timKiemTen(String ten){
+	public List<HopDong> timKiemMaHopDong(String ma){
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<NhanVien> dsnv = new ArrayList<>();
+		List<HopDong> dshd = new ArrayList<>();
 		
 		try {
-			stmt = con.prepareStatement("select * from NhanVien where HoTen = ?");
+			stmt = con.prepareStatement("select * from HopDong where maHopDong = ?");
+			stmt.setString(1, ma);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				String maHD = rs.getString(1);
+				String maSP = rs.getString(2);
+				String maNV = rs.getString(3);
+				String tenKH = rs.getString(4);
+				String ngayLap = rs.getString(5);
+				String ngayGiao = rs.getString(6);
+				double donGia = rs.getDouble(7);
+				NhanVien nv =new NhanVien(maNV);
+				SanPham sp=new SanPham(maSP);
+				HopDong hd =new HopDong(maHD, tenKH, ngayLap, ngayGiao, donGia, nv);
+				dshd.add(hd);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dshd;
+	}
+	public List<HopDong> timKiemTenKhachHang(String ten){
+		Conection_DB.getInstance();
+		Connection con = Conection_DB.getCon();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<HopDong> dsnv = new ArrayList<>();
+		
+		try {
+			stmt = con.prepareStatement("select * from HopDong where tenKhachHang = ?");
 			stmt.setString(1, ten);
 			rs = stmt.executeQuery();
 			while(rs.next()) {
-				String maNV = rs.getString(1);
-				String hoTen = rs.getString(2);
-				String cCCD = rs.getString(3);
-				String ngaySinh = rs.getString(4);
-				String gioiTinh = rs.getString(5);
-				String diaChi = rs.getString(6);
-				String soDienThoai = rs.getString(7);
-				double luongCoBan = rs.getDouble(8);
-				double phuCap = rs.getDouble(9);
-				String phongBan = rs.getString(10);
-				double heSoLuong = rs.getDouble(11);
-				NhanVien nv = new NhanVien(maNV, hoTen, cCCD, ngaySinh, gioiTinh, diaChi, soDienThoai, luongCoBan,
-						phuCap, phongBan, heSoLuong);
-				dsnv.add(nv);
+				String maHD = rs.getString(1);
+				String maSP = rs.getString(2);
+				String maNV = rs.getString(3);
+				String tenKH = rs.getString(4);
+				String ngayLap = rs.getString(5);
+				String ngayGiao = rs.getString(6);
+				double donGia = rs.getDouble(7);
+				NhanVien nv =new NhanVien(maNV);
+				SanPham sp=new SanPham(maSP);
+				HopDong hd =new HopDong(maHD, tenKH, ngayLap, ngayGiao, donGia, nv);
+				dsnv.add(hd);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dsnv;
+	}
+	public List<HopDong> timKiemMaNhanVien(String ma){
+		Conection_DB.getInstance();
+		Connection con = Conection_DB.getCon();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<HopDong> dshd = new ArrayList<>();
+		
+		try {
+			stmt = con.prepareStatement("select * from HopDong where maNhanVien = ?");
+			stmt.setString(1, ma);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				String maHD = rs.getString(1);
+				String maSP = rs.getString(2);
+				String maNV = rs.getString(3);
+				String tenKH = rs.getString(4);
+				String ngayLap = rs.getString(5);
+				String ngayGiao = rs.getString(6);
+				double donGia = rs.getDouble(7);
+				NhanVien nv =new NhanVien(maNV);
+				SanPham sp=new SanPham(maSP);
+				HopDong hd =new HopDong(maHD, tenKH, ngayLap, ngayGiao, donGia, nv);
+				dshd.add(hd);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dshd;
+	}
+	//all
+	public List<HopDong> timKiemALL(String ma, String tenKH1){
+		Conection_DB.getInstance();
+		Connection con = Conection_DB.getCon();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<HopDong> dshd = new ArrayList<>();
+		
+		try {
+			stmt = con.prepareStatement("select * from HopDong where maNhanVien = ? tenKhachHang=?");
+			stmt.setString(1, ma);
+			stmt.setString(2, tenKH1);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				String maHD = rs.getString(1);
+				String maSP = rs.getString(2);
+				String maNV = rs.getString(3);
+				String tenKH = rs.getString(4);
+				String ngayLap = rs.getString(5);
+				String ngayGiao = rs.getString(6);
+				double donGia = rs.getDouble(7);
+				NhanVien nv =new NhanVien(maNV);
+				SanPham sp=new SanPham(maSP);
+				HopDong hd =new HopDong(maHD, tenKH, ngayLap, ngayGiao, donGia, nv);
+				dshd.add(hd);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dshd;
+	}
+	public List<HopDong> timKiemTenNhanVien(String ten){
+		Conection_DB.getInstance();
+		Connection con = Conection_DB.getCon();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<HopDong> dsnv = new ArrayList<>();
+		
+		try {
+			stmt = con.prepareStatement("select * from HopDong where tenNhanVien = ?");
+			stmt.setString(1, ten);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				String maHD = rs.getString(1);
+				String maSP = rs.getString(2);
+				String maNV = rs.getString(3);
+				String tenKH = rs.getString(4);
+				String ngayLap = rs.getString(5);
+				String ngayGiao = rs.getString(6);
+				double donGia = rs.getDouble(7);
+				NhanVien nv =new NhanVien(maNV);
+				SanPham sp=new SanPham(maSP);
+				HopDong hd =new HopDong(maHD, tenKH, ngayLap, ngayGiao, donGia, nv);
+				dsnv.add(hd);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -145,32 +265,30 @@ public class DAO_HopDong {
 		return dsnv;
 	}
 	//Tim kiem theo gioi tinh
-	public List<NhanVien> timKiemGT(String gt){
+	public List<HopDong> timKiemNgayLap(String ngayLap){
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<NhanVien> dsnv = new ArrayList<>();
+		List<HopDong> dsnv = new ArrayList<>();
 		
 		try {
-			stmt = con.prepareStatement("select * from NhanVien where GioiTinh = ?");
-			stmt.setString(1, gt);
+			stmt = con.prepareStatement("select * from HopDong where ngayLap = ?");
+			stmt.setString(1, ngayLap);
 			rs = stmt.executeQuery();
 			while(rs.next()) {
-				String maNV = rs.getString(1);
-				String hoTen = rs.getString(2);
-				String cCCD = rs.getString(3);
-				String ngaySinh = rs.getString(4);
-				String gioiTinh = rs.getString(5);
-				String diaChi = rs.getString(6);
-				String soDienThoai = rs.getString(7);
-				double luongCoBan = rs.getDouble(8);
-				double phuCap = rs.getDouble(9);
-				String phongBan = rs.getString(10);
-				double heSoLuong = rs.getDouble(11);
-				NhanVien nv = new NhanVien(maNV, hoTen, cCCD, ngaySinh, gioiTinh, diaChi, soDienThoai, luongCoBan,
-						phuCap, phongBan, heSoLuong);
-				dsnv.add(nv);
+				String maHD = rs.getString(1);
+				String maSP = rs.getString(2);
+				String maNV = rs.getString(3);
+				String tenKH = rs.getString(4);
+				String ngayLap_New = rs.getString(5);
+				String ngayGiao = rs.getString(6);
+				double donGia = rs.getDouble(7);
+				NhanVien nv =new NhanVien(maNV);
+				SanPham sp=new SanPham(maSP);
+				HopDong hd =new HopDong(maHD, tenKH, ngayLap_New, ngayGiao, donGia, nv);
+				dsnv.add(hd);
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -178,7 +296,37 @@ public class DAO_HopDong {
 		}
 		return dsnv;
 	}
+	public List<HopDong> timKiemNgayGiao(String ngayGiao){
+		Conection_DB.getInstance();
+		Connection con = Conection_DB.getCon();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<HopDong> dsnv = new ArrayList<>();
+		
+		try {
+			stmt = con.prepareStatement("select * from HopDong where ngayLap = ?");
+			stmt.setString(1, ngayGiao);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				String maHD = rs.getString(1);
+				String maSP = rs.getString(2);
+				String maNV = rs.getString(3);
+				String tenKH = rs.getString(4);
+				String ngayLap = rs.getString(5);
+				String ngayGiao_New = rs.getString(6);
+				double donGia = rs.getDouble(7);
+				NhanVien nv =new NhanVien(maNV);
+				SanPham sp=new SanPham(maSP);
+				HopDong hd =new HopDong(maHD, tenKH, ngayLap, ngayGiao_New, donGia, nv);
+				dsnv.add(hd);
 
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dsnv;
+	}
 	// Lấy mã nhân viên lớn nhất có trong csdl để tránh bị trùng
 	public int getMaxEmployeeNumber() {
 		Conection_DB.getInstance();
