@@ -77,11 +77,11 @@ CREATE TABLE CongCuaNhanVien (
     maCongCuaNhanVien NVARCHAR(255) NOT NULL,
     maNhanVien NVARCHAR(255) NULL,
     NgayChamCong DATE NULL,
-    CaLam INT NOT NULL,
+    CaLam NVARCHAR(255) NOT NULL,
     GioLam NVARCHAR(255) NULL,
     LuongCaLam FLOAT NOT NULL,
-    TrangThai BIT NOT NULL,
-    NghiPhep BIT NOT NULL,
+    TrangThai NVARCHAR(255) NOT NULL,
+    NghiPhep NVARCHAR(255) NOT NULL,
     PRIMARY KEY (maCongCuaNhanVien)
 );
 
@@ -89,11 +89,11 @@ CREATE TABLE CongCuaCongNhan (
     maCongCuaCongNhan NVARCHAR(255) NOT NULL,
     maCongNhan NVARCHAR(255) NULL,
     NgayChamCong DATE NULL,
-    CaLam INT NOT NULL,
+    CaLam NVARCHAR(255) NOT NULL,
     GioLam NVARCHAR(255) NULL,
     SoLuongSPDaLam INT NOT NULL,
-    TrangThai BIT NOT NULL,
-    NghiPhep BIT NOT NULL,
+    TrangThai NVARCHAR(255) NOT NULL,
+    NghiPhep NVARCHAR(255) NOT NULL,
     PRIMARY KEY (maCongCuaCongNhan)
 );
 
