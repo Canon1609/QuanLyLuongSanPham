@@ -185,13 +185,13 @@ public class Form_SP_TimKiem extends JPanel {
 			 */
 			private static final long serialVersionUID = 1L;
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class, String.class, String.class, Double.class, Double.class, String.class, Double.class
+				String.class, String.class, String.class, String.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false, false, false, false, false, false
+				false, false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];

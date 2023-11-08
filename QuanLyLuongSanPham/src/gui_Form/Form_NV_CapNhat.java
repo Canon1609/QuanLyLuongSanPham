@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.awt.Color;
@@ -54,6 +55,10 @@ public class Form_NV_CapNhat extends JPanel {
 	private DAO_NhanVien nv_dao;
 	private DefaultTableModel tableModel;
 	private int nextEmployeeNumber = 0;
+	private JComboBox cmbGioiTinh;
+	private JDateChooser dateChooser;
+	private JComboBox cmbPhongBan;
+	private JComboBox cmbHeSoLuong;
 
 	/**
 	 * Create the panel.
@@ -115,7 +120,7 @@ public class Form_NV_CapNhat extends JPanel {
 		horizontalStrut_1.setPreferredSize(new Dimension(44, 0));
 		boxTrai2.add(horizontalStrut_1);
 
-		JComboBox cmbGioiTinh = new JComboBox();
+		cmbGioiTinh = new JComboBox();
 		cmbGioiTinh.setFont(new Font("Arial", Font.BOLD, 12));
 		cmbGioiTinh.setPreferredSize(new Dimension(30, 25));
 		cmbGioiTinh.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nữ" }));
@@ -171,7 +176,7 @@ public class Form_NV_CapNhat extends JPanel {
 		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
 		boxTrai5.add(horizontalStrut_7);
 
-		JComboBox cmbHeSoLuong = new JComboBox();
+		cmbHeSoLuong = new JComboBox();
 		cmbHeSoLuong.setModel(new DefaultComboBoxModel(new String[] { "1.0", "2.0", "3.0", "4.0" }));
 		cmbHeSoLuong.setPreferredSize(new Dimension(30, 25));
 		boxTrai5.add(cmbHeSoLuong);
@@ -234,7 +239,7 @@ public class Form_NV_CapNhat extends JPanel {
 		horizontalStrut_4.setPreferredSize(new Dimension(40, 0));
 		boxPhai2.add(horizontalStrut_4);
 
-		JDateChooser dateChooser = new JDateChooser();
+		dateChooser = new JDateChooser();
 		dateChooser.setPreferredSize(new Dimension(30, 25));
 		boxPhai2.add(dateChooser);
 
@@ -272,7 +277,7 @@ public class Form_NV_CapNhat extends JPanel {
 		horizontalStrut_10.setPreferredSize(new Dimension(35, 0));
 		boxPhai4.add(horizontalStrut_10);
 
-		JComboBox cmbPhongBan = new JComboBox();
+		cmbPhongBan = new JComboBox();
 		cmbPhongBan.setPreferredSize(new Dimension(30, 25));
 		cmbPhongBan.setModel(new DefaultComboBoxModel(new String[] { "Quản Lý", "Nhân Sự" }));
 		cmbPhongBan.setFont(new Font("Arial", Font.BOLD, 12));
@@ -384,50 +389,53 @@ public class Form_NV_CapNhat extends JPanel {
 		btnThemNhanVien.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Lấy thông tin từ các trường nhập liệu
-				// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
-				int maxEmployeeNumber = nv_dao.getMaxEmployeeNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
-				// Tăng giá trị mã nhân viên lớn nhất lên 1
-				int nextEmployeeNumber = maxEmployeeNumber + 1;
-				// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
-				String ma = String.format("NV%02d", nextEmployeeNumber);
+				if(valid())
+				{
+					// Lấy thông tin từ các trường nhập liệu
+					// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
+					int maxEmployeeNumber = nv_dao.getMaxEmployeeNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
+					// Tăng giá trị mã nhân viên lớn nhất lên 1
+					int nextEmployeeNumber = maxEmployeeNumber + 1;
+					// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
+					String ma = String.format("NV%02d", nextEmployeeNumber);
 
-		        // Gán mã nhân viên đã tạo vào trường nhập liệu
-		        txtMaNV.setText(ma);
-				String ten = txtHoTen.getText().trim();
-				String cmnd = txtCMND.getText().trim();
+			        // Gán mã nhân viên đã tạo vào trường nhập liệu
+			        txtMaNV.setText(ma);
+					String ten = txtHoTen.getText().trim();
+					String cmnd = txtCMND.getText().trim();
 
-				// Xử lý ngày sinh
-				Date ngaySinh = (Date) dateChooser.getDate();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				String ngaySinhStr = dateFormat.format(ngaySinh);
+					// Xử lý ngày sinh
+					Date ngaySinh = (Date) dateChooser.getDate();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					String ngaySinhStr = dateFormat.format(ngaySinh);
 
-				String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
-				String diaChi = txtDiaChi.getText().trim();
-				String soDienThoai = txtSoDienThoai.getText().trim();
-				double luongCoBan = Double.parseDouble(txtLuongCoBan.getText().trim());
-				double phuCap = Double.parseDouble(txtPhuCap.getText().trim());
-				String phongBan = cmbPhongBan.getSelectedItem().toString();
-				double heSoLuong = Double.parseDouble(cmbHeSoLuong.getSelectedItem().toString());
-				
-				NhanVien nv = new NhanVien(ma, ten, cmnd, ngaySinhStr, gioiTinh, diaChi, soDienThoai, luongCoBan, phuCap, phongBan, heSoLuong);
-				nv_dao.create(nv);
-				tableModel.addRow(new Object[] {nv.getMaNhanVien(),nv.getHoTen(),nv.getcCCD(),nv.getNgaySinh(),nv.getGioiTinh()
-						,nv.getDiaChi(),nv.getSoDienThoai(),nv.getLuongCoBan(),nv.getPhuCap(),nv.getPhongBan(),nv.getHeSoLuong()});
-				
-				// Xóa nội dung của các trường nhập liệu sau khi thêm
-				txtMaNV.setText("");
-				txtMaNV.requestFocus();
-				txtHoTen.setText("");
-				txtCMND.setText("");
-				dateChooser.setDate(null);
-				cmbGioiTinh.setSelectedIndex(0);
-				txtDiaChi.setText("");
-				txtSoDienThoai.setText("");
-				txtLuongCoBan.setText("");
-				txtPhuCap.setText("");
-				cmbPhongBan.setSelectedIndex(0);
-				cmbHeSoLuong.setSelectedIndex(0);
+					String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
+					String diaChi = txtDiaChi.getText().trim();
+					String soDienThoai = txtSoDienThoai.getText().trim();
+					double luongCoBan = Double.parseDouble(txtLuongCoBan.getText().trim());
+					double phuCap = Double.parseDouble(txtPhuCap.getText().trim());
+					String phongBan = cmbPhongBan.getSelectedItem().toString();
+					double heSoLuong = Double.parseDouble(cmbHeSoLuong.getSelectedItem().toString());
+					
+					NhanVien nv = new NhanVien(ma, ten, cmnd, ngaySinhStr, gioiTinh, diaChi, soDienThoai, luongCoBan, phuCap, phongBan, heSoLuong);
+					nv_dao.create(nv);
+					tableModel.addRow(new Object[] {nv.getMaNhanVien(),nv.getHoTen(),nv.getcCCD(),nv.getNgaySinh(),nv.getGioiTinh()
+							,nv.getDiaChi(),nv.getSoDienThoai(),nv.getLuongCoBan(),nv.getPhuCap(),nv.getPhongBan(),nv.getHeSoLuong()});
+					
+					// Xóa nội dung của các trường nhập liệu sau khi thêm
+					txtMaNV.setText("");
+					txtMaNV.requestFocus();
+					txtHoTen.setText("");
+					txtCMND.setText("");
+					dateChooser.setDate(null);
+					cmbGioiTinh.setSelectedIndex(0);
+					txtDiaChi.setText("");
+					txtSoDienThoai.setText("");
+					txtLuongCoBan.setText("");
+					txtPhuCap.setText("");
+					cmbPhongBan.setSelectedIndex(0);
+					cmbHeSoLuong.setSelectedIndex(0);
+				}
 			}
 		});
 		//XÓA NHÂN VIÊN
@@ -571,4 +579,120 @@ public class Form_NV_CapNhat extends JPanel {
 		}
 
 	}
+	
+	public boolean valid() {
+	    if (txtHoTen.getText().equals("") 
+	        || txtCMND.getText().equals("") || dateChooser.getDate() == null 
+	        || cmbGioiTinh.getSelectedItem() == null || txtDiaChi.getText().equals("") 
+	        || txtSoDienThoai.getText().equals("") || txtLuongCoBan.getText().equals("") 
+	        || txtPhuCap.getText().equals("") || cmbPhongBan.getSelectedItem() == null 
+	        || cmbHeSoLuong.getSelectedItem() == null) 
+	    {
+	        JOptionPane.showMessageDialog(null, "Không được rỗng !!!");
+	        return false;
+	    }
+	    
+	    if (!(txtHoTen.getText().matches("[A-Za-z' ]+"))) {
+	        JOptionPane.showMessageDialog(null, "Tên theo mẫu: Ho Nguyen Cong Hieu");
+	        txtHoTen.requestFocus();
+	        return false;
+	    }
+	    
+	    if (!(txtCMND.getText().matches("0\\d{11}"))) {
+	        JOptionPane.showMessageDialog(null, "CMND/CCCD theo mẫu: bắt đầu bằng số 0 và theo sau là 11 số khác");
+	        txtCMND.requestFocus();
+	        return false;
+	    }
+	    
+	    if (!(cmbGioiTinh.getSelectedItem().toString().matches("[A-Za-z' ]+"))) {
+	        JOptionPane.showMessageDialog(null, "Giới tính theo mẫu: Nam hoặc Nữ");
+	        cmbGioiTinh.requestFocus();
+	        return false;
+	    }
+	    
+	    // Kiểm tra ngày sinh theo định dạng ngày/tháng/năm
+//	    String ngaySinhPattern = "\\d{2}/\\d{2}/\\d{4}";
+//	    if (!txtDiaChi.getText().matches(ngaySinhPattern)) {
+//	        JOptionPane.showMessageDialog(null, "Ngày sinh theo mẫu: 16/09/2003");
+//	        txtDiaChi.requestFocus();
+//	        return false;
+//	    }
+	    
+	    
+	        if (dateChooser.getDate() != null) {
+	            Calendar dob = Calendar.getInstance();
+	            dob.setTime(dateChooser.getDate());
+
+	            Calendar now = Calendar.getInstance();
+	            now.setTime(new Date());
+
+	            int age = now.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+	            if (now.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+	                age--;
+	            }
+
+	            if (age < 18) {
+	                JOptionPane.showMessageDialog(null, "Nhân viên phải trên 18 tuổi.");
+	                return false;
+	            }
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Ngày sinh không được để trống.");
+	            return false;
+	        }
+
+
+	    if (!(txtDiaChi.getText().matches("[0-9/]*\\s*[a-zA-Z_0-9' ,]+"))) {
+	        JOptionPane.showMessageDialog(null, "Địa chỉ phải theo mẫu: 117/12 Nguyen Ba Tong, P11, Tan Binh");
+	        txtDiaChi.requestFocus();
+	        return false;
+	    }
+	    
+	    // Kiểm tra số điện thoại theo mẫu
+	    String soDienThoaiPattern = "^\\d{10,11}$";
+	    if (!txtSoDienThoai.getText().matches(soDienThoaiPattern)) {
+	        JOptionPane.showMessageDialog(null, "Số điện thoại theo mẫu: 0366228041");
+	        txtSoDienThoai.requestFocus();
+	        return false;
+	    }
+	    
+	    try {
+		    double luong = Double.parseDouble(txtLuongCoBan.getText());
+	        if (luong <= 0) {
+	            JOptionPane.showMessageDialog(null, "Lương phải lớn hơn 0");
+	            txtLuongCoBan.requestFocus();
+	            return false;
+	        }
+		    
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Lương không hợp lệ");
+			return false;
+		}
+	    
+	    try {
+		    double phuCap = Double.parseDouble(txtPhuCap.getText());
+	        if (phuCap <= 0) {
+	            JOptionPane.showMessageDialog(null, "Phụ cấp phải lớn hơn 0");
+	            txtPhuCap.requestFocus();
+	            return false;
+	        }
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Phụ cấp không hợp lệ");
+			return false;
+		}
+        
+	    try {
+	        double heSoLuong = Double.parseDouble(cmbHeSoLuong.getSelectedItem().toString());
+	        if (heSoLuong <= 0) {
+	            JOptionPane.showMessageDialog(null, "Hệ số lương phải lớn hơn 0");
+	            cmbHeSoLuong.requestFocus();
+	            return false;
+	        }
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Hệ số lương không hợp lệ");
+			return false;
+		}
+        return true;  
+	}
+
 }

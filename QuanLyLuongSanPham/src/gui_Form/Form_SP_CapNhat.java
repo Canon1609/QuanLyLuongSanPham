@@ -44,6 +44,7 @@ public class Form_SP_CapNhat extends JPanel {
 	private JTextField txtChatLieu;
 	private DefaultTableModel tableModel;
 	private DAO_SanPham sp_dao;
+	private JSpinField jsfSoLuong;
 
 	/**
 	 * Create the panel.
@@ -156,7 +157,7 @@ public class Form_SP_CapNhat extends JPanel {
 		lblSoLuong.setFont(new Font("Arial", Font.BOLD, 14));
 		boxSoLuong.add(lblSoLuong);
 		
-		JSpinField jsfSoLuong = new JSpinField();
+		jsfSoLuong = new JSpinField();
 		jsfSoLuong.getSpinner().setPreferredSize(new Dimension(30, 40));
 		jsfSoLuong.setPreferredSize(new Dimension(100, 29));
 		boxSoLuong.add(jsfSoLuong);
@@ -247,33 +248,36 @@ public class Form_SP_CapNhat extends JPanel {
 		btnThemSanPham.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Lấy thông tin từ các trường nhập liệu
-				// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
-				int maxSPNumber = sp_dao.getMaxProductNumberNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
-				// Tăng giá trị mã nhân viên lớn nhất lên 1
-				int nextSPNumber = maxSPNumber + 1;
-				// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
-				String ma = String.format("SP%02d", nextSPNumber);
+				if(valid())
+				{
+					// Lấy thông tin từ các trường nhập liệu
+					// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
+					int maxSPNumber = sp_dao.getMaxProductNumberNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
+					// Tăng giá trị mã nhân viên lớn nhất lên 1
+					int nextSPNumber = maxSPNumber + 1;
+					// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
+					String ma = String.format("SP%02d", nextSPNumber);
 
-		        // Gán mã nhân viên đã tạo vào trường nhập liệu
-		        txtMaSanPham.setText(ma);
-				String tenSanPham = txtTenSanPham.getText().trim();
-				String kieuDang = txtKieuDang.getText().trim();
-				String chatLieu = txtChatLieu.getText().trim();
-				
-				// Xử lý số lượng
-				int soLuong = jsfSoLuong.getValue();
-				
-				SanPham sp = new SanPham(ma, tenSanPham, kieuDang, chatLieu, soLuong);
-				sp_dao.create(sp);
-				tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
-				
-				// Xóa nội dung của các trường nhập liệu sau khi thêm
-				txtMaSanPham.setText("");
-				txtMaSanPham.requestFocus();
-				txtTenSanPham.setText("");
-				txtChatLieu.setText("");
-				jsfSoLuong.validate();
+			        // Gán mã nhân viên đã tạo vào trường nhập liệu
+			        txtMaSanPham.setText(ma);
+					String tenSanPham = txtTenSanPham.getText().trim();
+					String kieuDang = txtKieuDang.getText().trim();
+					String chatLieu = txtChatLieu.getText().trim();
+					
+					// Xử lý số lượng
+					int soLuong = jsfSoLuong.getValue();
+					
+					SanPham sp = new SanPham(ma, tenSanPham, kieuDang, chatLieu, soLuong);
+					sp_dao.create(sp);
+					tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+					
+					// Xóa nội dung của các trường nhập liệu sau khi thêm
+					txtMaSanPham.setText("");
+					txtMaSanPham.requestFocus();
+					txtTenSanPham.setText("");
+					txtChatLieu.setText("");
+					jsfSoLuong.validate();
+				}
 			}
 		});
 		//XÓA NHÂN VIÊN
@@ -375,7 +379,36 @@ public class Form_SP_CapNhat extends JPanel {
 	public void DocDuLieuDBVaoTable() {
 		List<SanPham> list = DAO_SanPham.getAlltbSanPham();
 		for (SanPham sp : list) {
-			tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getKieuDang(),sp.getSoLuong()});
+			tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
 		}
 	}
+	
+	public boolean valid() {
+	    if (txtTenSanPham.getText().equals("") || txtKieuDang.getText().equals("") || txtChatLieu.getText().equals("") 
+	        || jsfSoLuong.getValue() <= 0) 
+	    {
+	        JOptionPane.showMessageDialog(null, "Không được rỗng !!!");
+	        return false;
+	    }
+	    
+	    if (!(txtTenSanPham.getText().matches("[A-Za-z0-9' ]+"))) {
+	        JOptionPane.showMessageDialog(null, "Tên sản phẩm theo mẫu: Air Force 1");
+	        txtTenSanPham.requestFocus();
+	        return false;
+	    }
+	    if (!(txtKieuDang.getText().matches("[A-Za-z' ,]+"))) {
+	        JOptionPane.showMessageDialog(null, "Kiểu dáng sản phẩm theo mẫu: to");
+	        txtKieuDang.requestFocus();
+	        return false;
+	    }
+	    if (!(txtChatLieu.getText().matches("[A-Za-z0-9' ]+"))) {
+	        JOptionPane.showMessageDialog(null, "Chất liệu sản phẩm theo mẫu: vải 03");
+	        txtChatLieu.requestFocus();
+	        return false;
+	    }
+	    return true;
+	}
+
+
+	
 }
