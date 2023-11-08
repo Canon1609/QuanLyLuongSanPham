@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.awt.Color;
@@ -361,6 +362,7 @@ public class Form_NV_ChamCong extends JPanel {
 				            String phongBan = (String) tblDanhSachNV.getValueAt(row, 9);
 				            String heSoLuong = (String) tblDanhSachNV.getValueAt(row, 10).toString();
 
+
 				            txtPhongBan.setText(phongBan);
 				            txtNhanVien.setText(ma);
 				        }
@@ -470,6 +472,12 @@ public class Form_NV_ChamCong extends JPanel {
 						congNV.getNhanVien().getMaNhanVien(),
 						congNV.getNgayChamCong(),congNV.getCaLam(),congNV.getGioLam(),congNV.getLuongCaLam(),
 						congNV.getTrangThai(),congNV.getNghiPhep()});
+				txtNhanVien.setText("");
+				txtGioLam.setText("");
+				txtLuongCa.setText("");
+				txtPhongBan.setText("");
+				dateChooser.setDate(null);
+				cmbCaLam.setSelectedIndex(0);
 			}
 		});
 		btnXoaChamCongNV.addActionListener(new ActionListener() {
@@ -488,6 +496,8 @@ public class Form_NV_ChamCong extends JPanel {
 				
 			}
 		});
+		
+		
 		
 		
 	}
@@ -509,5 +519,79 @@ public class Form_NV_ChamCong extends JPanel {
 
 		}
 	}
+	//tinh tong ngay cong
+	public int tinhTongNgayCong(String maNhanVien, int thang) {
+	    int tongNgayCong = 0;
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	    for (int row = 0; row < tableModelDSChamCong.getRowCount(); row++) {
+	        String maNVTrongBang = (String) tableModelDSChamCong.getValueAt(row, 1); // Cột Mã Nhân Viên
+	        String trangThai = (String) tableModelDSChamCong.getValueAt(row, 6); // Cột Trạng Thái
+	        String ngayChamCongStr = (String) tableModelDSChamCong.getValueAt(row, 2); // Cột Ngày Chấm Công
+	        Date ngayChamCong;
+
+	        try {
+	            ngayChamCong = dateFormat.parse(ngayChamCongStr);
+	        } catch (ParseException e) {
+	            // Xử lý ngoại lệ nếu định dạng ngày không hợp lệ
+	            e.printStackTrace();
+	            continue;
+	        }
+
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.setTime(ngayChamCong);
+	        int thangChamCong = calendar.get(Calendar.MONTH) + 1;
+
+	        if (maNVTrongBang.equals(maNhanVien) && "Có mặt".equals(trangThai) && thangChamCong == thang) {
+	            tongNgayCong++;
+	        }
+	    }
+
+	    return tongNgayCong;
+	}
+
+	//TB luong ca
+	public double tinhTrungBinhLuongCa(String maNhanVien, int thang) {
+	    double tongLuongCa = 0;
+	    int soLuongChamCong = 0;
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	    for (int row = 0; row < tableModelDSChamCong.getRowCount(); row++) {
+	        String maNVTrongBang = (String) tableModelDSChamCong.getValueAt(row, 1); // Cột Mã Nhân Viên
+	        String ngayChamCongStr = (String) tableModelDSChamCong.getValueAt(row, 2); // Cột Ngày Chấm Công
+	        Object luongCaLamObj = tableModelDSChamCong.getValueAt(row, 5); // Cột Lương Ca Làm
+	        String trangThai = (String) tableModelDSChamCong.getValueAt(row, 6); // Cột Trạng Thái
+
+	        try {
+	            Date ngayChamCong = dateFormat.parse(ngayChamCongStr);
+	            Calendar calendar = Calendar.getInstance();
+	            calendar.setTime(ngayChamCong);
+	            int thangChamCong = calendar.get(Calendar.MONTH) + 1;
+
+	            if (maNVTrongBang.equals(maNhanVien)&& "Có mặt".equals(trangThai) && thangChamCong == thang ) {
+	                if (luongCaLamObj instanceof Double) {
+	                    double luongCaLam = (Double) luongCaLamObj;
+	                    tongLuongCa += luongCaLam;
+	                    soLuongChamCong++;
+	                }
+	            }
+	        } catch (ParseException e) {
+	            // Xử lý ngoại lệ nếu định dạng ngày không hợp lệ
+	            e.printStackTrace();
+	            continue;
+	        }
+	    }
+
+	    if (soLuongChamCong == 0) {
+	        return 0.0; // Tránh chia cho 0
+	    } else {
+	        return tongLuongCa / soLuongChamCong;
+	    }
+	}
+
+
+
+
+
 	//
 }
