@@ -16,6 +16,7 @@ public class SanPham {
 		super();
 		this.maSanPham = maSanPham;
 	}
+	
 	public SanPham(String maSanPham, String tenSanPham, String kieuDang, String chatLieu, int soLuong) {
 		super();
 		this.maSanPham = maSanPham;

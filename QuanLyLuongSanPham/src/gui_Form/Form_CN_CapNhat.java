@@ -3,11 +3,17 @@ package gui_Form;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.awt.Color;
@@ -24,6 +30,7 @@ import connectDB.Conection_DB;
 import dao.DAO_CongNhan;
 import dao.DAO_NhanVien;
 import entity.CongNhan;
+import entity.NhanVien;
 
 import java.awt.Component;
 import javax.swing.JButton;
@@ -42,6 +49,7 @@ public class Form_CN_CapNhat extends JPanel {
 	private JTable table;
 	private DAO_CongNhan cn_dao;
 	private DefaultTableModel tableModel;
+	private DAO_NhanVien dao_nv;
 
 	/**
 	 * Create the panel.
@@ -326,6 +334,7 @@ public class Form_CN_CapNhat extends JPanel {
 		};
 		tableModel.setColumnIdentifiers(columnNames);
 		//Hien thi du lieu tu bang
+		
 		// khởi tạo kết nối đến CSDL
 		try {
 			Conection_DB.getInstance().connect();
@@ -340,51 +349,186 @@ public class Form_CN_CapNhat extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Lấy thông tin từ các trường nhập liệu
-				int maxCNNumber = cn_dao.getCNNumber(); 
-				// Tăng giá trị mã CN lớn nhất lên 1
-				int nextCNNumber = maxCNNumber + 1;
-				// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã CN-
-				String ma = String.format("NV%02d", nextCNNumber);
+				if(valiData())
+				{
+					// Lấy thông tin từ các trường nhập liệu
+					int maxCNNumber = cn_dao.getCNNumber(); 
+					// Tăng giá trị mã CN lớn nhất lên 1
+					int nextCNNumber = maxCNNumber + 1;
+					// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã CN-
+					String ma = String.format("NV%02d", nextCNNumber);
+					
+					String ten = txtHoTen.getText().trim();
+					String cmnd = txtCMND.getText().trim();
+
+					// Xử lý ngày sinh
+					Date ngaySinh = (Date) dateChooser.getDate();
+					
 				
-				String ten = txtHoTen.getText().trim();
-				String cmnd = txtCMND.getText().trim();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					String ngaySinhStr = dateFormat.format(ngaySinh);
+					
 
-				// Xử lý ngày sinh
-				Date ngaySinh = (Date) dateChooser.getDate();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				String ngaySinhStr = dateFormat.format(ngaySinh);
+					String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
+					String diaChi = txtDiaChi.getText().trim();
+					String soDienThoai = txtSoDienThoai.getText().trim();
+					double phuCap = Double.parseDouble(txtPhuCap.getText().trim());
+					String tayNghe = cmbTaynghe.getSelectedItem().toString();
+					String phongBan = cmbPhongBan.getSelectedItem().toString();
 
+					CongNhan cn = new CongNhan(ma, ten, gioiTinh, ngaySinhStr,cmnd, soDienThoai, phuCap, phongBan, tayNghe, diaChi);
+					cn_dao.create(cn);
+					tableModel.addRow(new Object[] {cn.getMaCongNhan(),cn.getHoTen(),cn.getcCCD(),cn.getNgaySinh(),cn.getGioiTinh(),
+							cn.getDiaChi(),cn.getSoDienThoai(),cn.getPhuCap(),cn.getTrinhDoTayNghe(),cn.getPhongBan()});
 
-				String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
-				String diaChi = txtDiaChi.getText().trim();
-				String soDienThoai = txtSoDienThoai.getText().trim();
-				double phuCap = Double.parseDouble(txtPhuCap.getText().trim());
-				String tayNghe = cmbTaynghe.getSelectedItem().toString();
-				String phongBan = cmbPhongBan.getSelectedItem().toString();
-
-				CongNhan cn = new CongNhan(ma, ten, gioiTinh, ngaySinhStr,cmnd, soDienThoai, phuCap, phongBan, tayNghe, diaChi);
-				cn_dao.create(cn);
-				tableModel.addRow(new Object[] {cn.getMaCongNhan(),cn.getHoTen(),cn.getcCCD(),cn.getNgaySinh(),cn.getGioiTinh(),
-						cn.getDiaChi(),cn.getSoDienThoai(),cn.getPhuCap(),cn.getTrinhDoTayNghe(),cn.getPhongBan()});
-
-				// Xóa nội dung của các trường nhập liệu sau khi thêm
-				txtMaCongNhan.setText("");
-				txtMaCongNhan.requestFocus();
-				txtHoTen.setText("");
-				txtCMND.setText("");
-				dateChooser.setDate(null);
-				cmbGioiTinh.setSelectedIndex(0);
-				txtDiaChi.setText("");
-				txtSoDienThoai.setText("");
-				txtPhuCap.setText("");
-				cmbTaynghe.setSelectedIndex(0);
-				cmbPhongBan.setSelectedIndex(0);
+					// Xóa nội dung của các trường nhập liệu sau khi thêm
+					txtMaCongNhan.setText("");
+					txtMaCongNhan.requestFocus();
+					txtHoTen.setText("");
+					txtCMND.setText("");
+					dateChooser.setDate(null);
+					cmbGioiTinh.setSelectedIndex(0);
+					txtDiaChi.setText("");
+					txtSoDienThoai.setText("");
+					txtPhuCap.setText("");
+					cmbTaynghe.setSelectedIndex(0);
+					cmbPhongBan.setSelectedIndex(0);
+				}
 	
 				
 			}
 		});
+		//XÓA NHÂN VIÊN
+		btnXoaCongNhan.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+				if(row < 0) {
+					JOptionPane.showMessageDialog(null, "Chọn công nhân nhân cần xóa");
+				}else {
+					String maCN = (String) table.getValueAt(row, 0);
+					cn_dao.deleteCN(maCN);
+					tableModel.removeRow(row);
+					JOptionPane.showMessageDialog(null, "Xóa công nhân thành công");
+				}
+				
+			}
+		});
+		//SỬA NHÂN VIÊN
+		btnSuaThongTin.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		       if(valiData())
+		       {
+		    	   int selectedRow = table.getSelectedRow();
+			        if (selectedRow < 0) {
+			            JOptionPane.showMessageDialog(null, "Chọn một công nhân trong bảng để sửa.");
+			            return;
+			        }
+
+			        // Lấy thông tin nhân viên từ dòng được chọn trong bảng
+			        String maCN = txtMaCongNhan.getText().trim();
+			        String ten = txtHoTen.getText().trim();
+			        String cmnd = txtCMND.getText().trim();
+			        // Xử lý ngày sinh
+			        Date ngaySinh = (Date) dateChooser.getDate();
+			        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			        String ngaySinhStr = dateFormat.format(ngaySinh);		        
+			        String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
+			        String diaChi = txtDiaChi.getText().trim();
+			        String soDienThoai = txtSoDienThoai.getText().trim();
+			        double phuCap = Double.parseDouble(txtPhuCap.getText().trim());
+			        String phongBan = cmbPhongBan.getSelectedItem().toString();
+			        String tayNghe =cmbTaynghe.getSelectedItem().toString();
+			        // Tạo đối tượng NhanVien mới
+			        CongNhan cn =new CongNhan(maCN, ten, gioiTinh, ngaySinhStr, gioiTinh, soDienThoai, phuCap, phongBan, tayNghe, diaChi);
+			        // Gọi phương thức DAO để cập nhật thông tin nhân viên
+			        boolean updated = cn_dao.update(cn);
+
+			        if (updated) {
+			            // Cập nhật lại thông tin trong bảng
+			            tableModel.setValueAt(ten, selectedRow, 1);
+			            tableModel.setValueAt(cmnd, selectedRow, 2);
+			            tableModel.setValueAt(ngaySinhStr, selectedRow, 3);
+			            tableModel.setValueAt(gioiTinh, selectedRow, 4);
+			            tableModel.setValueAt(diaChi, selectedRow, 5);
+			            tableModel.setValueAt(soDienThoai, selectedRow, 6);
+			            tableModel.setValueAt(phuCap, selectedRow, 7);
+			            tableModel.setValueAt(tayNghe, selectedRow, 8);
+			            tableModel.setValueAt(phongBan, selectedRow, 9);
+			           
+
+			            JOptionPane.showMessageDialog(null, "Cập nhật thông tin công nhân thành công");
+			        } else {
+			            JOptionPane.showMessageDialog(null, "Cập nhật thông tin công nhân thất bại");
+			        }
+		       }
+		    }
+		});
 		
+		// XÓA RỖNG
+		btnXoaRong.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Đặt giá trị của các trường nhập liệu về rỗng hoặc giá trị mặc định
+		        txtMaCongNhan.setText("");
+		        txtHoTen.setText("");
+		        txtCMND.setText("");
+		        dateChooser.setDate(null);
+		        cmbGioiTinh.setSelectedIndex(0); // Đặt lại giá trị mặc định
+		        cmbTaynghe.setSelectedIndex(0);
+		        txtDiaChi.setText("");
+		        txtSoDienThoai.setText("");
+		        txtPhuCap.setText("");
+		        cmbPhongBan.setSelectedIndex(0); // Đặt lại giá trị mặc định
+		     
+		    }
+		});
+		//THOÁT
+		btnThoat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		// Đưa dữ liệu từ bảng lên các trường nhập liệu khi click vào một dòng trong bảng
+		table.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        int row = table.getSelectedRow();
+		        if (row >= 0) {
+		            String ma = (String) table.getValueAt(row, 0);
+		            String ten = (String) table.getValueAt(row, 1);
+		            String cmnd = (String) table.getValueAt(row, 2);
+		            String ngaySinhStr = (String) table.getValueAt(row, 3);
+		            String gioiTinh = (String) table.getValueAt(row, 4);
+		            String diaChi = (String) table.getValueAt(row, 5);
+		            String soDienThoai = (String) table.getValueAt(row, 6);
+		            String phuCap = (String) table.getValueAt(row, 7).toString();
+		            String tayNghe = (String) table.getValueAt(row, 8);
+		            String phongBan = (String) table.getValueAt(row, 9);
+		           
+		           
+		            txtMaCongNhan.setText(ma);
+		            txtHoTen.setText(ten);
+		            txtCMND.setText(cmnd);
+		            try {
+		                Date ngaySinhDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngaySinhStr);
+		                dateChooser.setDate(ngaySinhDate);
+		            } catch (ParseException ex) {
+		                ex.printStackTrace();
+		            }
+		            cmbGioiTinh.setSelectedItem(gioiTinh);
+		            txtDiaChi.setText(diaChi);
+		            txtSoDienThoai.setText(soDienThoai);
+		        
+		            txtPhuCap.setText(phuCap);
+		            cmbPhongBan.setSelectedItem(phongBan);
+		            cmbTaynghe.setSelectedItem(tayNghe);
+		        }
+		    }
+		});
 		
 		//
 		
@@ -397,7 +541,89 @@ public class Form_CN_CapNhat extends JPanel {
 					cn.getDiaChi(),cn.getSoDienThoai(),cn.getPhuCap(),cn.getTrinhDoTayNghe(),cn.getPhongBan()});
 		}
 	}
-	
+	public boolean valiData()
+	{
+		
+		if(txtCMND.getText().trim().equals(""))
+		{
+			JOptionPane.showMessageDialog(this, "CCCD Không Được Rỗng!!!");
+			txtCMND.selectAll();
+			txtCMND.requestFocus();
+			return false;
+		}
+		if(txtPhuCap.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(this, "Phụ Cấp Không Được Rỗng!!!");
+			txtPhuCap.selectAll();
+			txtPhuCap.requestFocus();
+			return false;
+		}
+		if(txtHoTen.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(this, "Họ Tên Không Được Rỗng!!!");
+			txtHoTen.selectAll();
+			txtHoTen.requestFocus();
+			return false;
+		}
+		if(txtSoDienThoai.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(this, "Số Điện Thoại Không Được Rỗng!!!");
+			txtSoDienThoai.selectAll();
+			txtSoDienThoai.requestFocus();
+			return false;
+		}
+		if(txtDiaChi.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(this, "Địa Chỉ Không Được Rỗng!!!");
+			txtDiaChi.selectAll();
+			txtDiaChi.requestFocus();
+			return false;
+		}
+		String hoTen =txtHoTen.getText().trim();
+		String cCCD =txtCMND.getText().trim();
+		String diaChi =txtDiaChi.getText().trim();
+		String soDienThoai =txtSoDienThoai.getText().trim();
+		double phuCap =Double.parseDouble(txtPhuCap.getText().trim());
+		
+		if(!hoTen.matches("[a-zA-Z' ]+"))
+		{
+			JOptionPane.showMessageDialog(this, "Tên Công Nhân Không Hợp Lệ!!!");
+			txtHoTen.selectAll();
+			txtHoTen.requestFocus();
+			return false;
+		}
+		if(!cCCD.matches("^\\d{9}$|^\\d{12}$"))
+		{
+			JOptionPane.showMessageDialog(this, "CCCD Không Hợp Lệ!!!");
+			txtCMND.selectAll();
+			txtCMND.requestFocus();
+			return false;
+		}
+		if(!diaChi.matches("[0-9/]*\\s*[a-zA-Z_0-9' ,]+"))
+		{
+			JOptionPane.showMessageDialog(this, "Địa Chỉ Không Hợp Lệ!!!");
+			txtDiaChi.selectAll();
+			txtDiaChi.requestFocus();
+			return false;
+		}
+		if(!soDienThoai.matches("^0\\d{9}$"))
+		{
+			JOptionPane.showMessageDialog(this, "Số Điện Thoại Không Hợp Lệ!!!");
+			txtSoDienThoai.selectAll();
+			txtSoDienThoai.requestFocus();
+			return false;
+		}
+		
+		if(phuCap<=0)
+		{
+			JOptionPane.showMessageDialog(this, "Phụ Cấp Phải Lớn Hơn 0!!!");
+			txtPhuCap.selectAll();
+			txtPhuCap.requestFocus();
+			return false;
+		}
+			
+		return true;
+	}
 	
 	
 

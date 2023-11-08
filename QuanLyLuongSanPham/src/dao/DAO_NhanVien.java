@@ -50,7 +50,44 @@ public class DAO_NhanVien {
 		}
 		return dsnv;
 	}
+	public static ArrayList<NhanVien> getmatbNhanVien(String ma) {
+		ArrayList<NhanVien> dsnv = new ArrayList<NhanVien>();
 
+		Conection_DB.getInstance();
+		Connection con = Conection_DB.getCon();
+
+
+		String sql = "select * from nhanvien where maNhanVien=?";
+		
+		
+		
+		PreparedStatement stmt =null;
+		try {
+			stmt =con.prepareStatement(sql);
+			stmt.setString(1, ma);
+			ResultSet rs =stmt.executeQuery();
+			while (rs.next()) {
+				String maNV = rs.getString(1);
+				String hoTen = rs.getString(2);
+				String cCCD = rs.getString(3);
+				String ngaySinh = rs.getString(4);
+				String gioiTinh = rs.getString(5);
+				String diaChi = rs.getString(6);
+				String soDienThoai = rs.getString(7);
+				double luongCoBan = rs.getDouble(8);
+				double phuCap = rs.getDouble(9);
+				String phongBan = rs.getString(10);
+				double heSoLuong = rs.getDouble(11);
+				NhanVien nv = new NhanVien(maNV, hoTen, cCCD, ngaySinh, gioiTinh, diaChi, soDienThoai, luongCoBan,
+						phuCap, phongBan, heSoLuong);
+				dsnv.add(nv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dsnv;
+	}
 	public boolean create(NhanVien nv) {
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();

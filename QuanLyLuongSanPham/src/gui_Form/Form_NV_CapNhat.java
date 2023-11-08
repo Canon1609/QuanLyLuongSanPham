@@ -176,8 +176,13 @@ public class Form_NV_CapNhat extends JPanel {
 		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
 		boxTrai5.add(horizontalStrut_7);
 
+<<<<<<< HEAD
 		cmbHeSoLuong = new JComboBox();
 		cmbHeSoLuong.setModel(new DefaultComboBoxModel(new String[] { "1.0", "2.0", "3.0", "4.0" }));
+=======
+		JComboBox cmbHeSoLuong = new JComboBox();
+		cmbHeSoLuong.setModel(new DefaultComboBoxModel(new String[] { "2.34", "2.67", "3.00", "3.33", "3.66", "3.99", "4.32" }));
+>>>>>>> 29a7a7cc4225dae3bbe259202670494a7b21841f
 		cmbHeSoLuong.setPreferredSize(new Dimension(30, 25));
 		boxTrai5.add(cmbHeSoLuong);
 
