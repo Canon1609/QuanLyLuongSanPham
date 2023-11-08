@@ -22,7 +22,7 @@ public class Conection_DB {
 	public void connect() throws SQLException {
 		String url = "jdbc:sqlserver://localhost:1433;databasename=QuanLyLuongSanPham";
 		String user = "sa";
-		String password = "123456789";
+		String password = "sapassword";
 		con = DriverManager.getConnection(url, user, password);
 	}
 
