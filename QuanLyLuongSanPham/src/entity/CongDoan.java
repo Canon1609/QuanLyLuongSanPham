@@ -7,6 +7,9 @@ public class CongDoan {
 	private String tenCongDoan;
 	private double giaCongDoan;
 	private SanPham sanPham;
+	private String tenSanPham;
+	private int soLuong;
+	private String congDoanYC;
 	public CongDoan() {
 		super();
 		// TODO Auto-generated constructor stub

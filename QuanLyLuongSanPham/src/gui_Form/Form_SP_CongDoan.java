@@ -13,10 +13,21 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import connectDB.Conection_DB;
+import dao.DAO_SanPham;
+import entity.SanPham;
+
 import javax.swing.JScrollPane;
 import java.awt.Component;
 import javax.swing.JRadioButton;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.DefaultComboBoxModel;
@@ -29,6 +40,8 @@ public class Form_SP_CongDoan extends JPanel {
 	private JTextField txtTenSanPham;
 	private JTable table;
 	private JTable table_1;
+	private DAO_SanPham dao_SP;
+	private TableModel tableModelSP;
 
 	/**
 	 * Create the panel.
@@ -132,7 +145,7 @@ public class Form_SP_CongDoan extends JPanel {
 		pnNhap.add(horizontalStrut);
 		
 		Box box2 = Box.createVerticalBox();
-		box2.setPreferredSize(new Dimension(250, 170));
+		box2.setPreferredSize(new Dimension(250, 200));
 		pnNhap.add(box2);
 		
 		Box boxTenCongDoan = Box.createHorizontalBox();
@@ -187,6 +200,9 @@ public class Form_SP_CongDoan extends JPanel {
 		boxSoLuong.add(cmbSoLuong);
 		
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+		Component verticalStrut_10 = Box.createVerticalStrut(20);
+		verticalStrut_10.setPreferredSize(new Dimension(0, 40));
+		box2.add(verticalStrut_10);
 		pnNhap.add(horizontalStrut_2);
 		
 		JPanel pnDanhSachSanPham = new JPanel();
@@ -213,6 +229,34 @@ public class Form_SP_CongDoan extends JPanel {
 				return columnTypes[columnIndex];
 			}
 		});
+		//xu ly
+		tableModelSP = table.getModel(); 
+		String [] columName = {"Mã Sản Phẩm","Tên Sản Phẩm","Kiểu Dáng","Chất Liệu","Số Lượng"};
+		((DefaultTableModel) tableModelSP).setColumnIdentifiers(columName);
+		// khởi tạo kết nối đến CSDL
+		try {
+			Conection_DB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dao_SP = new DAO_SanPham();
+		DocDuLieuDBVaoTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = table.getSelectedRow();
+				if(row>=0) {
+					String maSP = (String) table.getValueAt(row, 0);
+					String tenSP = (String) table.getValueAt(row, 1);
+					int soLuong = (int) table.getValueAt(row, 4);
+					txtMaSanPham.setText(maSP);
+					txtTenSanPham.setText(tenSP);
+					cmbSoLuong.addItem(soLuong);
+				}
+			}
+		});
+		
 		
 		JPanel pnChucNang = new JPanel();
 		pnChucNang.setPreferredSize(new Dimension(1200, 50));
@@ -274,6 +318,13 @@ public class Form_SP_CongDoan extends JPanel {
 			}
 		});
 
+	}
+	//
+	public void DocDuLieuDBVaoTable() {
+		List<SanPham> list = DAO_SanPham.getAlltbSanPham();
+		for (SanPham sp : list) {
+			((DefaultTableModel) tableModelSP).addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+		}
 	}
 
 }

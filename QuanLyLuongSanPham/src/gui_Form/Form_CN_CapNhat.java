@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.awt.Color;
@@ -349,8 +348,7 @@ public class Form_CN_CapNhat extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(valiData())
-				{
+				if(valiData()) {
 					// Lấy thông tin từ các trường nhập liệu
 					int maxCNNumber = cn_dao.getCNNumber(); 
 					// Tăng giá trị mã CN lớn nhất lên 1
@@ -363,11 +361,9 @@ public class Form_CN_CapNhat extends JPanel {
 
 					// Xử lý ngày sinh
 					Date ngaySinh = (Date) dateChooser.getDate();
-					
-				
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 					String ngaySinhStr = dateFormat.format(ngaySinh);
-					
+
 
 					String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
 					String diaChi = txtDiaChi.getText().trim();
@@ -381,6 +377,7 @@ public class Form_CN_CapNhat extends JPanel {
 					tableModel.addRow(new Object[] {cn.getMaCongNhan(),cn.getHoTen(),cn.getcCCD(),cn.getNgaySinh(),cn.getGioiTinh(),
 							cn.getDiaChi(),cn.getSoDienThoai(),cn.getPhuCap(),cn.getTrinhDoTayNghe(),cn.getPhongBan()});
 
+					JOptionPane.showMessageDialog(null, "Thêm công nhân thành công");
 					// Xóa nội dung của các trường nhập liệu sau khi thêm
 					txtMaCongNhan.setText("");
 					txtMaCongNhan.requestFocus();
@@ -393,6 +390,9 @@ public class Form_CN_CapNhat extends JPanel {
 					txtPhuCap.setText("");
 					cmbTaynghe.setSelectedIndex(0);
 					cmbPhongBan.setSelectedIndex(0);
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Thêm công nhân không thành công");
 				}
 	
 				
@@ -419,51 +419,48 @@ public class Form_CN_CapNhat extends JPanel {
 		btnSuaThongTin.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		       if(valiData())
-		       {
-		    	   int selectedRow = table.getSelectedRow();
-			        if (selectedRow < 0) {
-			            JOptionPane.showMessageDialog(null, "Chọn một công nhân trong bảng để sửa.");
-			            return;
-			        }
+		        int selectedRow = table.getSelectedRow();
+		        if (selectedRow < 0) {
+		            JOptionPane.showMessageDialog(null, "Chọn một công nhân trong bảng để sửa.");
+		            return;
+		        }
 
-			        // Lấy thông tin nhân viên từ dòng được chọn trong bảng
-			        String maCN = txtMaCongNhan.getText().trim();
-			        String ten = txtHoTen.getText().trim();
-			        String cmnd = txtCMND.getText().trim();
-			        // Xử lý ngày sinh
-			        Date ngaySinh = (Date) dateChooser.getDate();
-			        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			        String ngaySinhStr = dateFormat.format(ngaySinh);		        
-			        String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
-			        String diaChi = txtDiaChi.getText().trim();
-			        String soDienThoai = txtSoDienThoai.getText().trim();
-			        double phuCap = Double.parseDouble(txtPhuCap.getText().trim());
-			        String phongBan = cmbPhongBan.getSelectedItem().toString();
-			        String tayNghe =cmbTaynghe.getSelectedItem().toString();
-			        // Tạo đối tượng NhanVien mới
-			        CongNhan cn =new CongNhan(maCN, ten, gioiTinh, ngaySinhStr, gioiTinh, soDienThoai, phuCap, phongBan, tayNghe, diaChi);
-			        // Gọi phương thức DAO để cập nhật thông tin nhân viên
-			        boolean updated = cn_dao.update(cn);
+		        // Lấy thông tin nhân viên từ dòng được chọn trong bảng
+		        String maCN = txtMaCongNhan.getText().trim();
+		        String ten = txtHoTen.getText().trim();
+		        String cmnd = txtCMND.getText().trim();
+		        // Xử lý ngày sinh
+		        Date ngaySinh = (Date) dateChooser.getDate();
+		        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		        String ngaySinhStr = dateFormat.format(ngaySinh);		        
+		        String gioiTinh = cmbGioiTinh.getSelectedItem().toString();
+		        String diaChi = txtDiaChi.getText().trim();
+		        String soDienThoai = txtSoDienThoai.getText().trim();
+		        double phuCap = Double.parseDouble(txtPhuCap.getText().trim());
+		        String phongBan = cmbPhongBan.getSelectedItem().toString();
+		        String tayNghe =cmbTaynghe.getSelectedItem().toString();
+		        // Tạo đối tượng NhanVien mới
+		        CongNhan cn =new CongNhan(maCN, ten, gioiTinh, ngaySinhStr, gioiTinh, soDienThoai, phuCap, phongBan, tayNghe, diaChi);
+		        // Gọi phương thức DAO để cập nhật thông tin nhân viên
+		        boolean updated = cn_dao.update(cn);
 
-			        if (updated) {
-			            // Cập nhật lại thông tin trong bảng
-			            tableModel.setValueAt(ten, selectedRow, 1);
-			            tableModel.setValueAt(cmnd, selectedRow, 2);
-			            tableModel.setValueAt(ngaySinhStr, selectedRow, 3);
-			            tableModel.setValueAt(gioiTinh, selectedRow, 4);
-			            tableModel.setValueAt(diaChi, selectedRow, 5);
-			            tableModel.setValueAt(soDienThoai, selectedRow, 6);
-			            tableModel.setValueAt(phuCap, selectedRow, 7);
-			            tableModel.setValueAt(tayNghe, selectedRow, 8);
-			            tableModel.setValueAt(phongBan, selectedRow, 9);
-			           
+		        if (updated) {
+		            // Cập nhật lại thông tin trong bảng
+		            tableModel.setValueAt(ten, selectedRow, 1);
+		            tableModel.setValueAt(cmnd, selectedRow, 2);
+		            tableModel.setValueAt(ngaySinhStr, selectedRow, 3);
+		            tableModel.setValueAt(gioiTinh, selectedRow, 4);
+		            tableModel.setValueAt(diaChi, selectedRow, 5);
+		            tableModel.setValueAt(soDienThoai, selectedRow, 6);
+		            tableModel.setValueAt(phuCap, selectedRow, 7);
+		            tableModel.setValueAt(tayNghe, selectedRow, 8);
+		            tableModel.setValueAt(phongBan, selectedRow, 9);
+		           
 
-			            JOptionPane.showMessageDialog(null, "Cập nhật thông tin công nhân thành công");
-			        } else {
-			            JOptionPane.showMessageDialog(null, "Cập nhật thông tin công nhân thất bại");
-			        }
-		       }
+		            JOptionPane.showMessageDialog(null, "Cập nhật thông tin công nhân thành công");
+		        } else {
+		            JOptionPane.showMessageDialog(null, "Cập nhật thông tin công nhân thất bại");
+		        }
 		    }
 		});
 		
@@ -624,6 +621,7 @@ public class Form_CN_CapNhat extends JPanel {
 			
 		return true;
 	}
+	
 	
 	
 

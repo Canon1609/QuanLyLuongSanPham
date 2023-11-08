@@ -71,9 +71,13 @@ CREATE TABLE PhanCong (
 
 CREATE TABLE CongDoan (
     maCongDoan NVARCHAR(255) NOT NULL,
+	TenCongDoan NVARCHAR(255) NULL,
+	GiaCongDoan FLOAT NOT NULL,
     maSanPham NVARCHAR(255) NULL,
-    TenCongDoan NVARCHAR(255) NULL,
-    GiaCongDoan FLOAT NOT NULL,
+	tenSanPham NVARCHAR(255) NULL,
+    SoLuong INT NOT NULL,
+	congDoanYeuCau NVARCHAR(255) NULL,
+    
     PRIMARY KEY (maCongDoan)
 );
 

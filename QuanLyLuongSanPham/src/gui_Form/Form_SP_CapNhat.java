@@ -248,8 +248,7 @@ public class Form_SP_CapNhat extends JPanel {
 		btnThemSanPham.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(valid())
-				{
+				if(valid()) {
 					// Lấy thông tin từ các trường nhập liệu
 					// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
 					int maxSPNumber = sp_dao.getMaxProductNumberNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
@@ -270,13 +269,15 @@ public class Form_SP_CapNhat extends JPanel {
 					SanPham sp = new SanPham(ma, tenSanPham, kieuDang, chatLieu, soLuong);
 					sp_dao.create(sp);
 					tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
-					
+					JOptionPane.showMessageDialog(null, "Thêm sản phẩm thành công");
 					// Xóa nội dung của các trường nhập liệu sau khi thêm
 					txtMaSanPham.setText("");
 					txtMaSanPham.requestFocus();
 					txtTenSanPham.setText("");
 					txtChatLieu.setText("");
 					jsfSoLuong.validate();
+				}else {
+					JOptionPane.showMessageDialog(null, "Thêm sản phẩm không thành công");
 				}
 			}
 		});
@@ -382,7 +383,6 @@ public class Form_SP_CapNhat extends JPanel {
 			tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
 		}
 	}
-	
 	public boolean valid() {
 	    if (txtTenSanPham.getText().equals("") || txtKieuDang.getText().equals("") || txtChatLieu.getText().equals("") 
 	        || jsfSoLuong.getValue() <= 0) 
@@ -408,7 +408,5 @@ public class Form_SP_CapNhat extends JPanel {
 	    }
 	    return true;
 	}
-
-
-	
+	//
 }

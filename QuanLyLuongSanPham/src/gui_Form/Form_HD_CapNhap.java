@@ -61,12 +61,11 @@ public class Form_HD_CapNhap extends JPanel {
 	private DAO_NhanVien dao_nv;
 	private DAO_SanPham dao_sp;
 	private DefaultTableModel tableModelSanPham;
-<<<<<<< HEAD
-	private JDateChooser dateChooser_ngayGiao;
+	private JTextField txt_tenNhanVien;
+	private JTextField txt_tenSanPham;
 	private JDateChooser dateChooser_ngayLap;
-=======
+	private JDateChooser dateChooser_ngayGiao;
 
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
 	/**
 	 * Create the panel.
 	 */
@@ -162,7 +161,7 @@ public class Form_HD_CapNhap extends JPanel {
 		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
 		b3.add(horizontalStrut_4);
 
-		JTextField txt_tenNhanVien = new JTextField();
+		txt_tenNhanVien = new JTextField();
 		txt_tenNhanVien.setPreferredSize(new Dimension(30, 30));
 		txt_tenNhanVien.setFont(new Font("Arial", Font.PLAIN, 12));
 		b3.add(txt_tenNhanVien);
@@ -183,7 +182,7 @@ public class Form_HD_CapNhap extends JPanel {
 		Component horizontalStrut_5 = Box.createHorizontalStrut(20);
 		b4.add(horizontalStrut_5);
 
-		JTextField txt_tenSanPham = new JTextField();
+		txt_tenSanPham = new JTextField();
 		txt_tenSanPham.setPreferredSize(new Dimension(100, 30));
 		txt_tenSanPham.setFont(new Font("Arial", Font.PLAIN, 12));
 		b4.add(txt_tenSanPham);
@@ -220,13 +219,8 @@ public class Form_HD_CapNhap extends JPanel {
 
 		Component horizontalStrut_8 = Box.createHorizontalStrut(20);
 		b5.add(horizontalStrut_8);
-<<<<<<< HEAD
-		
-		dateChooser_ngayLap = new JDateChooser();
-=======
 
-		JDateChooser dateChooser_ngayLap = new JDateChooser();
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
+		dateChooser_ngayLap = new JDateChooser();
 		dateChooser_ngayLap.setPreferredSize(new Dimension(45, 30));
 		dateChooser_ngayLap.setFont(new Font("Arial", Font.PLAIN, 12));
 		b5.add(dateChooser_ngayLap);
@@ -240,13 +234,8 @@ public class Form_HD_CapNhap extends JPanel {
 
 		Component horizontalStrut_10 = Box.createHorizontalStrut(20);
 		b5.add(horizontalStrut_10);
-<<<<<<< HEAD
-		
-		dateChooser_ngayGiao = new JDateChooser();
-=======
 
-		JDateChooser dateChooser_ngayGiao = new JDateChooser();
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
+		dateChooser_ngayGiao = new JDateChooser();
 		dateChooser_ngayGiao.setFont(new Font("Arial", Font.PLAIN, 12));
 		b5.add(dateChooser_ngayGiao);
 
@@ -385,13 +374,8 @@ public class Form_HD_CapNhap extends JPanel {
 
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.NORTH);
-<<<<<<< HEAD
-		
-		JLabel lblCapNhatHDong = new JLabel("CẬP NHẬT THÔNG TIN HỢP ĐỒNG");
-=======
 
 		JLabel lblCapNhatHDong = new JLabel("CẬP NHẬT THÔNG TIN HỢP ĐÔNG");
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
 		lblCapNhatHDong.setForeground(new Color(255, 0, 0));
 		lblCapNhatHDong.setFont(new Font("Arial", Font.BOLD, 16));
 		panel.add(lblCapNhatHDong);
@@ -437,31 +421,12 @@ public class Form_HD_CapNhap extends JPanel {
 			        // Gán mã nhân viên đã tạo vào trường nhập liệu
 			        txtmaHD.setText(ma);
 
-<<<<<<< HEAD
-					// Xử lý ngày sinh
-					Date ngayLap = (Date) dateChooser_ngayLap.getDate();
-					Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
-
-		              
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-					String ngayLap_New = dateFormat.format(ngayLap);
-					String ngayGiao_New = dateFormat.format(ngayGiao);
-					
-					
-					String maSP = txt_tenSanPham.getText().trim();
-					
-					String tenKH = txtkhachHang.getText().trim();
-					
-					String maNV = cmbmaNV.getSelectedItem().toString();
-					
-=======
 		            // Lấy thông tin từ các trường nhập liệu
 		            Date ngayLap = (Date) dateChooser_ngayLap.getDate();
 		            Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
 		            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		            String ngayLap_New = dateFormat.format(ngayLap);
 		            String ngayGiao_New = dateFormat.format(ngayGiao);
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
 
 		            String maSP = txt_tenSanPham.getText().trim();
 		            String tenSP = txtTenSP.getText().trim();
@@ -532,56 +497,6 @@ public class Form_HD_CapNhap extends JPanel {
 		btn_Sua.addActionListener(new ActionListener() {
 
 			@Override
-<<<<<<< HEAD
-		    public void actionPerformed(ActionEvent e) {
-		     if(valiData())
-		     {
-		    	   int selectedRow = tbl_Chinh.getSelectedRow();
-			        if (selectedRow < 0) {
-			            JOptionPane.showMessageDialog(null, "Chọn một hợp đồng trong bảng để sửa.");
-			            return;
-			        }
-
-			        // Lấy thông tin nhân viên từ dòng được chọn trong bảng
-			       String maHD =txtmaHD.getText().trim();
-			        String ten = txtkhachHang.getText().trim();
-			        
-			        // Xử lý ngày sinh
-			        Date ngayLap = (Date) dateChooser_ngayLap.getDate();
-			        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			        String ngayLapStr = dateFormat.format(ngayLap);		
-			        Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
-			        String ngayGiaoStr = dateFormat.format(ngayLap);
-			        
-			        String maNV = cmbmaNV.getSelectedItem().toString();
-			        String maSP = txt_tenSanPham.getText();
-			        NhanVien nv =new NhanVien(maNV);
-			        SanPham sp =new SanPham(maSP);
-			        int soLuong =jsfSoLuong.getValue();
-			        double donGia = Double.parseDouble(txtdonGia.getText().trim());
-			      
-			        // Tạo đối tượng NhanVien mới
-			      HopDong hd =new HopDong(maHD, ten, ngayLapStr,ngayGiaoStr, donGia, soLuong, nv, sp);
-			        // Gọi phương thức DAO để cập nhật thông tin nhân viên
-			        boolean updated = hd_dao.update(hd);
-
-			        if (updated) {
-			            // Cập nhật lại thông tin trong bảng
-			            tableModel.setValueAt(ten, selectedRow, 1);
-			            tableModel.setValueAt(maNV, selectedRow, 2);
-			            tableModel.setValueAt(ngayLapStr, selectedRow, 3);
-			            tableModel.setValueAt(ngayGiaoStr, selectedRow, 4);
-			            tableModel.setValueAt(donGia, selectedRow, 5);
-			            
-			          
-
-			            JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thành công");
-			        } else {
-			            JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thất bại");
-			        }
-		     }
-		    }
-=======
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = tbl_Chinh.getSelectedRow();
 				if (selectedRow < 0) {
@@ -633,7 +548,6 @@ public class Form_HD_CapNhap extends JPanel {
 					JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thất bại");
 				}
 			}
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
 		});
 
 		// XÓA RỖNG
@@ -659,48 +573,7 @@ public class Form_HD_CapNhap extends JPanel {
 
 			}
 		});
-<<<<<<< HEAD
-		btn_In.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-//				  Workbook workbook = new XSSFWorkbook();
-//			        
-//			        // Tạo một trang tính mới
-//			        Sheet sheet = workbook.createSheet("Dữ liệu mẫu");
-//			        
-//			        // Tạo hàng đầu tiên (tiêu đề)
-//			        Row headerRow = sheet.createRow(0);
-//			        Cell headerCell = headerRow.createCell(0);
-//			        headerCell.setCellValue("Tên");
-//			        headerCell = headerRow.createCell(1);
-//			        headerCell.setCellValue("Tuổi");
-//			        
-//			        // Tạo dữ liệu mẫu
-//			        Row dataRow = sheet.createRow(1);
-//			        Cell dataCell = dataRow.createCell(0);
-//			        dataCell.setCellValue("John Doe");
-//			        dataCell = dataRow.createCell(1);
-//			        dataCell.setCellValue(30);
-//			        
-//			        // Lưu tệp Excel
-//			        try {
-//			            FileOutputStream outputStream = new FileOutputStream("example.xlsx");
-//			            workbook.write(outputStream);
-//			            outputStream.close();
-//			            System.out.println("Tệp Excel đã được tạo thành công.");
-//			        } catch (IOException e) {
-//			            e.printStackTrace();
-//			        }
-				
-			    
-				
-			}
-		});
-		//THOÁT
-=======
 		// THOÁT
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
 //		btn.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e) {
@@ -772,7 +645,7 @@ public class Form_HD_CapNhap extends JPanel {
 					, hd.getTenKH(), hd.getNhanVien().getMaNhanVien(),hd.getTenNVien(),
 					hd.getNgayLap(), hd.getNgayGiao(),hd.getSoLuongSanPham(), hd.getDonGia() });
 		}
-		System.out.println(list);
+		//System.out.println(list);
 	}
 
 	public void DocDuLieuDBVaoTableSanPham() {
@@ -798,35 +671,28 @@ public class Form_HD_CapNhap extends JPanel {
 			txtdonGia.requestFocus();
 			return false;
 		}
-<<<<<<< HEAD
+
 		String tenKH =txtkhachHang.getText().trim();
 		Date ngayLap =dateChooser_ngayLap.getDate();
 		Date ngayGiao =dateChooser_ngayGiao.getDate();
 		double donGia =Double.parseDouble(txtdonGia.getText().trim());
-		if(!tenKH.matches("[a-zA-Z' ]+"))
-		{
-=======
-		String tenKH = txtkhachHang.getText().trim();
-		double donGia = Double.parseDouble(txtdonGia.getText().trim());
+
 		if (!tenKH.matches("[a-zA-Z' ]+")) {
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
 			JOptionPane.showMessageDialog(this, "Tên Khách Hàng Không Hợp Lệ!!!");
 			txtkhachHang.selectAll();
 			txtkhachHang.requestFocus();
 			return false;
 		}
-<<<<<<< HEAD
+
 		if(ngayLap.compareTo(ngayGiao) >=0)
 		{
 			JOptionPane.showMessageDialog(this, "Ngày Lập Phải Trước Ngày Giao!!!");
 			return false;
 					
 		}
-		if(donGia<=0)
-		{
-=======
+
 		if (donGia <= 0) {
->>>>>>> 630da27d2334f3d2c48fe1466394dfd58e5c0011
+
 			JOptionPane.showMessageDialog(this, "Đơn Giá Phải Lớn Hơn 0!!!");
 			txtdonGia.selectAll();
 			txtdonGia.requestFocus();

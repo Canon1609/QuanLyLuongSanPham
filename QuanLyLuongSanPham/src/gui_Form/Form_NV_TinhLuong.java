@@ -50,6 +50,7 @@ public class Form_NV_TinhLuong extends JPanel {
 	private int tongNgayCong;
 	private double tbLuongCa;
 	private double thucNhan;
+	private Double heSoLuong;
 	private DAO_TinhLuongNhanVien luongNV_DAO;
 
 	/**
@@ -256,6 +257,8 @@ public class Form_NV_TinhLuong extends JPanel {
 		DocDuLieuDBVaoTable();
 
 		table.addMouseListener(new MouseAdapter() {
+			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = table.getSelectedRow();
@@ -264,6 +267,7 @@ public class Form_NV_TinhLuong extends JPanel {
 					String ten = (String) table.getValueAt(row, 1);
 					luongCB = (Double) table.getValueAt(row, 7);
 					phuCap = (Double) table.getValueAt(row, 8);
+					heSoLuong = (Double) table.getValueAt(row, 10);
 					txtMaNV.setText(ma);
 					txtTenNV.setText(ten);
 				}
@@ -351,7 +355,7 @@ public class Form_NV_TinhLuong extends JPanel {
 				// System.out.println("Tổng ngày công: " + tongNgayCong); // Thay thế
 				// lblTongNgayCong bằng thành phần hiển thị thực tế của bạn
 				// System.out.println("\nTB lương ca: " + tbLuongCa);
-				thucNhan = (((luongCB * tbLuongCa) / 26) * tongNgayCong) + phuCap;
+				thucNhan = ((((luongCB * tbLuongCa)*heSoLuong) / 26) * tongNgayCong) + phuCap;
 				// Chuyển giá trị double thành chuỗi
 				String thucNhanStr = Double.toString(thucNhan);
 
@@ -407,7 +411,25 @@ public class Form_NV_TinhLuong extends JPanel {
 
 			}
 		});
-
+		btnLamMoi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				txtMaLuong.setText("");
+				txtMaNV.setText("");
+				txtTenNV.setText("");
+				txtThucLanh.setText("");
+				cmbNam.setSelectedIndex(0);
+				cmbThang.setSelectedIndex(0);
+				
+			}
+		});
+		btnThoat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
 	}
 
 	public void DocDuLieuDBVaoTable() {

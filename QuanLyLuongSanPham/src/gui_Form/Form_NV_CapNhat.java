@@ -55,10 +55,10 @@ public class Form_NV_CapNhat extends JPanel {
 	private DAO_NhanVien nv_dao;
 	private DefaultTableModel tableModel;
 	private int nextEmployeeNumber = 0;
-	private JComboBox cmbGioiTinh;
-	private JDateChooser dateChooser;
-	private JComboBox cmbPhongBan;
 	private JComboBox cmbHeSoLuong;
+	private JDateChooser dateChooser;
+	private JComboBox cmbGioiTinh;
+	private JComboBox cmbPhongBan;
 
 	/**
 	 * Create the panel.
@@ -176,13 +176,8 @@ public class Form_NV_CapNhat extends JPanel {
 		Component horizontalStrut_7 = Box.createHorizontalStrut(20);
 		boxTrai5.add(horizontalStrut_7);
 
-<<<<<<< HEAD
 		cmbHeSoLuong = new JComboBox();
-		cmbHeSoLuong.setModel(new DefaultComboBoxModel(new String[] { "1.0", "2.0", "3.0", "4.0" }));
-=======
-		JComboBox cmbHeSoLuong = new JComboBox();
 		cmbHeSoLuong.setModel(new DefaultComboBoxModel(new String[] { "2.34", "2.67", "3.00", "3.33", "3.66", "3.99", "4.32" }));
->>>>>>> 29a7a7cc4225dae3bbe259202670494a7b21841f
 		cmbHeSoLuong.setPreferredSize(new Dimension(30, 25));
 		boxTrai5.add(cmbHeSoLuong);
 
@@ -394,8 +389,7 @@ public class Form_NV_CapNhat extends JPanel {
 		btnThemNhanVien.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(valid())
-				{
+				if(valid()) {
 					// Lấy thông tin từ các trường nhập liệu
 					// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
 					int maxEmployeeNumber = nv_dao.getMaxEmployeeNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
@@ -426,7 +420,7 @@ public class Form_NV_CapNhat extends JPanel {
 					nv_dao.create(nv);
 					tableModel.addRow(new Object[] {nv.getMaNhanVien(),nv.getHoTen(),nv.getcCCD(),nv.getNgaySinh(),nv.getGioiTinh()
 							,nv.getDiaChi(),nv.getSoDienThoai(),nv.getLuongCoBan(),nv.getPhuCap(),nv.getPhongBan(),nv.getHeSoLuong()});
-					
+					JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công");
 					// Xóa nội dung của các trường nhập liệu sau khi thêm
 					txtMaNV.setText("");
 					txtMaNV.requestFocus();
@@ -440,6 +434,9 @@ public class Form_NV_CapNhat extends JPanel {
 					txtPhuCap.setText("");
 					cmbPhongBan.setSelectedIndex(0);
 					cmbHeSoLuong.setSelectedIndex(0);
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Thêm nhân viên không thành công");
 				}
 			}
 		});
@@ -582,9 +579,7 @@ public class Form_NV_CapNhat extends JPanel {
 			tableModel.addRow(new Object[] {nv.getMaNhanVien(),nv.getHoTen(),nv.getcCCD(),nv.getNgaySinh(),nv.getGioiTinh()
 					,nv.getDiaChi(),nv.getSoDienThoai(),nv.getLuongCoBan(),nv.getPhuCap(),nv.getPhongBan(),nv.getHeSoLuong()});
 		}
-
 	}
-	
 	public boolean valid() {
 	    if (txtHoTen.getText().equals("") 
 	        || txtCMND.getText().equals("") || dateChooser.getDate() == null 
@@ -699,5 +694,4 @@ public class Form_NV_CapNhat extends JPanel {
 		}
         return true;  
 	}
-
 }
