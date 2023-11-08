@@ -60,6 +60,8 @@ public class Form_HD_CapNhap extends JPanel {
 	private DAO_NhanVien dao_nv;
 	private DAO_SanPham dao_sp;
 	private DefaultTableModel tableModelSanPham;
+	private JDateChooser dateChooser_ngayGiao;
+	private JDateChooser dateChooser_ngayLap;
 	/**
 	 * Create the panel.
 	 */
@@ -213,7 +215,7 @@ public class Form_HD_CapNhap extends JPanel {
 		Component horizontalStrut_8 = Box.createHorizontalStrut(20);
 		b5.add(horizontalStrut_8);
 		
-		JDateChooser dateChooser_ngayLap = new JDateChooser();
+		dateChooser_ngayLap = new JDateChooser();
 		dateChooser_ngayLap.setPreferredSize(new Dimension(45, 30));
 		dateChooser_ngayLap.setFont(new Font("Arial", Font.PLAIN, 12));
 		b5.add(dateChooser_ngayLap);
@@ -228,7 +230,7 @@ public class Form_HD_CapNhap extends JPanel {
 		Component horizontalStrut_10 = Box.createHorizontalStrut(20);
 		b5.add(horizontalStrut_10);
 		
-		JDateChooser dateChooser_ngayGiao = new JDateChooser();
+		dateChooser_ngayGiao = new JDateChooser();
 		dateChooser_ngayGiao.setFont(new Font("Arial", Font.PLAIN, 12));
 		b5.add(dateChooser_ngayGiao);
 		
@@ -365,7 +367,7 @@ public class Form_HD_CapNhap extends JPanel {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.NORTH);
 		
-		JLabel lblCapNhatHDong = new JLabel("CẬP NHẬT THÔNG TIN HỢP ĐÔNG");
+		JLabel lblCapNhatHDong = new JLabel("CẬP NHẬT THÔNG TIN HỢP ĐỒNG");
 		lblCapNhatHDong.setForeground(new Color(255, 0, 0));
 		lblCapNhatHDong.setFont(new Font("Arial", Font.BOLD, 16));
 		panel.add(lblCapNhatHDong);
@@ -419,6 +421,8 @@ public class Form_HD_CapNhap extends JPanel {
 					// Xử lý ngày sinh
 					Date ngayLap = (Date) dateChooser_ngayLap.getDate();
 					Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
+
+		              
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 					String ngayLap_New = dateFormat.format(ngayLap);
 					String ngayGiao_New = dateFormat.format(ngayGiao);
@@ -498,49 +502,52 @@ cmbmaNV.addActionListener(new ActionListener(){
 
 			@Override
 		    public void actionPerformed(ActionEvent e) {
-		        int selectedRow = tbl_Chinh.getSelectedRow();
-		        if (selectedRow < 0) {
-		            JOptionPane.showMessageDialog(null, "Chọn một hợp đồng trong bảng để sửa.");
-		            return;
-		        }
+		     if(valiData())
+		     {
+		    	   int selectedRow = tbl_Chinh.getSelectedRow();
+			        if (selectedRow < 0) {
+			            JOptionPane.showMessageDialog(null, "Chọn một hợp đồng trong bảng để sửa.");
+			            return;
+			        }
 
-		        // Lấy thông tin nhân viên từ dòng được chọn trong bảng
-		       String maHD =txtmaHD.getText().trim();
-		        String ten = txtkhachHang.getText().trim();
-		        
-		        // Xử lý ngày sinh
-		        Date ngayLap = (Date) dateChooser_ngayLap.getDate();
-		        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		        String ngayLapStr = dateFormat.format(ngayLap);		
-		        Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
-		        String ngayGiaoStr = dateFormat.format(ngayLap);
-		        
-		        String maNV = cmbmaNV.getSelectedItem().toString();
-		        String maSP = txt_tenSanPham.getText();
-		        NhanVien nv =new NhanVien(maNV);
-		        SanPham sp =new SanPham(maSP);
-		        int soLuong =jsfSoLuong.getValue();
-		        double donGia = Double.parseDouble(txtdonGia.getText().trim());
-		      
-		        // Tạo đối tượng NhanVien mới
-		      HopDong hd =new HopDong(maHD, ten, ngayLapStr,ngayGiaoStr, donGia, soLuong, nv, sp);
-		        // Gọi phương thức DAO để cập nhật thông tin nhân viên
-		        boolean updated = hd_dao.update(hd);
+			        // Lấy thông tin nhân viên từ dòng được chọn trong bảng
+			       String maHD =txtmaHD.getText().trim();
+			        String ten = txtkhachHang.getText().trim();
+			        
+			        // Xử lý ngày sinh
+			        Date ngayLap = (Date) dateChooser_ngayLap.getDate();
+			        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			        String ngayLapStr = dateFormat.format(ngayLap);		
+			        Date ngayGiao = (Date) dateChooser_ngayGiao.getDate();
+			        String ngayGiaoStr = dateFormat.format(ngayLap);
+			        
+			        String maNV = cmbmaNV.getSelectedItem().toString();
+			        String maSP = txt_tenSanPham.getText();
+			        NhanVien nv =new NhanVien(maNV);
+			        SanPham sp =new SanPham(maSP);
+			        int soLuong =jsfSoLuong.getValue();
+			        double donGia = Double.parseDouble(txtdonGia.getText().trim());
+			      
+			        // Tạo đối tượng NhanVien mới
+			      HopDong hd =new HopDong(maHD, ten, ngayLapStr,ngayGiaoStr, donGia, soLuong, nv, sp);
+			        // Gọi phương thức DAO để cập nhật thông tin nhân viên
+			        boolean updated = hd_dao.update(hd);
 
-		        if (updated) {
-		            // Cập nhật lại thông tin trong bảng
-		            tableModel.setValueAt(ten, selectedRow, 1);
-		            tableModel.setValueAt(maNV, selectedRow, 2);
-		            tableModel.setValueAt(ngayLapStr, selectedRow, 3);
-		            tableModel.setValueAt(ngayGiaoStr, selectedRow, 4);
-		            tableModel.setValueAt(donGia, selectedRow, 5);
-		            
-		          
+			        if (updated) {
+			            // Cập nhật lại thông tin trong bảng
+			            tableModel.setValueAt(ten, selectedRow, 1);
+			            tableModel.setValueAt(maNV, selectedRow, 2);
+			            tableModel.setValueAt(ngayLapStr, selectedRow, 3);
+			            tableModel.setValueAt(ngayGiaoStr, selectedRow, 4);
+			            tableModel.setValueAt(donGia, selectedRow, 5);
+			            
+			          
 
-		            JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thành công");
-		        } else {
-		            JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thất bại");
-		        }
+			            JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thành công");
+			        } else {
+			            JOptionPane.showMessageDialog(null, "Cập nhật thông tin hợp đồng thất bại");
+			        }
+		     }
 		    }
 		});
 		
@@ -566,6 +573,43 @@ cmbmaNV.addActionListener(new ActionListener(){
 		       
 		       
 		    }
+		});
+		btn_In.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				  Workbook workbook = new XSSFWorkbook();
+//			        
+//			        // Tạo một trang tính mới
+//			        Sheet sheet = workbook.createSheet("Dữ liệu mẫu");
+//			        
+//			        // Tạo hàng đầu tiên (tiêu đề)
+//			        Row headerRow = sheet.createRow(0);
+//			        Cell headerCell = headerRow.createCell(0);
+//			        headerCell.setCellValue("Tên");
+//			        headerCell = headerRow.createCell(1);
+//			        headerCell.setCellValue("Tuổi");
+//			        
+//			        // Tạo dữ liệu mẫu
+//			        Row dataRow = sheet.createRow(1);
+//			        Cell dataCell = dataRow.createCell(0);
+//			        dataCell.setCellValue("John Doe");
+//			        dataCell = dataRow.createCell(1);
+//			        dataCell.setCellValue(30);
+//			        
+//			        // Lưu tệp Excel
+//			        try {
+//			            FileOutputStream outputStream = new FileOutputStream("example.xlsx");
+//			            workbook.write(outputStream);
+//			            outputStream.close();
+//			            System.out.println("Tệp Excel đã được tạo thành công.");
+//			        } catch (IOException e) {
+//			            e.printStackTrace();
+//			        }
+				
+			    
+				
+			}
 		});
 		//THOÁT
 //		btn.addActionListener(new ActionListener() {
@@ -658,6 +702,8 @@ cmbmaNV.addActionListener(new ActionListener(){
 			return false;
 		}
 		String tenKH =txtkhachHang.getText().trim();
+		Date ngayLap =dateChooser_ngayLap.getDate();
+		Date ngayGiao =dateChooser_ngayGiao.getDate();
 		double donGia =Double.parseDouble(txtdonGia.getText().trim());
 		if(!tenKH.matches("[a-zA-Z' ]+"))
 		{
@@ -665,6 +711,12 @@ cmbmaNV.addActionListener(new ActionListener(){
 			txtkhachHang.selectAll();
 			txtkhachHang.requestFocus();
 			return false;
+		}
+		if(ngayLap.compareTo(ngayGiao) >=0)
+		{
+			JOptionPane.showMessageDialog(this, "Ngày Lập Phải Trước Ngày Giao!!!");
+			return false;
+					
 		}
 		if(donGia<=0)
 		{
