@@ -158,7 +158,31 @@ public class DAO_SanPham {
 		}
 		return dssp;
 	}
-	
+	public int getSoLuong(String maSanPham) {
+	    int soLuong = 0;
+
+	    Connection con = Conection_DB.getCon();
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        // Truy vấn để lấy ra số lượng của sản phẩm có mã là maSanPham
+	        String sql = "SELECT SOLUONG FROM SanPham WHERE MASANPHAM = ?";
+	        stmt = con.prepareStatement(sql);
+	        stmt.setString(1, maSanPham);
+
+	        rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            soLuong = rs.getInt("SOLUONG");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return soLuong;
+	}
+
 	// Lấy mã sản phẩm lớn nhất có trong csdl để tránh bị trùng
 	public int getMaxProductNumberNumber() {
 		Conection_DB.getInstance();
@@ -166,7 +190,7 @@ public class DAO_SanPham {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			// Truy vấn để lấy ra mã nhân viên lớn nhất
+			// Truy vấn để lấy ra mã sản phẩm lớn nhất
 			String query = "SELECT MAX(CAST(SUBSTRING(MaSanPham, 3, LEN(MaSanPham) - 2) AS INT)) FROM SanPham";
 			stmt = con.prepareStatement(query);
 			// Thực hiện truy vấn

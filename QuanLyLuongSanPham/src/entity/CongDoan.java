@@ -18,12 +18,16 @@ public class CongDoan {
 		super();
 		this.maCongDoan = maCongDoan;
 	}
-	public CongDoan(String maCongDoan, String tenCongDoan, double giaCongDoan, SanPham sanPham) {
+	public CongDoan(String maCongDoan, String tenCongDoan, double giaCongDoan, SanPham sanPham, String tenSanPham,
+			int soLuong, String congDoanYC) {
 		super();
 		this.maCongDoan = maCongDoan;
 		this.tenCongDoan = tenCongDoan;
 		this.giaCongDoan = giaCongDoan;
 		this.sanPham = sanPham;
+		this.tenSanPham = tenSanPham;
+		this.soLuong = soLuong;
+		this.congDoanYC = congDoanYC;
 	}
 	public String getMaCongDoan() {
 		return maCongDoan;
@@ -49,9 +53,27 @@ public class CongDoan {
 	public void setSanPham(SanPham sanPham) {
 		this.sanPham = sanPham;
 	}
+	public String getTenSanPham() {
+		return tenSanPham;
+	}
+	public void setTenSanPham(String tenSanPham) {
+		this.tenSanPham = tenSanPham;
+	}
+	public int getSoLuong() {
+		return soLuong;
+	}
+	public void setSoLuong(int soLuong) {
+		this.soLuong = soLuong;
+	}
+	public String getCongDoanYC() {
+		return congDoanYC;
+	}
+	public void setCongDoanYC(String congDoanYC) {
+		this.congDoanYC = congDoanYC;
+	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(maCongDoan);
+		return Objects.hash(congDoanYC, giaCongDoan, maCongDoan, sanPham, soLuong, tenCongDoan, tenSanPham);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -62,12 +84,18 @@ public class CongDoan {
 		if (getClass() != obj.getClass())
 			return false;
 		CongDoan other = (CongDoan) obj;
-		return Objects.equals(maCongDoan, other.maCongDoan);
+		return Objects.equals(congDoanYC, other.congDoanYC)
+				&& Double.doubleToLongBits(giaCongDoan) == Double.doubleToLongBits(other.giaCongDoan)
+				&& Objects.equals(maCongDoan, other.maCongDoan) && Objects.equals(sanPham, other.sanPham)
+				&& soLuong == other.soLuong && Objects.equals(tenCongDoan, other.tenCongDoan)
+				&& Objects.equals(tenSanPham, other.tenSanPham);
 	}
 	@Override
 	public String toString() {
 		return "CongDoan [maCongDoan=" + maCongDoan + ", tenCongDoan=" + tenCongDoan + ", giaCongDoan=" + giaCongDoan
-				+ ", sanPham=" + sanPham + "]";
+				+ ", sanPham=" + sanPham + ", tenSanPham=" + tenSanPham + ", soLuong=" + soLuong + ", congDoanYC="
+				+ congDoanYC + "]";
 	}
+	
 	
 }

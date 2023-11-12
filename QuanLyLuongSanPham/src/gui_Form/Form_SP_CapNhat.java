@@ -249,12 +249,10 @@ public class Form_SP_CapNhat extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(valid()) {
-					// Lấy thông tin từ các trường nhập liệu
-					// Truy vấn cơ sở dữ liệu để lấy ra mã nhân viên lớn nhất
-					int maxSPNumber = sp_dao.getMaxProductNumberNumber(); // Hãy viết phương thức getMaxEmployeeNumber để thực hiện truy vấn
-					// Tăng giá trị mã nhân viên lớn nhất lên 1
+					int maxSPNumber = sp_dao.getMaxProductNumberNumber(); 
+					// Tăng giá trị mã sản phẩm lớn nhất lên 1
 					int nextSPNumber = maxSPNumber + 1;
-					// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã nhân viên
+					// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã sản phẩm
 					String ma = String.format("SP%02d", nextSPNumber);
 
 			        // Gán mã nhân viên đã tạo vào trường nhập liệu
@@ -281,7 +279,7 @@ public class Form_SP_CapNhat extends JPanel {
 				}
 			}
 		});
-		//XÓA NHÂN VIÊN
+		//XÓA Sản phẩm
 		btnXoaSanPham.addActionListener(new ActionListener() {
 			
 			@Override
@@ -297,7 +295,7 @@ public class Form_SP_CapNhat extends JPanel {
 				}
 			} 
 		}); 
-		//SỬA NHÂN VIÊN
+		//SỬA Sản phẩm
 		btnSuaThongTin.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {

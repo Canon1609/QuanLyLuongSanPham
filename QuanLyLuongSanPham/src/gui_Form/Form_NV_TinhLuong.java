@@ -28,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
 
 import connectDB.Conection_DB;
 import dao.DAO_NhanVien;
-import dao.DAO_TinhLuongNhanVien;
+import dao.DAO_LuongNhanVien;
 import entity.LuongNhanVien;
 import entity.NhanVien;
 
@@ -51,7 +51,7 @@ public class Form_NV_TinhLuong extends JPanel {
 	private double tbLuongCa;
 	private double thucNhan;
 	private Double heSoLuong;
-	private DAO_TinhLuongNhanVien luongNV_DAO;
+	private DAO_LuongNhanVien luongNV_DAO;
 
 	/**
 	 * Create the panel.
@@ -257,7 +257,6 @@ public class Form_NV_TinhLuong extends JPanel {
 		DocDuLieuDBVaoTable();
 
 		table.addMouseListener(new MouseAdapter() {
-			
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -355,7 +354,7 @@ public class Form_NV_TinhLuong extends JPanel {
 				// System.out.println("Tổng ngày công: " + tongNgayCong); // Thay thế
 				// lblTongNgayCong bằng thành phần hiển thị thực tế của bạn
 				// System.out.println("\nTB lương ca: " + tbLuongCa);
-				thucNhan = ((((luongCB * tbLuongCa)*heSoLuong) / 26) * tongNgayCong) + phuCap;
+				thucNhan = ((((luongCB * tbLuongCa) * heSoLuong) / 26) * tongNgayCong) + phuCap;
 				// Chuyển giá trị double thành chuỗi
 				String thucNhanStr = Double.toString(thucNhan);
 
@@ -365,7 +364,7 @@ public class Form_NV_TinhLuong extends JPanel {
 			}
 		});
 
-		luongNV_DAO = new DAO_TinhLuongNhanVien();
+		luongNV_DAO = new DAO_LuongNhanVien();
 		btnTinhLuong.addActionListener(new ActionListener() {
 
 			@Override
@@ -412,7 +411,7 @@ public class Form_NV_TinhLuong extends JPanel {
 			}
 		});
 		btnLamMoi.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				txtMaLuong.setText("");
@@ -421,7 +420,7 @@ public class Form_NV_TinhLuong extends JPanel {
 				txtThucLanh.setText("");
 				cmbNam.setSelectedIndex(0);
 				cmbThang.setSelectedIndex(0);
-				
+
 			}
 		});
 		btnThoat.addActionListener(new ActionListener() {
@@ -443,7 +442,7 @@ public class Form_NV_TinhLuong extends JPanel {
 	}
 
 	public void docDLLuongNV() {
-		List<LuongNhanVien> list = DAO_TinhLuongNhanVien.getAlltbCongCuaNhanVien();
+		List<LuongNhanVien> list = DAO_LuongNhanVien.getAlltbCongCuaNhanVien();
 		for (LuongNhanVien luongNV : list) {
 			tableModelTinhLuong.addRow(new Object[] { luongNV.getMaLuongNhanVien(),
 					luongNV.getNhanVien().getMaNhanVien(), luongNV.getTenNhanVien(), luongNV.getSoNgayDiLam(),
