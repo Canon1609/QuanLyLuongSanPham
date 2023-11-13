@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import java.awt.Component;
 import javax.swing.JLabel;
@@ -16,13 +18,37 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import connectDB.Conection_DB;
+import dao.DAO_ChamCongNhanVIen;
+import dao.DAO_CongNhan;
+import dao.DAO_NhanVien;
+import dao.DAO_TinhLuongNhanVien;
+import entity.CongCuaNhanVien;
+import entity.CongNhan;
+import entity.HopDong;
+import entity.LuongNhanVien;
+import entity.NhanVien;
+
 import javax.swing.DefaultComboBoxModel;
 
 public class Form_NV_ThongKe extends JPanel {
 	private JTable tbl_c;
+	private DAO_NhanVien nv_dao;
+	private JComboBox cmb_tenNV;
+	private JComboBox cmb_maNV;
+	private DefaultTableModel tableModel;
+	private DAO_ChamCongNhanVIen cnv_dao;
+	private DAO_TinhLuongNhanVien lnv;
+	private DAO_TinhLuongNhanVien lnv_dao;
 
 	/**
 	 * Create the panel.
@@ -98,7 +124,7 @@ public class Form_NV_ThongKe extends JPanel {
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		b2.add(horizontalStrut_3);
 		
-		JComboBox cmb_maNV = new JComboBox();
+		cmb_maNV = new JComboBox();
 		cmb_maNV.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
 		cmb_maNV.setPreferredSize(new Dimension(100, 30));
 		cmb_maNV.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -110,19 +136,19 @@ public class Form_NV_ThongKe extends JPanel {
 		Box b3 = Box.createHorizontalBox();
 		b.add(b3);
 		
-		JLabel lbl_tenNV = new JLabel("Tên Nhân Viên: ");
-		lbl_tenNV.setPreferredSize(new Dimension(100, 30));
-		lbl_tenNV.setFont(new Font("Arial", Font.PLAIN, 12));
-		b3.add(lbl_tenNV);
+//		JLabel lbl_tenNV = new JLabel("Tên Nhân Viên: ");
+//		lbl_tenNV.setPreferredSize(new Dimension(100, 30));
+//		lbl_tenNV.setFont(new Font("Arial", Font.PLAIN, 12));
+//		b3.add(lbl_tenNV);
+//		
+//		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
+//		b3.add(horizontalStrut_4);
 		
-		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
-		b3.add(horizontalStrut_4);
-		
-		JComboBox cmb_tenNV = new JComboBox();
-		cmb_tenNV.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
-		cmb_tenNV.setFont(new Font("Arial", Font.PLAIN, 12));
-		b3.add(cmb_tenNV);
-		
+//		cmb_tenNV = new JComboBox();
+//		cmb_tenNV.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
+//		cmb_tenNV.setFont(new Font("Arial", Font.PLAIN, 12));
+//		b3.add(cmb_tenNV);
+//		
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		verticalStrut_2.setPreferredSize(new Dimension(0, 50));
 		b.add(verticalStrut_2);
@@ -158,22 +184,23 @@ public class Form_NV_ThongKe extends JPanel {
 		src_c.setPreferredSize(new Dimension(1100, 270));
 		panel_South.add(src_c);
 		
-		tbl_c = new JTable();
-		tbl_c.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"M\u00E3 Nh\u00E2n Vi\u00EAn", "T\u00EAn Nh\u00E2n Vi\u00EAn", "CMND", "Gi\u1EDBi T\u00EDnh", "\u0110\u1ECBa Ch\u1EC9", "S\u1ED1 \u0110i\u1EC7n Tho\u1EA1i", "S\u1ED1 Ng\u00E0y L\u00E0m", "S\u1ED1 Ca T\u0103ng", "L\u01B0\u01A1ng"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, Double.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tbl_c.getColumnModel().getColumn(6).setResizable(false);
+		JTable tbl_c = new JTable(new DefaultTableModel(
+			    new Object[][] {},
+			    new String[] {  "Mã Nhân Viên","Họ Tên", "Số Ngày Làm", "Lương" }
+			) {
+			    Class[] columnTypes = new Class[] { String.class, String.class, Integer.class,  Double.class };
+			    public Class getColumnClass(int columnIndex) {
+			        return columnTypes[columnIndex];
+			    }
+			});
+
+			DefaultTableModel tableModel = (DefaultTableModel) tbl_c.getModel();
+			tableModel.setColumnIdentifiers(new String[] { "Mã Nhân Viên","Họ Tên", "Số Ngày Làm", "Lương" });
+
+
+
+
+		//tbl_c.getColumnModel().getColumn(6).setResizable(true);
 		tbl_c.setFont(new Font("Arial", Font.PLAIN, 12));
 		src_c.setViewportView(tbl_c);
 		
@@ -331,6 +358,134 @@ public class Form_NV_ThongKe extends JPanel {
 		lbl_hienThiLuongThapNhat.setPreferredSize(new Dimension(160, 30));
 		lbl_hienThiLuongThapNhat.setFont(new Font("Arial", Font.PLAIN, 14));
 		bc6_1.add(lbl_hienThiLuongThapNhat);
+		try {
+			Conection_DB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		nv_dao =new DAO_NhanVien();
+		List<NhanVien> list =nv_dao.getAlltbNhanVien();
+		
+		for (NhanVien nhanVien : list) {
+			cmb_maNV.addItem(nhanVien.getMaNhanVien());
+		//	cmb_tenNV.addItem(nhanVien.getHoTen());
+		}
+		cnv_dao =new DAO_ChamCongNhanVIen();
+		lnv =new DAO_TinhLuongNhanVien();
+		List<LuongNhanVien> dscnv =lnv.getAlltbCongCuaNhanVien();
+		for (LuongNhanVien luongNhanVien : dscnv) {
+			tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+											luongNhanVien.getTenNhanVien(),
+											luongNhanVien.getSoNgayDiLam(),
+											luongNhanVien.getThucNhan()  });
+		}
+		lnv_dao =new DAO_TinhLuongNhanVien();
+		
+		btn_thongKe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String ma =cmb_maNV.getSelectedItem().toString();
+				String date =cmb_thang.getSelectedItem().toString();
+				String year =comboBox_1.getSelectedItem().toString();
+				tableModel.setRowCount(0);
+				
+				if(date.equals("Tất cả") && year.equals("Tất cả"))
+				{
+					List<LuongNhanVien> list_hd =lnv_dao.getmatbNhanVien(ma);
+					for (LuongNhanVien luongNhanVien : list_hd) {
+						tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+								luongNhanVien.getTenNhanVien(),
+								luongNhanVien.getSoNgayDiLam(),
+								luongNhanVien.getThucNhan()  });
+						
+					}
+				}
+				else if(ma.equals("Tất cả") && date.equals("Tất cả"))
+				{
+					List<LuongNhanVien> list_hd =lnv_dao.timKiemNgayLYear(year);
+					for (LuongNhanVien luongNhanVien : list_hd) {
+						tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+								luongNhanVien.getTenNhanVien(),
+								luongNhanVien.getSoNgayDiLam(),
+								luongNhanVien.getThucNhan()  });
+						
+				//	lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				}
+				else if(year.equals("Tất cả") && ma.equals("Tất cả"))
+				{
+					List<LuongNhanVien> list_hd =lnv_dao.timKiemNgayLMonth(date);
+					for (LuongNhanVien luongNhanVien : list_hd) {
+						tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+								luongNhanVien.getTenNhanVien(),
+								luongNhanVien.getSoNgayDiLam(),
+								luongNhanVien.getThucNhan()  });
+						
+					}
+					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(year.equals("Tất cả"))
+				{
+					List<LuongNhanVien> list_hd =lnv_dao.timKiemMonthMaHD(date, ma);
+					for (LuongNhanVien luongNhanVien : list_hd) {
+						tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+								luongNhanVien.getTenNhanVien(),
+								luongNhanVien.getSoNgayDiLam(),
+								luongNhanVien.getThucNhan()  });
+						
+					}
+					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(ma.equals("Tất cả"))
+				{
+					List<LuongNhanVien> list_hd =lnv_dao.timKiemMonthYear(date, year);
+					for (LuongNhanVien luongNhanVien : list_hd) {
+						tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+								luongNhanVien.getTenNhanVien(),
+								luongNhanVien.getSoNgayDiLam(),
+								luongNhanVien.getThucNhan()  });
+						
+					}
+					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(date.equals("Tất cả"))
+				{
+					List<LuongNhanVien> list_hd =lnv_dao.timKiemYearMaHD(year, ma);
+					for (LuongNhanVien luongNhanVien : list_hd) {
+						tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+								luongNhanVien.getTenNhanVien(),
+								luongNhanVien.getSoNgayDiLam(),
+								luongNhanVien.getThucNhan()  });
+						
+					}
+					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(date.equals("Tất cả") && year.equals("Tất cả") && ma.equals("Tất cả"))
+				{
+					
+//					DocDuLieuDBVaoTable();
+//					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+					
+				else
+					{
+						List<LuongNhanVien> list_hd =lnv_dao.timKiem(date,year,ma);
+						for (LuongNhanVien luongNhanVien : list_hd) {
+							tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+									luongNhanVien.getTenNhanVien(),
+									luongNhanVien.getSoNgayDiLam(),
+									luongNhanVien.getThucNhan()  });
+							
+						}						
+						//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					}
+				
+				
+			}
+		});
 	}
+	
 
 }

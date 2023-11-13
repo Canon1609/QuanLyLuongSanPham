@@ -104,6 +104,32 @@ public class DAO_SanPham {
 	}
 	
 	//Tim kiem theo ten
+	public List<SanPham> timKiemMa(String ma){
+		Conection_DB.getInstance();
+		Connection con = Conection_DB.getCon();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<SanPham> dssp = new ArrayList<>();
+		
+		try {
+			stmt = con.prepareStatement("select * from SanPham where maSanPham = ?");
+			stmt.setString(1,ma);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				String maSanPham = rs.getString(1);
+				String tenSanPham = rs.getString(2);
+				String kieuDang = rs.getString(3);
+				String chatLieu = rs.getString(4);
+				int soLuong = rs.getInt(5);
+				SanPham sp = new SanPham(maSanPham, tenSanPham, kieuDang, chatLieu, soLuong);
+				dssp.add(sp);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dssp;
+	}
 	public List<SanPham> timKiemTen(String ten){
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
@@ -181,6 +207,31 @@ public class DAO_SanPham {
 		}
 		return 0; // Trả về giá trị mặc định nếu có lỗi
 	}
-	
+//	public List<SanPham> timKiemThangNam(String thangNam){
+//		Conection_DB.getInstance();
+//		Connection con = Conection_DB.getCon();
+//		PreparedStatement stmt = null;
+//		ResultSet rs = null;
+//		List<SanPham> dssp = new ArrayList<>();
+//		
+//		try {
+//			stmt = con.prepareStatement("select * from SanPham where  = ?");
+//			stmt.setString(1,ten);
+//			rs = stmt.executeQuery();
+//			while(rs.next()) {
+//				String maSanPham = rs.getString(1);
+//				String tenSanPham = rs.getString(2);
+//				String kieuDang = rs.getString(3);
+//				String chatLieu = rs.getString(4);
+//				int soLuong = rs.getInt(5);
+//				SanPham sp = new SanPham(maSanPham, tenSanPham, kieuDang, chatLieu, soLuong);
+//				dssp.add(sp);
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return dssp;
+//	}
 
 }

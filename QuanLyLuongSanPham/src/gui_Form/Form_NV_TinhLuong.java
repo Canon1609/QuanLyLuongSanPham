@@ -430,6 +430,7 @@ public class Form_NV_TinhLuong extends JPanel {
 				setVisible(false);
 			}
 		});
+		
 	}
 
 	public void DocDuLieuDBVaoTable() {

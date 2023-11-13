@@ -4,7 +4,13 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 import java.awt.FlowLayout;
 import javax.swing.Box;
 import java.awt.Component;
@@ -18,10 +24,17 @@ import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import connectDB.Conection_DB;
+import dao.DAO_HopDong;
+import entity.HopDong;
+
 import javax.swing.DefaultComboBoxModel;
 
 public class Form_HD_ThongKe extends JPanel {
 	private JTable tbl_c;
+	private DAO_HopDong hd_dao;
+	private DefaultTableModel tableModel;
 
 	/**
 	 * Create the panel.
@@ -270,6 +283,122 @@ public class Form_HD_ThongKe extends JPanel {
 		lbl_hienThiTongGiaTriHD.setPreferredSize(new Dimension(160, 30));
 		lbl_hienThiTongGiaTriHD.setFont(new Font("Arial", Font.PLAIN, 14));
 		bc4_1.add(lbl_hienThiTongGiaTriHD);
+		tableModel = (DefaultTableModel) tbl_c.getModel();
+		String[] columnNames = { "Mã Hợp Đồng", "Tên Khách Hàng",
+				 "Ngày Lập", "Ngày Giao", "Đơn Giá" };
+		tableModel.setColumnIdentifiers(columnNames);
+		try {
+			Conection_DB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		hd_dao =new DAO_HopDong();
+		List<HopDong> list = hd_dao.getAllHopDong();
+		for (HopDong hopDong : list) {
+			cmb_maHD.addItem(hopDong.getMaHopDong());
+		}
+		DocDuLieuDBVaoTable();
+		btn_thongKe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String ma =cmb_maHD.getSelectedItem().toString();
+				String date =cmb_thang.getSelectedItem().toString();
+				String year =comboBox_1.getSelectedItem().toString();
+				tableModel.setRowCount(0);
+				
+				
+				if(date.equals("Tất cả") && year.equals("Tất cả"))
+				{
+					List<HopDong> list_hd =hd_dao.timKiemMaHopDong(ma);
+					for (HopDong hd : list_hd) {
+						
+						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+						lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					}
+				}
+				else if(ma.equals("Tất cả") && date.equals("Tất cả"))
+				{
+					List<HopDong> list_hd =hd_dao.timKiemNgayLYear(year);
+					for (HopDong hd : list_hd) {
+						
+						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+					}
+					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(year.equals("Tất cả") && ma.equals("Tất cả"))
+				{
+					List<HopDong> list_hd =hd_dao.timKiemNgayLMonth(date);
+					for (HopDong hd : list_hd) {
+						
+						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+					}
+					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(year.equals("Tất cả"))
+				{
+					List<HopDong> list_hd =hd_dao.timKiemMonthMaHD(date, ma);
+					for (HopDong hd : list_hd) {
+						
+						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+					}
+					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(ma.equals("Tất cả"))
+				{
+					List<HopDong> list_hd =hd_dao.timKiemMonthYear(date, year);
+					for (HopDong hd : list_hd) {
+						
+						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+					}
+					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(date.equals("Tất cả"))
+				{
+					List<HopDong> list_hd =hd_dao.timKiemYearMaHD(year, ma);
+					for (HopDong hd : list_hd) {
+						
+						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+					}
+					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(date.equals("Tất cả") && year.equals("Tất cả") && ma.equals("Tất cả"))
+				{
+					
+					DocDuLieuDBVaoTable();
+					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+					
+				else
+					{
+						List<HopDong> list_hd =hd_dao.timKiem(date,year,ma);
+						for (HopDong hd : list_hd) {
+							
+							tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+									hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+							
+						}
+						lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					}
+				
+				
+			}
+		});
 	}
+	public void DocDuLieuDBVaoTable() {
+		List<HopDong> list = hd_dao.getAllHopDong();
+		for (HopDong hd : list) {
 
+			tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+					hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+		}
+		
+}
 }

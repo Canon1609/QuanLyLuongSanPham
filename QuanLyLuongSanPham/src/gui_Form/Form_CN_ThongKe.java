@@ -18,11 +18,29 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.swing.table.DefaultTableModel;
+
+import connectDB.Conection_DB;
+import dao.DAO_ChamCongNhanVIen;
+import dao.DAO_CongNhan;
+import dao.DAO_TinhLuongCongNhan;
+import dao.DAO_TinhLuongNhanVien;
+import entity.CongNhan;
+import entity.LuongCongNhan;
+import entity.LuongNhanVien;
+import entity.NhanVien;
+
 import javax.swing.DefaultComboBoxModel;
 
 public class Form_CN_ThongKe extends JPanel {
 	private JTable tbl_c;
+	private DAO_CongNhan cn_dao;
+	private DAO_TinhLuongCongNhan lcn_dao;
 
 	/**
 	 * Create the panel.
@@ -110,19 +128,19 @@ public class Form_CN_ThongKe extends JPanel {
 		
 		Box b3 = Box.createHorizontalBox();
 		b.add(b3);
-		
-		JLabel lbl_tenCN = new JLabel("Tên Công Nhân: ");
-		lbl_tenCN.setPreferredSize(new Dimension(100, 30));
-		lbl_tenCN.setFont(new Font("Arial", Font.PLAIN, 12));
-		b3.add(lbl_tenCN);
-		
-		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
-		b3.add(horizontalStrut_4);
-		
-		JComboBox cmb_tenCN = new JComboBox();
-		cmb_tenCN.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
-		b3.add(cmb_tenCN);
-		
+//		
+//		JLabel lbl_tenCN = new JLabel("Tên Công Nhân: ");
+//		lbl_tenCN.setPreferredSize(new Dimension(100, 30));
+//		lbl_tenCN.setFont(new Font("Arial", Font.PLAIN, 12));
+//		b3.add(lbl_tenCN);
+//		
+//		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
+//		b3.add(horizontalStrut_4);
+//		
+//		JComboBox cmb_tenCN = new JComboBox();
+//		cmb_tenCN.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
+//		b3.add(cmb_tenCN);
+//		
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		verticalStrut_2.setPreferredSize(new Dimension(0, 50));
 		b.add(verticalStrut_2);
@@ -159,20 +177,18 @@ public class Form_CN_ThongKe extends JPanel {
 		panel_South.add(src_c);
 		
 		tbl_c = new JTable();
-		tbl_c.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"M\u00E3 C\u00F4ng Nh\u00E2n", "T\u00EAn C\u00F4ng Nh\u00E2n", "CMND", "Ng\u00E0y Sinh", "S\u1ED1 \u0110i\u1EC7n Tho\u1EA1i", "Gi\u1EDBi T\u00EDnh", "S\u1ED1 Ng\u00E0y L\u00E0m", "S\u1ED1 Ca T\u0103ng", "L\u01B0\u01A1ng"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, Double.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
+		JTable tbl_c = new JTable(new DefaultTableModel(
+			    new Object[][] {},
+			    new String[] {  "Mã Công Nhân","Họ Tên", "Số Ngày Làm", "Lương" }
+			) {
+			    Class[] columnTypes = new Class[] { String.class, String.class, Integer.class,  Double.class };
+			    public Class getColumnClass(int columnIndex) {
+			        return columnTypes[columnIndex];
+			    }
+			});
+
+			DefaultTableModel tableModel = (DefaultTableModel) tbl_c.getModel();
+			tableModel.setColumnIdentifiers(new String[] { "Mã Công Nhân","Họ Tên", "Số Ngày Làm", "Lương" });
 		tbl_c.setFont(new Font("Arial", Font.PLAIN, 12));
 		src_c.setViewportView(tbl_c);
 		
@@ -327,6 +343,125 @@ public class Form_CN_ThongKe extends JPanel {
 		lbl_hienThiLuongThapNhat.setPreferredSize(new Dimension(160, 30));
 		lbl_hienThiLuongThapNhat.setFont(new Font("Arial", Font.PLAIN, 14));
 		bc6_1.add(lbl_hienThiLuongThapNhat);
+		try {
+			Conection_DB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		cn_dao =new DAO_CongNhan();
+	List<CongNhan> list =cn_dao.getAlltbCongNhan();
+		
+		for (CongNhan congNhan : list) {
+			cmb_maCN.addItem(congNhan.getMaCongNhan());
+		}
+		
+		lcn_dao =new DAO_TinhLuongCongNhan();
+		List<LuongCongNhan> dscnv =lcn_dao.getAlltbCongCuaNhanVien();
+		for (LuongCongNhan luongCongNhan : dscnv) {
+			tableModel.addRow(new Object[] {luongCongNhan.getCongNhan().getMaCongNhan(),
+					luongCongNhan.getTenCongNhan(),
+					luongCongNhan.getSoNgayDiLam(),
+					luongCongNhan.getThucNhan()  });
+		}
+		btn_thongKe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String ma =cmb_maCN.getSelectedItem().toString();
+				String date =cmb_thang.getSelectedItem().toString();
+				String year =comboBox_1.getSelectedItem().toString();
+				tableModel.setRowCount(0);
+				
+				if(date.equals("Tất cả") && year.equals("Tất cả"))
+				{
+					List<LuongCongNhan> list_hd =lcn_dao.getmatbNhanVien(ma);
+					for (LuongCongNhan luongCongNhan : dscnv) {
+						tableModel.addRow(new Object[] {luongCongNhan.getCongNhan().getMaCongNhan(),
+								luongCongNhan.getTenCongNhan(),
+								luongCongNhan.getSoNgayDiLam(),
+								luongCongNhan.getThucNhan()  });
+					}
+				}
+				else if(ma.equals("Tất cả") && date.equals("Tất cả"))
+				{
+					List<LuongCongNhan> list_hd =lcn_dao.timKiemNgayLYear(year);
+					for (LuongCongNhan luongCongNhan : dscnv) {
+						tableModel.addRow(new Object[] {luongCongNhan.getCongNhan().getMaCongNhan(),
+								luongCongNhan.getTenCongNhan(),
+								luongCongNhan.getSoNgayDiLam(),
+								luongCongNhan.getThucNhan()  });
+					}
+						
+				//	lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				
+				else if(year.equals("Tất cả") && ma.equals("Tất cả"))
+				{
+					List<LuongCongNhan> list_hd =lcn_dao.timKiemNgayLMonth(date);
+					for (LuongCongNhan luongCongNhan : dscnv) {
+						tableModel.addRow(new Object[] {luongCongNhan.getCongNhan().getMaCongNhan(),
+								luongCongNhan.getTenCongNhan(),
+								luongCongNhan.getSoNgayDiLam(),
+								luongCongNhan.getThucNhan()  });
+					}
+					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(year.equals("Tất cả"))
+				{
+					List<LuongCongNhan> list_hd =lcn_dao.timKiemMonthMaHD(date, ma);
+					for (LuongCongNhan luongCongNhan : dscnv) {
+						tableModel.addRow(new Object[] {luongCongNhan.getCongNhan().getMaCongNhan(),
+								luongCongNhan.getTenCongNhan(),
+								luongCongNhan.getSoNgayDiLam(),
+								luongCongNhan.getThucNhan()  });
+					}
+					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(ma.equals("Tất cả"))
+				{
+					List<LuongCongNhan> list_hd =lcn_dao.timKiemMonthYear(date, year);
+					for (LuongCongNhan luongCongNhan : dscnv) {
+						tableModel.addRow(new Object[] {luongCongNhan.getCongNhan().getMaCongNhan(),
+								luongCongNhan.getTenCongNhan(),
+								luongCongNhan.getSoNgayDiLam(),
+								luongCongNhan.getThucNhan()  });
+					}
+					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(date.equals("Tất cả"))
+				{
+					List<LuongCongNhan> list_hd =lcn_dao.timKiemYearMaHD(year, ma);
+					for (LuongCongNhan luongCongNhan : dscnv) {
+						tableModel.addRow(new Object[] {luongCongNhan.getCongNhan().getMaCongNhan(),
+								luongCongNhan.getTenCongNhan(),
+								luongCongNhan.getSoNgayDiLam(),
+								luongCongNhan.getThucNhan()  });
+					}
+					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+				else if(date.equals("Tất cả") && year.equals("Tất cả") && ma.equals("Tất cả"))
+				{
+					
+//					DocDuLieuDBVaoTable();
+//					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+				}
+					
+				else
+					{
+						List<LuongCongNhan> list_hd =lcn_dao.timKiem(date,year,ma);
+						for (LuongCongNhan luongCongNhan : dscnv) {
+							tableModel.addRow(new Object[] {luongCongNhan.getCongNhan().getMaCongNhan(),
+									luongCongNhan.getTenCongNhan(),
+									luongCongNhan.getSoNgayDiLam(),
+									luongCongNhan.getThucNhan()  });
+						}					
+						//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					}
+				
+				
+			}
+		});
 	}
 
 }

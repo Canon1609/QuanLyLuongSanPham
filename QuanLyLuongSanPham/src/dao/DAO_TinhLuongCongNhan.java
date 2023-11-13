@@ -9,36 +9,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Conection_DB;
-import entity.CongCuaNhanVien;
-import entity.HopDong;
+import entity.CongNhan;
+import entity.LuongCongNhan;
 import entity.LuongNhanVien;
 import entity.NhanVien;
-import entity.SanPham;
 
-public class DAO_TinhLuongNhanVien {
-	public DAO_TinhLuongNhanVien() {
+public class DAO_TinhLuongCongNhan {
+	public DAO_TinhLuongCongNhan() {
 		// TODO Auto-generated constructor stub
 	}
-	public static ArrayList<LuongNhanVien> getAlltbCongCuaNhanVien(){
-		ArrayList<LuongNhanVien> dsluongNV = new ArrayList<LuongNhanVien>();
+	public static ArrayList<LuongCongNhan> getAlltbCongCuaNhanVien(){
+		ArrayList<LuongCongNhan> dsluongNV = new ArrayList<LuongCongNhan>();
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
-		String sql = "select * from LuongNhanVien";
+		String sql = "select * from LuongCongNhan";
 		Statement statement;
 		try {
 			statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while(rs.next()) {
 				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
+				String maNV = rs.getString("maCongNhan");
 				String tenNV = rs.getString(3);
 				int soNgayDiLam = rs.getInt(4);
 				int thangNhan = rs.getInt(5);
 				int namNhan = rs.getInt(6);
 				double thucNhan = rs.getDouble(7);
 				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+				CongNhan cn = new CongNhan(maNV);
+				LuongCongNhan luongNV =new LuongCongNhan(maLuong, cn, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
 				dsluongNV.add(luongNV);
 			}
 		} catch (SQLException e) {
@@ -47,56 +46,14 @@ public class DAO_TinhLuongNhanVien {
 		}
 		return dsluongNV;
 	}
-	
-	public boolean create(LuongNhanVien luongNV) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		int n=0;
-		
-		try {
-			stmt = con.prepareStatement("insert into " + "LuongNhanVien values (?,?,?,?,?,?,?)");
-			stmt.setString(1, luongNV.getMaLuongNhanVien());
-			stmt.setString(2, luongNV.getNhanVien().getMaNhanVien());
-			stmt.setString(3, luongNV.getTenNhanVien());
-			stmt.setInt(4, luongNV.getSoNgayDiLam());
-			stmt.setInt(5, luongNV.getThangNhan());
-			stmt.setInt(6, luongNV.getNamNhan());
-			stmt.setDouble(7, luongNV.getThucNhan());
-			n = stmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return n>0;
-	}
-	public boolean delete(String maLuongNV) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		
-		try {
-			PreparedStatement stmt = con.prepareStatement("delete from LuongNhanVien where maLuongNhanVien = ?");
-			stmt.setString(1, maLuongNV);
-			int n = stmt.executeUpdate();
-			if(n>0)
-				return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-	//TimKIem
-	
-	public static ArrayList<LuongNhanVien> getmatbNhanVien(String ma) {
-		ArrayList<LuongNhanVien> dsnv = new ArrayList<LuongNhanVien>();
+	public static ArrayList<LuongCongNhan> getmatbNhanVien(String ma) {
+		ArrayList<LuongCongNhan> dsnv = new ArrayList<LuongCongNhan>();
 
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 
 
-		String sql = "select * from luongNhanVien where maNhanVien=?";
+		String sql = "select * from luongCongNhan where maCongNhan=?";
 		
 		
 		
@@ -107,15 +64,15 @@ public class DAO_TinhLuongNhanVien {
 			ResultSet rs =stmt.executeQuery();
 			while (rs.next()) {
 				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
+				String maNV = rs.getString("maCongNhan");
 				String tenNV = rs.getString(3);
 				int soNgayDiLam = rs.getInt(4);
 				int thangNhan = rs.getInt(5);
 				int namNhan = rs.getInt(6);
 				double thucNhan = rs.getDouble(7);
 				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+				CongNhan cn = new CongNhan(maNV);
+				LuongCongNhan luongNV =new LuongCongNhan(maLuong, cn, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
 				dsnv.add(luongNV);
 			}
 		} catch (SQLException e) {
@@ -124,28 +81,28 @@ public class DAO_TinhLuongNhanVien {
 		}
 		return dsnv;
 	}
-	public List<LuongNhanVien> timKiemNgayLMonth(String date) {
+	public List<LuongCongNhan> timKiemNgayLMonth(String date) {
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
+		List<LuongCongNhan> dsnv = new ArrayList<>();
 
 		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =?");
+			stmt = con.prepareStatement("select * from LuongCongNhan where thangNhan =?");
 			stmt.setString(1, date);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
+				String maNV = rs.getString("maCongNhan");
 				String tenNV = rs.getString(3);
 				int soNgayDiLam = rs.getInt(4);
 				int thangNhan = rs.getInt(5);
 				int namNhan = rs.getInt(6);
 				double thucNhan = rs.getDouble(7);
 				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+				CongNhan cn = new CongNhan(maNV);
+				LuongCongNhan luongNV =new LuongCongNhan(maLuong, cn, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
 				dsnv.add(luongNV);
 			}
 		} catch (SQLException e) {
@@ -154,28 +111,28 @@ public class DAO_TinhLuongNhanVien {
 		}
 		return dsnv;
 	}
-	public List<LuongNhanVien> timKiemNgayLYear(String date) {
+	public List<LuongCongNhan> timKiemNgayLYear(String date) {
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
+		List<LuongCongNhan> dsnv = new ArrayList<>();
 
 		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where namNhan =?");
+			stmt = con.prepareStatement("select * from LuongCongNhan where namNhan =?");
 			stmt.setString(1, date);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
+				String maNV = rs.getString("maCongNhan");
 				String tenNV = rs.getString(3);
 				int soNgayDiLam = rs.getInt(4);
 				int thangNhan = rs.getInt(5);
 				int namNhan = rs.getInt(6);
 				double thucNhan = rs.getDouble(7);
 				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+				CongNhan cn = new CongNhan(maNV);
+				LuongCongNhan luongNV =new LuongCongNhan(maLuong, cn, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
 				dsnv.add(luongNV);
 
 			}
@@ -185,30 +142,30 @@ public class DAO_TinhLuongNhanVien {
 		}
 		return dsnv;
 	}
-	public List<LuongNhanVien> timKiem(String month, String year, String maHD) {
+	public List<LuongCongNhan> timKiem(String month, String year, String maHD) {
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
+		List<LuongCongNhan> dsnv = new ArrayList<>();
 
 		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND namNhan = ? AND maNhanVien = ?");
+			stmt = con.prepareStatement("select * from LuongCongNhan where thangNhan =? AND namNhan = ? AND maCongNhan = ?");
 			stmt.setString(1, month);
 			stmt.setString(2, year);
 			stmt.setString(3, maHD);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
+				String maNV = rs.getString("maCongNhan");
 				String tenNV = rs.getString(3);
 				int soNgayDiLam = rs.getInt(4);
 				int thangNhan = rs.getInt(5);
 				int namNhan = rs.getInt(6);
 				double thucNhan = rs.getDouble(7);
 				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+				CongNhan cn = new CongNhan(maNV);
+				LuongCongNhan luongNV =new LuongCongNhan(maLuong, cn, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
 				dsnv.add(luongNV);
 
 			}
@@ -218,30 +175,30 @@ public class DAO_TinhLuongNhanVien {
 		}
 		return dsnv;
 	}
-	public List<LuongNhanVien> timKiemMonthYear(String month, String year) {
+	public List<LuongCongNhan> timKiemMonthYear(String month, String year) {
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
+		List<LuongCongNhan> dsnv = new ArrayList<>();
 
 		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND namNhan = ? ");
+			stmt = con.prepareStatement("select * from LuongCongNhan where thangNhan =? AND namNhan = ? ");
 			stmt.setString(1, month);
 			stmt.setString(2, year);
 			
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
+				String maNV = rs.getString("maCongNhan");
 				String tenNV = rs.getString(3);
 				int soNgayDiLam = rs.getInt(4);
 				int thangNhan = rs.getInt(5);
 				int namNhan = rs.getInt(6);
 				double thucNhan = rs.getDouble(7);
 				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+				CongNhan cn = new CongNhan(maNV);
+				LuongCongNhan luongNV =new LuongCongNhan(maLuong, cn, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
 				dsnv.add(luongNV);
 
 
@@ -252,30 +209,30 @@ public class DAO_TinhLuongNhanVien {
 		}
 		return dsnv;
 	}
-	public List<LuongNhanVien> timKiemMonthMaHD(String month, String maHD) {
+	public List<LuongCongNhan> timKiemMonthMaHD(String month, String maHD) {
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
+		List<LuongCongNhan> dsnv = new ArrayList<>();
 
 		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND maNhanVien = ?");
+			stmt = con.prepareStatement("select * from LuongCongNhan where thangNhan =? AND maCongNhan = ?");
 			stmt.setString(1, month);
 		
 			stmt.setString(2, maHD);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
+				String maNV = rs.getString("maCongNhan");
 				String tenNV = rs.getString(3);
 				int soNgayDiLam = rs.getInt(4);
 				int thangNhan = rs.getInt(5);
 				int namNhan = rs.getInt(6);
 				double thucNhan = rs.getDouble(7);
 				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+				CongNhan cn = new CongNhan(maNV);
+				LuongCongNhan luongNV =new LuongCongNhan(maLuong, cn, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
 				dsnv.add(luongNV);
 
 			}
@@ -285,30 +242,30 @@ public class DAO_TinhLuongNhanVien {
 		}
 		return dsnv;
 	}
-	public List<LuongNhanVien> timKiemYearMaHD(String year, String maHD) {
+	public List<LuongCongNhan> timKiemYearMaHD(String year, String maHD) {
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
+		List<LuongCongNhan> dsnv = new ArrayList<>();
 
 		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where namNhan = ? AND maNhanVien = ?");
+			stmt = con.prepareStatement("select * from LuongCongNhan where namNhan = ? AND maCongNhan = ?");
 			
 			stmt.setString(1, year);
 			stmt.setString(2, maHD);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
+				String maNV = rs.getString("maCongNhan");
 				String tenNV = rs.getString(3);
 				int soNgayDiLam = rs.getInt(4);
 				int thangNhan = rs.getInt(5);
 				int namNhan = rs.getInt(6);
 				double thucNhan = rs.getDouble(7);
 				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+				CongNhan cn = new CongNhan(maNV);
+				LuongCongNhan luongNV =new LuongCongNhan(maLuong, cn, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
 				dsnv.add(luongNV);
 
 			}

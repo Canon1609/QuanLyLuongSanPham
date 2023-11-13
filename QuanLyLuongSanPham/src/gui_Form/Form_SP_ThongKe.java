@@ -4,7 +4,13 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 import java.awt.FlowLayout;
 import javax.swing.Box;
 import java.awt.Component;
@@ -18,10 +24,18 @@ import javax.swing.ImageIcon;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import connectDB.Conection_DB;
+import dao.DAO_SanPham;
+import entity.SanPham;
+
 import javax.swing.DefaultComboBoxModel;
 
 public class Form_SP_ThongKe extends JPanel {
 	private JTable tbl_c;
+	private DAO_SanPham sp_dao;
+	private DefaultTableModel tableModel;
+	private DAO_SanPham dao_sp;
 
 	/**
 	 * Create the panel.
@@ -52,7 +66,7 @@ public class Form_SP_ThongKe extends JPanel {
 		Box b1 = Box.createHorizontalBox();
 		b.add(b1);
 		
-		JLabel lbl_thang = new JLabel("Tháng: ");
+		JLabel lbl_thang = new JLabel("Mã Sản Phẩm: ");
 		lbl_thang.setPreferredSize(new Dimension(100, 30));
 		lbl_thang.setFont(new Font("Arial", Font.PLAIN, 12));
 		b1.add(lbl_thang);
@@ -60,28 +74,28 @@ public class Form_SP_ThongKe extends JPanel {
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		b1.add(horizontalStrut);
 		
-		JComboBox cmb_thang = new JComboBox();
-		cmb_thang.setModel(new DefaultComboBoxModel(new String[] {"Tất cả", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
-		cmb_thang.setPreferredSize(new Dimension(100, 30));
-		cmb_thang.setFont(new Font("Arial", Font.PLAIN, 12));
-		b1.add(cmb_thang);
+		JComboBox cmb_maSP = new JComboBox();
+		cmb_maSP.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
+		cmb_maSP.setPreferredSize(new Dimension(100, 30));
+		cmb_maSP.setFont(new Font("Arial", Font.PLAIN, 12));
+		b1.add(cmb_maSP);
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		horizontalStrut_1.setPreferredSize(new Dimension(40, 0));
 		b1.add(horizontalStrut_1);
-		
-		JLabel lbl_nam = new JLabel("Năm: ");
-		lbl_nam.setFont(new Font("Arial", Font.PLAIN, 12));
-		b1.add(lbl_nam);
-		
-		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
-		b1.add(horizontalStrut_2);
-		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Tất cả", "2018", "2019", "2020", "2021", "2022", "2023"}));
-		comboBox_1.setPreferredSize(new Dimension(100, 30));
-		comboBox_1.setFont(new Font("Arial", Font.PLAIN, 12));
-		b1.add(comboBox_1);
+//		
+//		JLabel lbl_nam = new JLabel("Năm: ");
+//		lbl_nam.setFont(new Font("Arial", Font.PLAIN, 12));
+//		b1.add(lbl_nam);
+//		
+//		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+//		b1.add(horizontalStrut_2);
+//		
+//		JComboBox cmb_nam = new JComboBox();
+//		cmb_nam.setModel(new DefaultComboBoxModel(new String[] {"Tất cả", "2018", "2019", "2020", "2021", "2022", "2023"}));
+//		cmb_nam.setPreferredSize(new Dimension(100, 30));
+//		cmb_nam.setFont(new Font("Arial", Font.PLAIN, 12));
+//		b1.add(cmb_nam);
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
 		b.add(verticalStrut);
@@ -89,7 +103,7 @@ public class Form_SP_ThongKe extends JPanel {
 		Box b2 = Box.createHorizontalBox();
 		b.add(b2);
 		
-		JLabel lbl_maSP = new JLabel("Mã Sản Phẩm: ");
+		JLabel lbl_maSP = new JLabel("Tên Sản Phẩm: ");
 		lbl_maSP.setPreferredSize(new Dimension(100, 30));
 		lbl_maSP.setFont(new Font("Arial", Font.PLAIN, 12));
 		b2.add(lbl_maSP);
@@ -97,11 +111,11 @@ public class Form_SP_ThongKe extends JPanel {
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		b2.add(horizontalStrut_3);
 		
-		JComboBox cmb_maSP = new JComboBox();
-		cmb_maSP.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
-		cmb_maSP.setPreferredSize(new Dimension(100, 30));
-		cmb_maSP.setFont(new Font("Arial", Font.PLAIN, 12));
-		b2.add(cmb_maSP);
+		JComboBox cmb_tenSP = new JComboBox();
+		cmb_tenSP.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
+		cmb_tenSP.setPreferredSize(new Dimension(100, 30));
+		cmb_tenSP.setFont(new Font("Arial", Font.PLAIN, 12));
+		b2.add(cmb_tenSP);
 		
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		b.add(verticalStrut_1);
@@ -249,6 +263,75 @@ public class Form_SP_ThongKe extends JPanel {
 		lbl_hienThiHangTon.setPreferredSize(new Dimension(160, 30));
 		lbl_hienThiHangTon.setFont(new Font("Arial", Font.PLAIN, 12));
 		bc3_1.add(lbl_hienThiHangTon);
+		
+		tableModel = (DefaultTableModel) tbl_c.getModel();
+		String[] columnNames = { "Mã Sản Phẩm", "Tên Sản Phẩm", "Kiểu Dáng", "Chất Liệu", "Số Lượng"};
+		tableModel.setColumnIdentifiers(columnNames);
+		try {
+			Conection_DB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sp_dao =new DAO_SanPham();
+		List<SanPham> list = DAO_SanPham.getAlltbSanPham();
+		for (SanPham sanPham : list) {
+			cmb_maSP.addItem(sanPham.getMaSanPham());
+			cmb_tenSP.addItem(sanPham.getTenSanPham());
+		}
+		cmb_maSP.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				List<SanPham> list1 = sp_dao.timKiemMa(cmb_maSP.getSelectedItem().toString());
+				for (SanPham sanPham : list1) {
+					cmb_tenSP.removeAllItems();
+					cmb_tenSP.addItem(sanPham.getTenSanPham());
+				}
+				
+			}
+		});
+
+		DocDuLieuDBVaoTable();
+		dao_sp =new DAO_SanPham();
+		btn_thongKe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String maSP =cmb_maSP.getSelectedItem().toString();
+				String  tenSP =cmb_tenSP.getSelectedItem().toString();
+				tableModel.setRowCount(0);
+				if(maSP.equals("Tất cả"))
+				{
+					List<SanPham> list =dao_sp.timKiemTen(tenSP);
+					for (SanPham sp : list) {
+						tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+					}
+				}
+				else if(tenSP.equals("Tất cả"))
+				{
+					List<SanPham> list =dao_sp.timKiemMa(maSP);
+					for (SanPham sp : list) {
+						tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+					}
+				}
+				else if(maSP.equals("Tất cả") && tenSP.equals("Tất cả"))
+				{
+					DocDuLieuDBVaoTable();
+				}
+				
+				
+				
+			}
+		});
+	}
+	public void DocDuLieuDBVaoTable() {
+		List<SanPham> list = DAO_SanPham.getAlltbSanPham();
+		for (SanPham sp : list) {
+			tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+		}
 	}
 
 }
