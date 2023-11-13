@@ -208,7 +208,7 @@ public class Form_NV_ChamCong extends JPanel {
 		horizontalBox_3.add(horizontalStrut_6);
 
 		JComboBox cmbCaLam = new JComboBox();
-		cmbCaLam.setModel(new DefaultComboBoxModel(new String[] { "Ca sáng", "Ca chiều", "Ca tối" }));
+		cmbCaLam.setModel(new DefaultComboBoxModel(new String[] { "Ca sáng", "Ca chiều", "Ca tối" ,"Sáng CN"}));
 		cmbCaLam.setPreferredSize(new Dimension(30, 25));
 		horizontalBox_3.add(cmbCaLam);
 		cmbCaLam.addMouseListener(new MouseListener() {
@@ -245,8 +245,11 @@ public class Form_NV_ChamCong extends JPanel {
 				} else if (cmbCaLam.getSelectedItem().toString().equals("Ca chiều")) {
 					txtGioLam.setText("13h-17h");
 					txtLuongCa.setText("1.0");
-				} else {
+				} else if (cmbCaLam.getSelectedItem().toString().equals("Ca tối")){
 					txtGioLam.setText("18h-21h");
+					txtLuongCa.setText("2.0");
+				}else {
+					txtGioLam.setText("7h-11h");
 					txtLuongCa.setText("2.0");
 				}
 
@@ -440,6 +443,10 @@ public class Form_NV_ChamCong extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(tblDanhSachNV.getSelectedRow()<0) {
+					JOptionPane.showMessageDialog(null, "Chua chon nhan vien de cham cong");
+					return;
+				}
 				if (valid()) {
 					int maxMaCongNV = dao_congNV.getMaxMaCongNV();
 					int nextMaCongNV = maxMaCongNV + 1;

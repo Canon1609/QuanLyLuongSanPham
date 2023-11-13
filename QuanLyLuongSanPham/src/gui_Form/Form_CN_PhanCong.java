@@ -444,6 +444,10 @@ public class Form_CN_PhanCong extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow()<0) {
+					JOptionPane.showMessageDialog(null, "Chua chon san pham");
+					return;
+				}
 				if(valid()) {
 					int maxMaPC = pc_dao.getPCNumber();
 					int nextMaPC = maxMaPC+1;

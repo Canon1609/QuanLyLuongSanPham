@@ -124,404 +124,405 @@ public class DAO_HopDong {
 	}
 
 	// Tim kiem theo ten
-	public List<HopDong> timKiemMaHopDong(String ma) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dshd = new ArrayList<>();
+		public List<HopDong> timKiemMaHopDong(String ma) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dshd = new ArrayList<>();
 
-		try {
-			stmt = con.prepareStatement("select * from HopDong where maHopDong = ?");
-			stmt.setString(1, ma);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
+			try {
+				stmt = con.prepareStatement("select * from HopDong where maHopDong = ?");
+				stmt.setString(1, ma);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
 
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
 
-	            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
-	            dshd.add(hd);
+		            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
+		            dshd.add(hd);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return dshd;
 		}
-		return dshd;
-	}
 
-	public List<HopDong> timKiemTenKhachHang(String ten) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dsnv = new ArrayList<>();
+		public List<HopDong> timKiemTenKhachHang(String ten) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
 
-		try {
-			stmt = con.prepareStatement("select * from HopDong where tenKhachHang = ?");
-			stmt.setString(1, ten);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
+			try {
+				stmt = con.prepareStatement("select * from HopDong where tenKhachHang = ?");
+				stmt.setString(1, ten);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
 
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
 
-	            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
-	            dsnv.add(hd);
+		            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
+		            dsnv.add(hd);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return dsnv;
 		}
-		return dsnv;
-	}
 
-	public List<HopDong> timKiemMaNhanVien(String ma) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dshd = new ArrayList<>();
+		public List<HopDong> timKiemMaNhanVien(String ma) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dshd = new ArrayList<>();
 
-		try {
-			stmt = con.prepareStatement("select * from HopDong where maNhanVien = ?");
-			stmt.setString(1, ma);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
+			try {
+				stmt = con.prepareStatement("select * from HopDong where maNhanVien = ?");
+				stmt.setString(1, ma);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
 
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
 
-	            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
-	            dshd.add(hd);
+		            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
+		            dshd.add(hd);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return dshd;
 		}
-		return dshd;
-	}
 
-	// all
-	public List<HopDong> timKiemALL(String ma, String tenKH1) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dshd = new ArrayList<>();
+		// all
+		public List<HopDong> timKiemALL(String ma, String tenKH1) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dshd = new ArrayList<>();
 
-		try {
-			stmt = con.prepareStatement("select * from HopDong where maNhanVien = ? tenKhachHang=?");
-			stmt.setString(1, ma);
-			stmt.setString(2, tenKH1);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
+			try {
+				stmt = con.prepareStatement("select * from HopDong where maNhanVien = ? tenKhachHang=?");
+				stmt.setString(1, ma);
+				stmt.setString(2, tenKH1);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
 
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
 
-	            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
-	            dshd.add(hd);
+		            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
+		            dshd.add(hd);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return dshd;
 		}
-		return dshd;
-	}
 
-	public List<HopDong> timKiemTenNhanVien(String ten) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dsnv = new ArrayList<>();
+		public List<HopDong> timKiemTenNhanVien(String ten) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
 
-		try {
-			stmt = con.prepareStatement("select * from HopDong where tenNhanVien = ?");
-			stmt.setString(1, ten);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
+			try {
+				stmt = con.prepareStatement("select * from HopDong where tenNhanVien = ?");
+				stmt.setString(1, ten);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
 
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
 
-	            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
-	            dsnv.add(hd);
+		            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
+		            dsnv.add(hd);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return dsnv;
 		}
-		return dsnv;
-	}
 
-	// Tim kiem theo gioi tinh
-	
-
-	public List<HopDong> timKiemNgayLMonth(String date) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from HopDong where month(ngayLap) =?");
-			stmt.setString(1, date);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao1 = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
-
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
-
-	            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
-	            dsnv.add(hd);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<HopDong> timKiemNgayLYear(String date) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from HopDong where year(ngayLap) =?");
-			stmt.setString(1, date);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao1 = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
-
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
-
-	            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
-	            dsnv.add(hd);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<HopDong> timKiem(String month, String year, String maHD) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from HopDong where month(ngayLap) =? AND YEAR(NgayLap) = ? AND maHopDong = ?");
-			stmt.setString(1, month);
-			stmt.setString(2, year);
-			stmt.setString(3, maHD);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD1 = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao1 = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
-
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
-
-	            HopDong hd = new HopDong(maHD1, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
-	            dsnv.add(hd);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<HopDong> timKiemMonthYear(String month, String year) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from HopDong where month(ngayLap) =? AND YEAR(NgayLap) = ? ");
-			stmt.setString(1, month);
-			stmt.setString(2, year);
-			
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD1 = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao1 = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
-
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
-
-	            HopDong hd = new HopDong(maHD1, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
-	            dsnv.add(hd);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<HopDong> timKiemMonthMaHD(String month, String maHD) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from HopDong where month(ngayLap) =? AND maHopDong = ?");
-			stmt.setString(1, month);
+		// Tim kiem theo gioi tinh
 		
-			stmt.setString(2, maHD);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD1 = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao1 = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
 
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
+		public List<HopDong> timKiemNgayLMonth(String date) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
 
-	            HopDong hd = new HopDong(maHD1, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
-	            dsnv.add(hd);
+			try {
+				stmt = con.prepareStatement("select * from HopDong where month(ngayLap) =?");
+				stmt.setString(1, date);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao1 = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
 
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
+
+		            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
+		            dsnv.add(hd);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return dsnv;
 		}
-		return dsnv;
-	}
-	public List<HopDong> timKiemYearMaHD(String year, String maHD) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<HopDong> dsnv = new ArrayList<>();
+		public List<HopDong> timKiemNgayLYear(String date) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
 
-		try {
-			stmt = con.prepareStatement("select * from HopDong where YEAR(NgayLap) = ? AND maHopDong = ?");
+			try {
+				stmt = con.prepareStatement("select * from HopDong where year(ngayLap) =?");
+				stmt.setString(1, date);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao1 = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
+
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
+
+		            HopDong hd = new HopDong(maHD, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
+		            dsnv.add(hd);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<HopDong> timKiem(String month, String year, String maHD) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from HopDong where month(ngayLap) =? AND YEAR(NgayLap) = ? AND maHopDong = ?");
+				stmt.setString(1, month);
+				stmt.setString(2, year);
+				stmt.setString(3, maHD);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD1 = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao1 = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
+
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
+
+		            HopDong hd = new HopDong(maHD1, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
+		            dsnv.add(hd);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<HopDong> timKiemMonthYear(String month, String year) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from HopDong where month(ngayLap) =? AND YEAR(NgayLap) = ? ");
+				stmt.setString(1, month);
+				stmt.setString(2, year);
+				
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD1 = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao1 = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
+
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
+
+		            HopDong hd = new HopDong(maHD1, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
+		            dsnv.add(hd);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<HopDong> timKiemMonthMaHD(String month, String maHD) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from HopDong where month(ngayLap) =? AND maHopDong = ?");
+				stmt.setString(1, month);
 			
-			stmt.setString(1, year);
-			stmt.setString(2, maHD);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maHD1 = rs.getString("maHopDong");
-	            String tenKH = rs.getString("TenKhachHang");
-	            String ngayLap = rs.getString("NgayLap");
-	            String ngayGiao1 = rs.getString("NgayGiao");
-	            int soLuong = rs.getInt("SoLuong");
-	            double donGia = rs.getDouble("DonGia");
+				stmt.setString(2, maHD);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD1 = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao1 = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
 
-	            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
-	            SanPham maSP = new SanPham(rs.getString("maSanPham"));
-	            String tenSP = rs.getString("tenSanPham");
-	            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
-	            String tenNV = rs.getString("tenNhanVien");
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
 
-	            HopDong hd = new HopDong(maHD1, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
-	            dsnv.add(hd);
+		            HopDong hd = new HopDong(maHD1, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
+		            dsnv.add(hd);
 
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return dsnv;
 		}
-		return dsnv;
-	}
+		public List<HopDong> timKiemYearMaHD(String year, String maHD) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from HopDong where YEAR(NgayLap) = ? AND maHopDong = ?");
+				
+				stmt.setString(1, year);
+				stmt.setString(2, maHD);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD1 = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao1 = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
+
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
+
+		            HopDong hd = new HopDong(maHD1, maSP, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao1, soLuong, donGia);
+		            dsnv.add(hd);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+
 	// Lấy mã nhân viên lớn nhất có trong csdl để tránh bị trùng
 	public int getMaxEmployeeNumber() {
 		Conection_DB.getInstance();

@@ -29,7 +29,7 @@ import connectDB.Conection_DB;
 import dao.DAO_ChamCongNhanVIen;
 import dao.DAO_CongNhan;
 import dao.DAO_TinhLuongCongNhan;
-import dao.DAO_TinhLuongNhanVien;
+import dao.DAO_LuongNhanVien;
 import entity.CongNhan;
 import entity.LuongCongNhan;
 import entity.LuongNhanVien;

@@ -10,10 +10,8 @@ import java.util.List;
 
 import connectDB.Conection_DB;
 import entity.CongCuaNhanVien;
-import entity.HopDong;
 import entity.LuongNhanVien;
 import entity.NhanVien;
-import entity.SanPham;
 
 public class DAO_LuongNhanVien {
 	public DAO_LuongNhanVien() {
@@ -86,238 +84,6 @@ public class DAO_LuongNhanVien {
 		}
 		return false;
 	}
-	
-	//TimKIem
-	
-	public static ArrayList<LuongNhanVien> getmatbNhanVien(String ma) {
-		ArrayList<LuongNhanVien> dsnv = new ArrayList<LuongNhanVien>();
-
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-
-
-		String sql = "select * from luongNhanVien where maNhanVien=?";
-		
-		
-		
-		PreparedStatement stmt =null;
-		try {
-			stmt =con.prepareStatement(sql);
-			stmt.setString(1, ma);
-			ResultSet rs =stmt.executeQuery();
-			while (rs.next()) {
-				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
-				String tenNV = rs.getString(3);
-				int soNgayDiLam = rs.getInt(4);
-				int thangNhan = rs.getInt(5);
-				int namNhan = rs.getInt(6);
-				double thucNhan = rs.getDouble(7);
-				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
-				dsnv.add(luongNV);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<LuongNhanVien> timKiemNgayLMonth(String date) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =?");
-			stmt.setString(1, date);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
-				String tenNV = rs.getString(3);
-				int soNgayDiLam = rs.getInt(4);
-				int thangNhan = rs.getInt(5);
-				int namNhan = rs.getInt(6);
-				double thucNhan = rs.getDouble(7);
-				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
-				dsnv.add(luongNV);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<LuongNhanVien> timKiemNgayLYear(String date) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where namNhan =?");
-			stmt.setString(1, date);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
-				String tenNV = rs.getString(3);
-				int soNgayDiLam = rs.getInt(4);
-				int thangNhan = rs.getInt(5);
-				int namNhan = rs.getInt(6);
-				double thucNhan = rs.getDouble(7);
-				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
-				dsnv.add(luongNV);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<LuongNhanVien> timKiem(String month, String year, String maHD) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND namNhan = ? AND maNhanVien = ?");
-			stmt.setString(1, month);
-			stmt.setString(2, year);
-			stmt.setString(3, maHD);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
-				String tenNV = rs.getString(3);
-				int soNgayDiLam = rs.getInt(4);
-				int thangNhan = rs.getInt(5);
-				int namNhan = rs.getInt(6);
-				double thucNhan = rs.getDouble(7);
-				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
-				dsnv.add(luongNV);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<LuongNhanVien> timKiemMonthYear(String month, String year) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND namNhan = ? ");
-			stmt.setString(1, month);
-			stmt.setString(2, year);
-			
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
-				String tenNV = rs.getString(3);
-				int soNgayDiLam = rs.getInt(4);
-				int thangNhan = rs.getInt(5);
-				int namNhan = rs.getInt(6);
-				double thucNhan = rs.getDouble(7);
-				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
-				dsnv.add(luongNV);
-
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<LuongNhanVien> timKiemMonthMaHD(String month, String maHD) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND maNhanVien = ?");
-			stmt.setString(1, month);
-		
-			stmt.setString(2, maHD);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
-				String tenNV = rs.getString(3);
-				int soNgayDiLam = rs.getInt(4);
-				int thangNhan = rs.getInt(5);
-				int namNhan = rs.getInt(6);
-				double thucNhan = rs.getDouble(7);
-				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
-				dsnv.add(luongNV);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
-	public List<LuongNhanVien> timKiemYearMaHD(String year, String maHD) {
-		Conection_DB.getInstance();
-		Connection con = Conection_DB.getCon();
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<LuongNhanVien> dsnv = new ArrayList<>();
-
-		try {
-			stmt = con.prepareStatement("select * from luongNhanVien where namNhan = ? AND maNhanVien = ?");
-			
-			stmt.setString(1, year);
-			stmt.setString(2, maHD);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String maLuong = rs.getString(1);
-				String maNV = rs.getString("maNhanVien");
-				String tenNV = rs.getString(3);
-				int soNgayDiLam = rs.getInt(4);
-				int thangNhan = rs.getInt(5);
-				int namNhan = rs.getInt(6);
-				double thucNhan = rs.getDouble(7);
-				
-				NhanVien nv = new NhanVien(maNV);
-				LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
-				dsnv.add(luongNV);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dsnv;
-	}
 	public int getMaxMaLuongNV() {
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
@@ -338,4 +104,235 @@ public class DAO_LuongNhanVien {
 		}
 		return 0;
 	}
+	//TimKIem
+	
+		public static ArrayList<LuongNhanVien> getmatbNhanVien(String ma) {
+			ArrayList<LuongNhanVien> dsnv = new ArrayList<LuongNhanVien>();
+
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+
+
+			String sql = "select * from luongNhanVien where maNhanVien=?";
+			
+			
+			
+			PreparedStatement stmt =null;
+			try {
+				stmt =con.prepareStatement(sql);
+				stmt.setString(1, ma);
+				ResultSet rs =stmt.executeQuery();
+				while (rs.next()) {
+					String maLuong = rs.getString(1);
+					String maNV = rs.getString("maNhanVien");
+					String tenNV = rs.getString(3);
+					int soNgayDiLam = rs.getInt(4);
+					int thangNhan = rs.getInt(5);
+					int namNhan = rs.getInt(6);
+					double thucNhan = rs.getDouble(7);
+					
+					NhanVien nv = new NhanVien(maNV);
+					LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+					dsnv.add(luongNV);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<LuongNhanVien> timKiemNgayLMonth(String date) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<LuongNhanVien> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =?");
+				stmt.setString(1, date);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maLuong = rs.getString(1);
+					String maNV = rs.getString("maNhanVien");
+					String tenNV = rs.getString(3);
+					int soNgayDiLam = rs.getInt(4);
+					int thangNhan = rs.getInt(5);
+					int namNhan = rs.getInt(6);
+					double thucNhan = rs.getDouble(7);
+					
+					NhanVien nv = new NhanVien(maNV);
+					LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+					dsnv.add(luongNV);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<LuongNhanVien> timKiemNgayLYear(String date) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<LuongNhanVien> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from luongNhanVien where namNhan =?");
+				stmt.setString(1, date);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maLuong = rs.getString(1);
+					String maNV = rs.getString("maNhanVien");
+					String tenNV = rs.getString(3);
+					int soNgayDiLam = rs.getInt(4);
+					int thangNhan = rs.getInt(5);
+					int namNhan = rs.getInt(6);
+					double thucNhan = rs.getDouble(7);
+					
+					NhanVien nv = new NhanVien(maNV);
+					LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+					dsnv.add(luongNV);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<LuongNhanVien> timKiem(String month, String year, String maHD) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<LuongNhanVien> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND namNhan = ? AND maNhanVien = ?");
+				stmt.setString(1, month);
+				stmt.setString(2, year);
+				stmt.setString(3, maHD);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maLuong = rs.getString(1);
+					String maNV = rs.getString("maNhanVien");
+					String tenNV = rs.getString(3);
+					int soNgayDiLam = rs.getInt(4);
+					int thangNhan = rs.getInt(5);
+					int namNhan = rs.getInt(6);
+					double thucNhan = rs.getDouble(7);
+					
+					NhanVien nv = new NhanVien(maNV);
+					LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+					dsnv.add(luongNV);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<LuongNhanVien> timKiemMonthYear(String month, String year) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<LuongNhanVien> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND namNhan = ? ");
+				stmt.setString(1, month);
+				stmt.setString(2, year);
+				
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maLuong = rs.getString(1);
+					String maNV = rs.getString("maNhanVien");
+					String tenNV = rs.getString(3);
+					int soNgayDiLam = rs.getInt(4);
+					int thangNhan = rs.getInt(5);
+					int namNhan = rs.getInt(6);
+					double thucNhan = rs.getDouble(7);
+					
+					NhanVien nv = new NhanVien(maNV);
+					LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+					dsnv.add(luongNV);
+
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<LuongNhanVien> timKiemMonthMaHD(String month, String maHD) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<LuongNhanVien> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from luongNhanVien where thangNhan =? AND maNhanVien = ?");
+				stmt.setString(1, month);
+			
+				stmt.setString(2, maHD);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maLuong = rs.getString(1);
+					String maNV = rs.getString("maNhanVien");
+					String tenNV = rs.getString(3);
+					int soNgayDiLam = rs.getInt(4);
+					int thangNhan = rs.getInt(5);
+					int namNhan = rs.getInt(6);
+					double thucNhan = rs.getDouble(7);
+					
+					NhanVien nv = new NhanVien(maNV);
+					LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+					dsnv.add(luongNV);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
+		public List<LuongNhanVien> timKiemYearMaHD(String year, String maHD) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<LuongNhanVien> dsnv = new ArrayList<>();
+
+			try {
+				stmt = con.prepareStatement("select * from luongNhanVien where namNhan = ? AND maNhanVien = ?");
+				
+				stmt.setString(1, year);
+				stmt.setString(2, maHD);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maLuong = rs.getString(1);
+					String maNV = rs.getString("maNhanVien");
+					String tenNV = rs.getString(3);
+					int soNgayDiLam = rs.getInt(4);
+					int thangNhan = rs.getInt(5);
+					int namNhan = rs.getInt(6);
+					double thucNhan = rs.getDouble(7);
+					
+					NhanVien nv = new NhanVien(maNV);
+					LuongNhanVien luongNV = new LuongNhanVien(maLuong, nv, tenNV, soNgayDiLam, thangNhan, namNhan, thucNhan);
+					dsnv.add(luongNV);
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
 }

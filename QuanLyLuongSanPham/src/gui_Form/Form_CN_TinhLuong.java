@@ -378,6 +378,10 @@ public class Form_CN_TinhLuong extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(tblDSCongNhan.getSelectedRow()<0) {
+					JOptionPane.showMessageDialog(null, "Chua chon cong nhan de tinh luong");
+					return;
+				}
 				if(valid()) {
 					int maxLuongNumber = LuongCN_dao.getMaxMaLuongCN();
 					int nextLuongNumber = maxLuongNumber+1;

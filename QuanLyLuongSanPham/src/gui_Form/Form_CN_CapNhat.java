@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.awt.Color;
@@ -49,6 +50,7 @@ public class Form_CN_CapNhat extends JPanel {
 	private DAO_CongNhan cn_dao;
 	private DefaultTableModel tableModel;
 	private DAO_NhanVien dao_nv;
+	private JDateChooser dateChooser;
 
 	/**
 	 * Create the panel.
@@ -208,7 +210,7 @@ public class Form_CN_CapNhat extends JPanel {
 		horizontalStrut_5.setPreferredSize(new Dimension(25, 0));
 		boxNgaySinh.add(horizontalStrut_5);
 		
-		JDateChooser dateChooser = new JDateChooser();
+		dateChooser = new JDateChooser();
 		dateChooser.setPreferredSize(new Dimension(73, 30));
 		boxNgaySinh.add(dateChooser);
 		
@@ -354,7 +356,7 @@ public class Form_CN_CapNhat extends JPanel {
 					// Tăng giá trị mã CN lớn nhất lên 1
 					int nextCNNumber = maxCNNumber + 1;
 					// Định dạng số thứ tự thành chuỗi với độ dài 2 và tạo mã CN-
-					String ma = String.format("NV%02d", nextCNNumber);
+					String ma = String.format("CN%02d", nextCNNumber);
 					
 					String ten = txtHoTen.getText().trim();
 					String cmnd = txtCMND.getText().trim();
@@ -548,6 +550,11 @@ public class Form_CN_CapNhat extends JPanel {
 			txtCMND.requestFocus();
 			return false;
 		}
+		if (!(txtCMND.getText().matches("0\\d{11}"))) {
+	        JOptionPane.showMessageDialog(null, "CMND/CCCD theo mẫu: bắt đầu bằng số 0 và theo sau là 11 số khác");
+	        txtCMND.requestFocus();
+	        return false;
+	    }
 		if(txtPhuCap.getText().equals(""))
 		{
 			JOptionPane.showMessageDialog(this, "Phụ Cấp Không Được Rỗng!!!");
@@ -589,13 +596,6 @@ public class Form_CN_CapNhat extends JPanel {
 			txtHoTen.requestFocus();
 			return false;
 		}
-		if(!cCCD.matches("^\\d{9}$|^\\d{12}$"))
-		{
-			JOptionPane.showMessageDialog(this, "CCCD Không Hợp Lệ!!!");
-			txtCMND.selectAll();
-			txtCMND.requestFocus();
-			return false;
-		}
 		if(!diaChi.matches("[0-9/]*\\s*[a-zA-Z_0-9' ,]+"))
 		{
 			JOptionPane.showMessageDialog(this, "Địa Chỉ Không Hợp Lệ!!!");
@@ -618,6 +618,27 @@ public class Form_CN_CapNhat extends JPanel {
 			txtPhuCap.requestFocus();
 			return false;
 		}
+		 if (dateChooser.getDate() != null) {
+	            Calendar dob = Calendar.getInstance();
+	            dob.setTime(dateChooser.getDate());
+
+	            Calendar now = Calendar.getInstance();
+	            now.setTime(new Date());
+
+	            int age = now.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+	            if (now.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+	                age--;
+	            }
+
+	            if (age < 18) {
+	                JOptionPane.showMessageDialog(null, "Nhân viên phải trên 18 tuổi.");
+	                return false;
+	            }
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Ngày sinh không được để trống.");
+	            return false;
+	        }
 			
 		return true;
 	}

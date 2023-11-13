@@ -438,7 +438,6 @@ public class TrangChu extends JFrame {
 			}
 		});
 		
-		
 		mniThongKeNhanVien.addActionListener(new ActionListener() {
 
 			@Override

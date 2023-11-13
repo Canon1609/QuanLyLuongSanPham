@@ -31,7 +31,7 @@ import connectDB.Conection_DB;
 import dao.DAO_ChamCongNhanVIen;
 import dao.DAO_CongNhan;
 import dao.DAO_NhanVien;
-import dao.DAO_TinhLuongNhanVien;
+import dao.DAO_LuongNhanVien;
 import entity.CongCuaNhanVien;
 import entity.CongNhan;
 import entity.HopDong;
@@ -47,8 +47,8 @@ public class Form_NV_ThongKe extends JPanel {
 	private JComboBox cmb_maNV;
 	private DefaultTableModel tableModel;
 	private DAO_ChamCongNhanVIen cnv_dao;
-	private DAO_TinhLuongNhanVien lnv;
-	private DAO_TinhLuongNhanVien lnv_dao;
+	private DAO_LuongNhanVien lnv;
+	private DAO_LuongNhanVien lnv_dao;
 
 	/**
 	 * Create the panel.
@@ -372,7 +372,7 @@ public class Form_NV_ThongKe extends JPanel {
 		//	cmb_tenNV.addItem(nhanVien.getHoTen());
 		}
 		cnv_dao =new DAO_ChamCongNhanVIen();
-		lnv =new DAO_TinhLuongNhanVien();
+		lnv =new DAO_LuongNhanVien();
 		List<LuongNhanVien> dscnv =lnv.getAlltbCongCuaNhanVien();
 		for (LuongNhanVien luongNhanVien : dscnv) {
 			tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
@@ -380,7 +380,7 @@ public class Form_NV_ThongKe extends JPanel {
 											luongNhanVien.getSoNgayDiLam(),
 											luongNhanVien.getThucNhan()  });
 		}
-		lnv_dao =new DAO_TinhLuongNhanVien();
+		lnv_dao =new DAO_LuongNhanVien();
 		
 		btn_thongKe.addActionListener(new ActionListener() {
 			

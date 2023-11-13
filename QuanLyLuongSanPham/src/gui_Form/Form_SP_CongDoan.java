@@ -266,6 +266,7 @@ public class Form_SP_CongDoan extends JPanel {
 					txtTenSanPham.setText(tenSP);
 					cmbSoLuong.addItem(soLuong);
 				}
+				
 			}
 		});
 		
@@ -370,7 +371,12 @@ public class Form_SP_CongDoan extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(valid()) {
+				int row = table.getSelectedRow();
+				if(row<0) {
+					JOptionPane.showMessageDialog(null, "Can chon san phan de phan cong doan");
+					return;
+				}
+				else if(valid()) {
 					String maSP = txtMaSanPham.getText().trim();
 					int maxMACD = cd_dao.getMaxMaCongDoan();
 					int nextMaCD = maxMACD +1;

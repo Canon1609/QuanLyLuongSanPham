@@ -342,6 +342,10 @@ public class Form_NV_TinhLuong extends JPanel {
 		cmbThang.addActionListener((ActionListener) new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow()<0) {
+					JOptionPane.showMessageDialog(null, "Phai chon nhan vien can tinh luong");
+					return;
+				}
 
 				// Gọi hàm tính tổng ngày công dựa trên tháng đã chọn
 				tongNgayCong = chamCongNV.tinhTongNgayCong(txtMaNV.getText().trim(),
@@ -369,6 +373,10 @@ public class Form_NV_TinhLuong extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow()<0) {
+					JOptionPane.showMessageDialog(null, "Chua chon nhan vien de tinh luong");
+					return;
+				}
 				int maxLuongNumber = luongNV_DAO.getMaxMaLuongNV();
 				int nextLuongNumber = maxLuongNumber + 1;
 				String ma = String.format("L%02d", nextLuongNumber);
@@ -429,7 +437,6 @@ public class Form_NV_TinhLuong extends JPanel {
 				setVisible(false);
 			}
 		});
-		
 	}
 
 	public void DocDuLieuDBVaoTable() {
@@ -439,7 +446,6 @@ public class Form_NV_TinhLuong extends JPanel {
 					nv.getGioiTinh(), nv.getDiaChi(), nv.getSoDienThoai(), nv.getLuongCoBan(), nv.getPhuCap(),
 					nv.getPhongBan(), nv.getHeSoLuong() });
 		}
-
 	}
 
 	public void docDLLuongNV() {
