@@ -4,9 +4,13 @@ import java.util.Objects;
 
 public class PhanCong {
 	private String maPhanCong;
-	private int sLSPCanLam;
-	private CongDoan congDoan;
 	private CongNhan congNhan;
+	private String tenCongNhan;
+	private CongDoan congDoan;
+	private String tenCongDoan;
+	private int sLSPCanLam;
+	
+	
 	public PhanCong() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -15,24 +19,34 @@ public class PhanCong {
 		super();
 		this.maPhanCong = maPhanCong;
 	}
-	public PhanCong(String maPhanCong, int sLSPCanLam, CongDoan congDoan, CongNhan congNhan) {
+	public PhanCong(String maPhanCong, CongNhan congNhan, String tenCongNhan, CongDoan congDoan, String tenCongDoan,
+			int sLSPCanLam) {
 		super();
 		this.maPhanCong = maPhanCong;
-		this.sLSPCanLam = sLSPCanLam;
-		this.congDoan = congDoan;
 		this.congNhan = congNhan;
+		this.tenCongNhan = tenCongNhan;
+		this.congDoan = congDoan;
+		this.tenCongDoan = tenCongDoan;
+		this.sLSPCanLam = sLSPCanLam;
 	}
+	
 	public String getMaPhanCong() {
 		return maPhanCong;
 	}
 	public void setMaPhanCong(String maPhanCong) {
 		this.maPhanCong = maPhanCong;
 	}
-	public int getsLSPCanLam() {
-		return sLSPCanLam;
+	public CongNhan getCongNhan() {
+		return congNhan;
 	}
-	public void setsLSPCanLam(int sLSPCanLam) {
-		this.sLSPCanLam = sLSPCanLam;
+	public void setCongNhan(CongNhan congNhan) {
+		this.congNhan = congNhan;
+	}
+	public String getTenCongNhan() {
+		return tenCongNhan;
+	}
+	public void setTenCongNhan(String tenCongNhan) {
+		this.tenCongNhan = tenCongNhan;
 	}
 	public CongDoan getCongDoan() {
 		return congDoan;
@@ -40,11 +54,17 @@ public class PhanCong {
 	public void setCongDoan(CongDoan congDoan) {
 		this.congDoan = congDoan;
 	}
-	public CongNhan getCongNhan() {
-		return congNhan;
+	public String getTenCongDoan() {
+		return tenCongDoan;
 	}
-	public void setCongNhan(CongNhan congNhan) {
-		this.congNhan = congNhan;
+	public void setTenCongDoan(String tenCongDoan) {
+		this.tenCongDoan = tenCongDoan;
+	}
+	public int getsLSPCanLam() {
+		return sLSPCanLam;
+	}
+	public void setsLSPCanLam(int sLSPCanLam) {
+		this.sLSPCanLam = sLSPCanLam;
 	}
 	@Override
 	public int hashCode() {
@@ -63,8 +83,8 @@ public class PhanCong {
 	}
 	@Override
 	public String toString() {
-		return "PhanCong [maPhanCong=" + maPhanCong + ", sLSPCanLam=" + sLSPCanLam + ", congDoan=" + congDoan
-				+ ", congNhan=" + congNhan + "]";
+		return "PhanCong [maPhanCong=" + maPhanCong + ", congNhan=" + congNhan + ", tenCongNhan=" + tenCongNhan
+				+ ", congDoan=" + congDoan + ", tenCongDoan=" + tenCongDoan + ", sLSPCanLam=" + sLSPCanLam + "]";
 	}
 	
 	

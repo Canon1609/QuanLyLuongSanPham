@@ -19,12 +19,11 @@ public class DAO_CongNhan {
 	
 	public static ArrayList<CongNhan> getAlltbCongNhan(){
 		ArrayList<CongNhan> dscn = new ArrayList<CongNhan>();
-		
 		Conection_DB.getInstance();
 		Connection con = Conection_DB.getCon();
 		String sql = "select * from congnhan";
 		
-		Statement statement;
+		Statement statement=null;
 		
 		try {
 			statement = con.createStatement();

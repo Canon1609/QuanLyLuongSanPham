@@ -15,8 +15,8 @@ import entity.LuongNhanVien;
 import entity.NhanVien;
 import entity.SanPham;
 
-public class DAO_TinhLuongNhanVien {
-	public DAO_TinhLuongNhanVien() {
+public class DAO_LuongNhanVien {
+	public DAO_LuongNhanVien() {
 		// TODO Auto-generated constructor stub
 	}
 	public static ArrayList<LuongNhanVien> getAlltbCongCuaNhanVien(){
