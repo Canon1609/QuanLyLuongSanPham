@@ -697,7 +697,6 @@ public class Form_HD_CapNhap extends JPanel {
 			return false;
 		}
 		
-
 		if (donGia <= 0) {
 
 			JOptionPane.showMessageDialog(this, "Đơn Giá Phải Lớn Hơn 0!!!");

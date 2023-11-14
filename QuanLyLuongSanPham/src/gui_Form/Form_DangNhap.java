@@ -25,10 +25,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.awt.Panel;
+import java.awt.Label;
 
 public class Form_DangNhap extends JFrame {
-
-	private JPanel contentPane;
 	private JTextField txttaiKhoan;
 	private JPasswordField passwordField;
 	private DAO_DangNhap dn_dao;
@@ -56,40 +56,40 @@ public class Form_DangNhap extends JFrame {
 	public Form_DangNhap() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TrangChu.class.getResource("/img/ungdung.png")));
-		setBounds(100, 100, 512, 312);
+		setBounds(100, 100, 841, 446);
 		this.setTitle("Đăng Nhập");
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbltieuDe = new JLabel("ĐĂNG NHẬP HỆ THỐNG");
-		lbltieuDe.setForeground(new Color(255, 255, 255));
-		lbltieuDe.setFont(new Font("Arial", Font.BOLD, 16));
-		lbltieuDe.setBounds(152, 11, 218, 29);
+		JLabel lbltieuDe = new JLabel("ĐĂNG NHẬP HỆ THỐNG QUẢN LÝ LƯƠNG SẢN PHẨM");
+		lbltieuDe.setForeground(new Color(0, 255, 0));
+		lbltieuDe.setFont(new Font("Arial", Font.BOLD, 20));
+		lbltieuDe.setBounds(185, 10, 529, 29);
 		contentPane.add(lbltieuDe);
 		
 		JLabel lbltenDangNhap = new JLabel("Tài Khoản:");
 		lbltenDangNhap.setFont(new Font("Arial", Font.BOLD, 11));
-		lbltenDangNhap.setBounds(30, 90, 58, 14);
+		lbltenDangNhap.setBounds(530, 95, 58, 14);
 		contentPane.add(lbltenDangNhap);
 		
 		JLabel lblmatKhau = new JLabel("Mật Khẩu:");
 		lblmatKhau.setFont(new Font("Arial", Font.BOLD, 11));
-		lblmatKhau.setBounds(31, 126, 57, 22);
+		lblmatKhau.setBounds(531, 145, 57, 22);
 		contentPane.add(lblmatKhau);
 		
 		txttaiKhoan = new JTextField();
-		txttaiKhoan.setBounds(109, 87, 328, 20);
+		txttaiKhoan.setBounds(598, 89, 175, 28);
 		contentPane.add(txttaiKhoan);
 		txttaiKhoan.setColumns(10);
 		
 		JCheckBox chckhienMatKhau = new JCheckBox("Hiển Thị Mật Khẩu");
 		chckhienMatKhau.setFont(new Font("Arial", Font.BOLD, 11));
-		chckhienMatKhau.setBounds(310, 154, 127, 29);
+		chckhienMatKhau.setBounds(646, 202, 127, 29);
 		contentPane.add(chckhienMatKhau);
         chckhienMatKhau.addActionListener(new ActionListener() {
             @Override
@@ -103,31 +103,39 @@ public class Form_DangNhap extends JFrame {
         });
 		
         txtPass = new JPasswordField();
-        txtPass.setBounds(109, 127, 328, 20);
+        txtPass.setBounds(598, 142, 175, 29);
         contentPane.add(txtPass);
 
 		
 		
 		JButton btnDangNhap = new JButton("Đăng nhập");
-		btnDangNhap.setBounds(109, 220, 99, 23);
+		btnDangNhap.setBackground(new Color(128, 255, 128));
+		btnDangNhap.setBounds(575, 253, 99, 34);
 		contentPane.add(btnDangNhap);
 		
 		JButton btnThoat = new JButton("Thoát");
+		btnThoat.setBackground(new Color(255, 128, 128));
 		btnThoat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnThoat.setBounds(329, 220, 89, 23);
+		btnThoat.setBounds(684, 253, 89, 34);
 		contentPane.add(btnThoat);
 		
 		JLabel AnhNen = new JLabel("");
 		AnhNen.setIcon(new ImageIcon(Form_DangNhap.class.getResource("/img/AnhLogin.jpg")));
-		AnhNen.setBounds(0, 0, 496, 50);
+		AnhNen.setBounds(0, 0, 827, 50);
 		contentPane.add(AnhNen);
 		
 		JLabel Nen1 = new JLabel("");
 		Nen1.setBounds(72, 178, 46, 14);
 		contentPane.add(Nen1);
+		
+		JLabel lblAnhNen = new JLabel("");
+		lblAnhNen.setIcon(new ImageIcon(Form_DangNhap.class.getResource("/img/trangchu - Copy.jpg")));
+		lblAnhNen.setFont(new Font("Arial", Font.BOLD, 11));
+		lblAnhNen.setBounds(10, 60, 500, 339);
+		contentPane.add(lblAnhNen);
 		
 		// khởi tạo kết nối đến CSDL
 				try {
@@ -142,10 +150,10 @@ public class Form_DangNhap extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int d = dn_dao.TimKiem(txttaiKhoan.getText(), txtPass.getText()).toArray().length;
-				System.out.println(d);
+				//System.out.println(d);
 				if(!txttaiKhoan.getText().equals("")&&!txtPass.getPassword().equals("")) {
-					System.out.println(txtPass.getText());
-					System.out.println(dn_dao.TimKiem(txttaiKhoan.getText(), txtPass.getText()));
+					//System.out.println(txtPass.getText());
+					//System.out.println(dn_dao.TimKiem(txttaiKhoan.getText(), txtPass.getText()));
 					if(dn_dao.TimKiem(txttaiKhoan.getText(), txtPass.getText())!=null) {
 						if(dn_dao.TimKiem(txttaiKhoan.getText(), txtPass.getText()).toArray().length==0) {
 							JOptionPane.showMessageDialog(null, "Thông tin tài khoản, mật khẩu không chính xác");

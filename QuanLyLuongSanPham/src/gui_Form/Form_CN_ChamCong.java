@@ -515,11 +515,7 @@ public class Form_CN_ChamCong extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(tblPhanCong.getSelectedRow()<0) {
-					JOptionPane.showMessageDialog(null, "Chua chon cong nhan de cham cong");
-					return;
-				}
-				else if(valid()) {
+				 if(valid()) {
 					int maxMaCongCN = congCN_dao.getMaxMaCongCN();
 					int nextMaCongCN = maxMaCongCN+1;
 					String maCong = String.format("C%02d", nextMaCongCN);
@@ -625,7 +621,11 @@ public class Form_CN_ChamCong extends JPanel {
 	        JOptionPane.showMessageDialog(null, "Vui lòng chọn ngày chấm công.");
 	        return false;
 	    }
-	    if(txtMaCong.getText().trim().equals("")) {
+	    if(txtMaCongNhan.getText().trim().equals("")) {
+			JOptionPane.showMessageDialog(null, "Chua chon cong nhan de cham cong");
+			return false;
+		}
+	    if(tblPhanCong.getSelectedRow()<0) {
 			JOptionPane.showMessageDialog(null, "Chua chon cong nhan de cham cong");
 			return false;
 		}
