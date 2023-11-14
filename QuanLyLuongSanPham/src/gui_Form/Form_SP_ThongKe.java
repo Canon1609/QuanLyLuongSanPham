@@ -26,7 +26,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import connectDB.Conection_DB;
+import dao.DAO_ChamCongCongNhan;
+import dao.DAO_HopDong;
 import dao.DAO_SanPham;
+import entity.CongCuaCongNhan;
+import entity.HopDong;
 import entity.SanPham;
 
 import javax.swing.DefaultComboBoxModel;
@@ -36,6 +40,8 @@ public class Form_SP_ThongKe extends JPanel {
 	private DAO_SanPham sp_dao;
 	private DefaultTableModel tableModel;
 	private DAO_SanPham dao_sp;
+	private DAO_HopDong dao_hd;
+	private DAO_ChamCongCongNhan dao_ccn;
 
 	/**
 	 * Create the panel.
@@ -279,22 +285,23 @@ public class Form_SP_ThongKe extends JPanel {
 			cmb_maSP.addItem(sanPham.getMaSanPham());
 			cmb_tenSP.addItem(sanPham.getTenSanPham());
 		}
-		cmb_maSP.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				List<SanPham> list1 = sp_dao.timKiemMa(cmb_maSP.getSelectedItem().toString());
-				for (SanPham sanPham : list1) {
-					cmb_tenSP.removeAllItems();
-					cmb_tenSP.addItem(sanPham.getTenSanPham());
-				}
-				
-			}
-		});
-
+//		cmb_maSP.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				
+//				List<SanPham> list1 = sp_dao.timKiemMa(cmb_maSP.getSelectedItem().toString());
+//				for (SanPham sanPham : list1) {
+//					cmb_tenSP.removeAllItems();
+//					cmb_tenSP.addItem(sanPham.getTenSanPham());
+//				}
+//				
+//			}
+//		});
+		dao_hd =new DAO_HopDong();
 		DocDuLieuDBVaoTable();
 		dao_sp =new DAO_SanPham();
+		dao_ccn =new DAO_ChamCongCongNhan();
 		btn_thongKe.addActionListener(new ActionListener() {
 			
 			@Override
@@ -303,23 +310,118 @@ public class Form_SP_ThongKe extends JPanel {
 				String maSP =cmb_maSP.getSelectedItem().toString();
 				String  tenSP =cmb_tenSP.getSelectedItem().toString();
 				tableModel.setRowCount(0);
+				int soLuong =0;
+				int soLuongDat =0;
+				int soLuongTon =0;
 				if(maSP.equals("Tất cả"))
 				{
 					List<SanPham> list =dao_sp.timKiemTen(tenSP);
 					for (SanPham sp : list) {
 						tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+						soLuong+=sp.getSoLuong();
+						List<HopDong> l =dao_hd.timKiemMaSP(sp.getMaSanPham());
+						for (HopDong hd : l) {
+							soLuongDat+=hd.getSoLuongSanPham();
+						}
 					}
+					List<CongCuaCongNhan> lii =dao_ccn.getAlltbCongCuaCongNhan();
+					for (CongCuaCongNhan li : lii) {
+						soLuongTon+=li.getSlSPDaLam();
+					}
+					lbl_hienThiSoLuongHienTai.setText(soLuong+"");
+					lbl_hienThiTongHangDat.setText(soLuongDat+"");
+					if(soLuongTon-soLuongDat<0)
+					{
+						lbl_hienThiHangTon.setText("0");
+					}
+					else
+					{
+						lbl_hienThiHangTon.setText(soLuongTon-soLuongDat+"");
+					}
+					
 				}
 				else if(tenSP.equals("Tất cả"))
 				{
 					List<SanPham> list =dao_sp.timKiemMa(maSP);
 					for (SanPham sp : list) {
 						tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+						soLuong+=sp.getSoLuong();
+						List<HopDong> l =dao_hd.timKiemMaSP(sp.getMaSanPham());
+						for (HopDong hd : l) {
+							soLuongDat+=hd.getSoLuongSanPham();
+						}
+					}
+					List<CongCuaCongNhan> lii =dao_ccn.getAlltbCongCuaCongNhan();
+					for (CongCuaCongNhan li : lii) {
+						soLuongTon+=li.getSlSPDaLam();
+					}
+					lbl_hienThiSoLuongHienTai.setText(soLuong+"");
+					lbl_hienThiTongHangDat.setText(soLuongDat+"");
+					if(soLuongTon-soLuongDat<0)
+					{
+						lbl_hienThiHangTon.setText("0");
+					}
+					else
+					{
+						lbl_hienThiHangTon.setText(soLuongTon-soLuongDat+"");
+					}
+					
+				}
+				else
+				{
+					List<SanPham> list =dao_sp.timKiem(maSP, tenSP);
+					for (SanPham sp : list) {
+						tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+						soLuong+=sp.getSoLuong();
+						List<HopDong> l =dao_hd.timKiemMaSP(sp.getMaSanPham());
+						for (HopDong hd : l) {
+							soLuongDat+=hd.getSoLuongSanPham();
+						}
+					}
+					List<CongCuaCongNhan> lii =dao_ccn.getAlltbCongCuaCongNhan();
+					for (CongCuaCongNhan li : lii) {
+						soLuongTon+=li.getSlSPDaLam();
+					}
+					lbl_hienThiSoLuongHienTai.setText(soLuong+"");
+					lbl_hienThiTongHangDat.setText(soLuongDat+"");
+					if(soLuongTon-soLuongDat<0)
+					{
+						lbl_hienThiHangTon.setText("0");
+					}
+					else
+					{
+						lbl_hienThiHangTon.setText(soLuongTon-soLuongDat+"");
+					
+					
 					}
 				}
-				else if(maSP.equals("Tất cả") && tenSP.equals("Tất cả"))
+				
+				if(maSP.equals("Tất cả") && tenSP.equals("Tất cả"))
 				{
-					DocDuLieuDBVaoTable();
+					List<SanPham> list =dao_sp.getAlltbSanPham();
+					for (SanPham sp : list) {
+						tableModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getKieuDang(),sp.getChatLieu(),sp.getSoLuong()});
+						soLuong+=sp.getSoLuong();
+						List<HopDong> l =dao_hd.timKiemMaSP(sp.getMaSanPham());
+						for (HopDong hd : l) {
+							soLuongDat+=hd.getSoLuongSanPham();
+						}
+					}
+					List<CongCuaCongNhan> lii =dao_ccn.getAlltbCongCuaCongNhan();
+					for (CongCuaCongNhan li : lii) {
+						soLuongTon+=li.getSlSPDaLam();
+					}
+					lbl_hienThiSoLuongHienTai.setText(soLuong+"");
+					lbl_hienThiTongHangDat.setText(soLuongDat+"");
+					if(soLuongTon-soLuongDat<0)
+					{
+						lbl_hienThiHangTon.setText("0");
+					}
+					else
+					{
+						lbl_hienThiHangTon.setText(soLuongTon-soLuongDat+"");
+					
+					}
 				}
 				
 				

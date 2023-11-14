@@ -307,7 +307,10 @@ public class Form_HD_ThongKe extends JPanel {
 				String date =cmb_thang.getSelectedItem().toString();
 				String year =comboBox_1.getSelectedItem().toString();
 				tableModel.setRowCount(0);
-				
+				int soLuong=0;
+				double max=0;
+				double min=0;
+				double tongGiaTriHopDong=0;
 				
 				if(date.equals("Tất cả") && year.equals("Tất cả"))
 				{
@@ -316,8 +319,22 @@ public class Form_HD_ThongKe extends JPanel {
 						
 						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
 								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
-						lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+						soLuong++;
+						if(max<hd.getDonGia())
+						{
+							max=hd.getDonGia();
+						}
+						if(min>hd.getDonGia())
+						{
+							min=hd.getDonGia();
+						}
+						tongGiaTriHopDong+=hd.getDonGia();
 					}
+					lbl_hienThiSoLuongHD.setText(soLuong+"");
+					lbl_hienThiGiaCaoNhat.setText(max+"");
+					lbl_hienThiGiaThapNhat.setText(min+"");
+					lbl_hienThiTongGiaTriHD.setText(tongGiaTriHopDong+"");
+					
 				}
 				else if(ma.equals("Tất cả") && date.equals("Tất cả"))
 				{
@@ -326,8 +343,22 @@ public class Form_HD_ThongKe extends JPanel {
 						
 						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
 								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+						soLuong++;
+						if(max<hd.getDonGia())
+						{
+							max=hd.getDonGia();
+						}
+						if(min>hd.getDonGia())
+						{
+							min=hd.getDonGia();
+						}
+						tongGiaTriHopDong+=hd.getDonGia();
 					}
-					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					lbl_hienThiSoLuongHD.setText(soLuong+"");
+					lbl_hienThiGiaCaoNhat.setText(max+"");
+					lbl_hienThiGiaThapNhat.setText(min+"");
+					lbl_hienThiTongGiaTriHD.setText(tongGiaTriHopDong+"");
+					
 				}
 				else if(year.equals("Tất cả") && ma.equals("Tất cả"))
 				{
@@ -336,8 +367,22 @@ public class Form_HD_ThongKe extends JPanel {
 						
 						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
 								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+						soLuong++;
+						if(max<hd.getDonGia())
+						{
+							max=hd.getDonGia();
+						}
+						if(min>hd.getDonGia())
+						{
+							min=hd.getDonGia();
+						}
+						tongGiaTriHopDong+=hd.getDonGia();
 					}
-					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					lbl_hienThiSoLuongHD.setText(soLuong+"");
+					lbl_hienThiGiaCaoNhat.setText(max+"");
+					lbl_hienThiGiaThapNhat.setText(min+"");
+					lbl_hienThiTongGiaTriHD.setText(tongGiaTriHopDong+"");
+					
 				}
 				else if(year.equals("Tất cả"))
 				{
@@ -346,8 +391,22 @@ public class Form_HD_ThongKe extends JPanel {
 						
 						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
 								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+						soLuong++;
+						if(max<hd.getDonGia())
+						{
+							max=hd.getDonGia();
+						}
+						if(min>hd.getDonGia())
+						{
+							min=hd.getDonGia();
+						}
+						tongGiaTriHopDong+=hd.getDonGia();
 					}
-					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					lbl_hienThiSoLuongHD.setText(soLuong+"");
+					lbl_hienThiGiaCaoNhat.setText(max+"");
+					lbl_hienThiGiaThapNhat.setText(min+"");
+					lbl_hienThiTongGiaTriHD.setText(tongGiaTriHopDong+"");
+					
 				}
 				else if(ma.equals("Tất cả"))
 				{
@@ -356,8 +415,22 @@ public class Form_HD_ThongKe extends JPanel {
 						
 						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
 								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+						soLuong++;
+						if(max<hd.getDonGia())
+						{
+							max=hd.getDonGia();
+						}
+						if(min>hd.getDonGia())
+						{
+							min=hd.getDonGia();
+						}
+						tongGiaTriHopDong+=hd.getDonGia();
 					}
-					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					lbl_hienThiSoLuongHD.setText(soLuong+"");
+					lbl_hienThiGiaCaoNhat.setText(max+"");
+					lbl_hienThiGiaThapNhat.setText(min+"");
+					lbl_hienThiTongGiaTriHD.setText(tongGiaTriHopDong+"");
+					
 				}
 				else if(date.equals("Tất cả"))
 				{
@@ -366,14 +439,22 @@ public class Form_HD_ThongKe extends JPanel {
 						
 						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
 								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+						soLuong++;
+						if(max<hd.getDonGia())
+						{
+							max=hd.getDonGia();
+						}
+						if(min>hd.getDonGia())
+						{
+							min=hd.getDonGia();
+						}
+						tongGiaTriHopDong+=hd.getDonGia();
 					}
-					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
-				}
-				else if(date.equals("Tất cả") && year.equals("Tất cả") && ma.equals("Tất cả"))
-				{
+					lbl_hienThiSoLuongHD.setText(soLuong+"");
+					lbl_hienThiGiaCaoNhat.setText(max+"");
+					lbl_hienThiGiaThapNhat.setText(min+"");
+					lbl_hienThiTongGiaTriHD.setText(tongGiaTriHopDong+"");
 					
-					DocDuLieuDBVaoTable();
-					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
 				}
 					
 				else
@@ -383,10 +464,47 @@ public class Form_HD_ThongKe extends JPanel {
 							
 							tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
 									hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
-							
+							soLuong++;
+							if(max<hd.getDonGia())
+							{
+								max=hd.getDonGia();
+							}
+							if(min>hd.getDonGia())
+							{
+								min=hd.getDonGia();
+							}
+							tongGiaTriHopDong+=hd.getDonGia();
 						}
-						lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+						lbl_hienThiSoLuongHD.setText(soLuong+"");
+						lbl_hienThiGiaCaoNhat.setText(max+"");
+						lbl_hienThiGiaThapNhat.setText(min+"");
+						lbl_hienThiTongGiaTriHD.setText(tongGiaTriHopDong+"");
+						
 					}
+				if(date.equals("Tất cả") && year.equals("Tất cả") && ma.equals("Tất cả"))
+				{
+					List<HopDong> list = hd_dao.getAllHopDong();
+					for (HopDong hd : list) {
+
+						tableModel.addRow(new Object[] { hd.getMaHopDong(),hd.getTenKH(),
+								hd.getNgayLap(), hd.getNgayGiao(), hd.getDonGia() });
+						soLuong++;
+						if(max<hd.getDonGia())
+						{
+							max=hd.getDonGia();
+						}
+						if(min>hd.getDonGia())
+						{
+							min=hd.getDonGia();
+						}
+						tongGiaTriHopDong+=hd.getDonGia();
+					}
+					lbl_hienThiSoLuongHD.setText(soLuong+"");
+					lbl_hienThiGiaCaoNhat.setText(max+"");
+					lbl_hienThiGiaThapNhat.setText(min+"");
+					lbl_hienThiTongGiaTriHD.setText(tongGiaTriHopDong+"");
+					}
+					
 				
 				
 			}

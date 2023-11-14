@@ -21,6 +21,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.YearMonth;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -49,6 +50,11 @@ public class Form_NV_ThongKe extends JPanel {
 	private DAO_ChamCongNhanVIen cnv_dao;
 	private DAO_LuongNhanVien lnv;
 	private DAO_LuongNhanVien lnv_dao;
+	private JLabel lbl_hienThiTongTienLuong;
+	private JLabel lbl_hienThiTongNV;
+	private JLabel lbl_hienThuSoNgayLam;
+	private JLabel lbl_hienThiSoNgayNghi;
+	private JLabel lbl_hienThiLuongCaoNhat;
 
 	/**
 	 * Create the panel.
@@ -255,13 +261,13 @@ public class Form_NV_ThongKe extends JPanel {
 		Box bc4 = Box.createHorizontalBox();
 		bc.add(bc4);
 		
-		JLabel lbl_soNgayNghi = new JLabel("Số ngày nghĩ trung bình: ");
-		lbl_soNgayNghi.setPreferredSize(new Dimension(160, 30));
-		lbl_soNgayNghi.setFont(new Font("Arial", Font.PLAIN, 14));
-		bc4.add(lbl_soNgayNghi);
+//		JLabel lbl_soNgayNghi = new JLabel("Số ngày nghĩ trung bình: ");
+//		lbl_soNgayNghi.setPreferredSize(new Dimension(160, 30));
+//		lbl_soNgayNghi.setFont(new Font("Arial", Font.PLAIN, 14));
+//		bc4.add(lbl_soNgayNghi);
 		
-		Component verticalStrut_8 = Box.createVerticalStrut(20);
-		bc.add(verticalStrut_8);
+//		Component verticalStrut_8 = Box.createVerticalStrut(20);
+//		bc.add(verticalStrut_8);
 		
 		Box bc5 = Box.createHorizontalBox();
 		bc.add(bc5);
@@ -295,7 +301,7 @@ public class Form_NV_ThongKe extends JPanel {
 		Box bc1_1 = Box.createHorizontalBox();
 		bc_1.add(bc1_1);
 		
-		JLabel lbl_hienThiTongTienLuong = new JLabel("???");
+		 lbl_hienThiTongTienLuong = new JLabel("???");
 		lbl_hienThiTongTienLuong.setPreferredSize(new Dimension(150, 30));
 		lbl_hienThiTongTienLuong.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_hienThiTongTienLuong.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -307,7 +313,7 @@ public class Form_NV_ThongKe extends JPanel {
 		Box bc2_1 = Box.createHorizontalBox();
 		bc_1.add(bc2_1);
 		
-		JLabel lbl_hienThiTongNV = new JLabel("???");
+		 lbl_hienThiTongNV = new JLabel("???");
 		lbl_hienThiTongNV.setPreferredSize(new Dimension(150, 30));
 		lbl_hienThiTongNV.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_hienThiTongNV.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -319,7 +325,7 @@ public class Form_NV_ThongKe extends JPanel {
 		Box bc3_1 = Box.createHorizontalBox();
 		bc_1.add(bc3_1);
 		
-		JLabel lbl_hienThuSoNgayLam = new JLabel("???");
+		 lbl_hienThuSoNgayLam = new JLabel("???");
 		lbl_hienThuSoNgayLam.setPreferredSize(new Dimension(160, 30));
 		lbl_hienThuSoNgayLam.setFont(new Font("Arial", Font.PLAIN, 14));
 		bc3_1.add(lbl_hienThuSoNgayLam);
@@ -329,20 +335,20 @@ public class Form_NV_ThongKe extends JPanel {
 		
 		Box bc4_1 = Box.createHorizontalBox();
 		bc_1.add(bc4_1);
-		
-		JLabel lbl_hienThiSoNgayNghi = new JLabel("???");
-		lbl_hienThiSoNgayNghi.setPreferredSize(new Dimension(160, 30));
-		lbl_hienThiSoNgayNghi.setFont(new Font("Arial", Font.PLAIN, 14));
-		bc4_1.add(lbl_hienThiSoNgayNghi);
-		
-		Component verticalStrut_8_1 = Box.createVerticalStrut(20);
-		verticalStrut_8_1.setPreferredSize(new Dimension(0, 0));
-		bc_1.add(verticalStrut_8_1);
+//		
+//		 lbl_hienThiSoNgayNghi = new JLabel("???");
+//		lbl_hienThiSoNgayNghi.setPreferredSize(new Dimension(160, 30));
+//		lbl_hienThiSoNgayNghi.setFont(new Font("Arial", Font.PLAIN, 14));
+//		bc4_1.add(lbl_hienThiSoNgayNghi);
+//		
+//		Component verticalStrut_8_1 = Box.createVerticalStrut(20);
+//		verticalStrut_8_1.setPreferredSize(new Dimension(0, 0));
+//		bc_1.add(verticalStrut_8_1);
 		
 		Box bc5_1 = Box.createHorizontalBox();
 		bc_1.add(bc5_1);
 		
-		JLabel lbl_hienThiLuongCaoNhat = new JLabel("???");
+		 lbl_hienThiLuongCaoNhat = new JLabel("???");
 		lbl_hienThiLuongCaoNhat.setPreferredSize(new Dimension(160, 30));
 		lbl_hienThiLuongCaoNhat.setFont(new Font("Arial", Font.PLAIN, 14));
 		bc5_1.add(lbl_hienThiLuongCaoNhat);
@@ -390,7 +396,15 @@ public class Form_NV_ThongKe extends JPanel {
 				String date =cmb_thang.getSelectedItem().toString();
 				String year =comboBox_1.getSelectedItem().toString();
 				tableModel.setRowCount(0);
-				
+				int tongNhanVien=0;
+				int soNgayLamTrungBinh=0;
+				int soNgayNghiTrungBinh=0;
+				float n,m;
+				double tongLuong =0;
+				double luongCao =0;
+				double luongThap =0;
+				double max =0;
+				double min =0;
 				if(date.equals("Tất cả") && year.equals("Tất cả"))
 				{
 					List<LuongNhanVien> list_hd =lnv_dao.getmatbNhanVien(ma);
@@ -399,7 +413,31 @@ public class Form_NV_ThongKe extends JPanel {
 								luongNhanVien.getTenNhanVien(),
 								luongNhanVien.getSoNgayDiLam(),
 								luongNhanVien.getThucNhan()  });
+					
+						tongNhanVien++;
+						soNgayLamTrungBinh+=luongNhanVien.getSoNgayDiLam();
+						tongLuong+=luongNhanVien.getThucNhan();
+						if(max<luongNhanVien.getThucNhan())
+						{
+							max=luongNhanVien.getThucNhan();
+						}
+						if(min>luongNhanVien.getThucNhan())
+						{
+							min=luongNhanVien.getThucNhan();
+						}
 						
+					}
+					lbl_hienThiTongNV.setText(tongNhanVien+"");
+					lbl_hienThiLuongThapNhat.setText(min+"");
+					lbl_hienThiLuongCaoNhat.setText(max+"");
+					lbl_hienThiTongTienLuong.setText(tongLuong+"");
+	if (tongNhanVien != 0) {
+						
+					    m = soNgayLamTrungBinh / tongNhanVien;
+					    lbl_hienThuSoNgayLam.setText(String.valueOf(m));
+					} else {
+					    lbl_hienThuSoNgayLam.setText("0");
+					    // Hoặc có thể xử lý khác tùy thuộc vào yêu cầu của bạn
 					}
 				}
 				else if(ma.equals("Tất cả") && date.equals("Tất cả"))
@@ -411,8 +449,33 @@ public class Form_NV_ThongKe extends JPanel {
 								luongNhanVien.getSoNgayDiLam(),
 								luongNhanVien.getThucNhan()  });
 						
-				//	lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
-				}
+
+						tongNhanVien++;
+						soNgayLamTrungBinh+=luongNhanVien.getSoNgayDiLam();
+						tongLuong+=luongNhanVien.getThucNhan();
+						if(max<luongNhanVien.getThucNhan())
+						{
+							max=luongNhanVien.getThucNhan();
+						}
+						if(min>luongNhanVien.getThucNhan())
+						{
+							min=luongNhanVien.getThucNhan();
+						}
+						
+					}
+					lbl_hienThiTongNV.setText(tongNhanVien+"");
+					lbl_hienThiLuongThapNhat.setText(min+"");
+					lbl_hienThiLuongCaoNhat.setText(max+"");
+					lbl_hienThiTongTienLuong.setText(tongLuong+"");
+	if (tongNhanVien != 0) {
+						
+					    m = soNgayLamTrungBinh / tongNhanVien;
+					    lbl_hienThuSoNgayLam.setText(String.valueOf(m));
+					} else {
+					    lbl_hienThuSoNgayLam.setText("0");
+					    // Hoặc có thể xử lý khác tùy thuộc vào yêu cầu của bạn
+					}
+				
 				}
 				else if(year.equals("Tất cả") && ma.equals("Tất cả"))
 				{
@@ -422,10 +485,35 @@ public class Form_NV_ThongKe extends JPanel {
 								luongNhanVien.getTenNhanVien(),
 								luongNhanVien.getSoNgayDiLam(),
 								luongNhanVien.getThucNhan()  });
+
+						tongNhanVien++;
+						soNgayLamTrungBinh+=luongNhanVien.getSoNgayDiLam();
+						tongLuong+=luongNhanVien.getThucNhan();
+						if(max<luongNhanVien.getThucNhan())
+						{
+							max=luongNhanVien.getThucNhan();
+						}
+						if(min>luongNhanVien.getThucNhan())
+						{
+							min=luongNhanVien.getThucNhan();
+						}
 						
 					}
-					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
-				}
+					lbl_hienThiTongNV.setText(tongNhanVien+"");
+					lbl_hienThiLuongThapNhat.setText(min+"");
+					lbl_hienThiLuongCaoNhat.setText(max+"");
+					lbl_hienThiTongTienLuong.setText(tongLuong+"");
+	if (tongNhanVien != 0) {
+						
+					    m = soNgayLamTrungBinh / tongNhanVien;
+					    lbl_hienThuSoNgayLam.setText(String.valueOf(m));
+					} else {
+					    lbl_hienThuSoNgayLam.setText("0");
+					    // Hoặc có thể xử lý khác tùy thuộc vào yêu cầu của bạn
+					}
+					}
+					
+				
 				else if(year.equals("Tất cả"))
 				{
 					List<LuongNhanVien> list_hd =lnv_dao.timKiemMonthMaHD(date, ma);
@@ -434,9 +522,34 @@ public class Form_NV_ThongKe extends JPanel {
 								luongNhanVien.getTenNhanVien(),
 								luongNhanVien.getSoNgayDiLam(),
 								luongNhanVien.getThucNhan()  });
+
+						tongNhanVien++;
+						soNgayLamTrungBinh+=luongNhanVien.getSoNgayDiLam();
+						tongLuong+=luongNhanVien.getThucNhan();
+						if(max<luongNhanVien.getThucNhan())
+						{
+							max=luongNhanVien.getThucNhan();
+						}
+						if(min>luongNhanVien.getThucNhan())
+						{
+							min=luongNhanVien.getThucNhan();
+						}
 						
 					}
-					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					lbl_hienThiTongNV.setText(tongNhanVien+"");
+					lbl_hienThiLuongThapNhat.setText(min+"");
+					lbl_hienThiLuongCaoNhat.setText(max+"");
+					lbl_hienThiTongTienLuong.setText(tongLuong+"");
+	if (tongNhanVien != 0) {
+						
+					    m = soNgayLamTrungBinh / tongNhanVien;
+					    lbl_hienThuSoNgayLam.setText(String.valueOf(m));
+					} else {
+					    lbl_hienThuSoNgayLam.setText("0");
+					    // Hoặc có thể xử lý khác tùy thuộc vào yêu cầu của bạn
+					}
+					
+					
 				}
 				else if(ma.equals("Tất cả"))
 				{
@@ -446,9 +559,34 @@ public class Form_NV_ThongKe extends JPanel {
 								luongNhanVien.getTenNhanVien(),
 								luongNhanVien.getSoNgayDiLam(),
 								luongNhanVien.getThucNhan()  });
+
+						tongNhanVien++;
+						soNgayLamTrungBinh+=luongNhanVien.getSoNgayDiLam();
+						tongLuong+=luongNhanVien.getThucNhan();
+						if(max<luongNhanVien.getThucNhan())
+						{
+							max=luongNhanVien.getThucNhan();
+						}
+						if(min>luongNhanVien.getThucNhan())
+						{
+							min=luongNhanVien.getThucNhan();
+						}
 						
 					}
-					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					lbl_hienThiTongNV.setText(tongNhanVien+"");
+					lbl_hienThiLuongThapNhat.setText(min+"");
+					lbl_hienThiLuongCaoNhat.setText(max+"");
+					lbl_hienThiTongTienLuong.setText(tongLuong+"");
+	if (tongNhanVien != 0) {
+						
+					    m = soNgayLamTrungBinh / tongNhanVien;
+					    lbl_hienThuSoNgayLam.setText(String.valueOf(m));
+					} else {
+					    lbl_hienThuSoNgayLam.setText("0");
+					    // Hoặc có thể xử lý khác tùy thuộc vào yêu cầu của bạn
+					}
+					
+					
 				}
 				else if(date.equals("Tất cả"))
 				{
@@ -458,16 +596,37 @@ public class Form_NV_ThongKe extends JPanel {
 								luongNhanVien.getTenNhanVien(),
 								luongNhanVien.getSoNgayDiLam(),
 								luongNhanVien.getThucNhan()  });
+
+						tongNhanVien++;
+						soNgayLamTrungBinh+=luongNhanVien.getSoNgayDiLam();
+						tongLuong+=luongNhanVien.getThucNhan();
+						if(max<luongNhanVien.getThucNhan())
+						{
+							max=luongNhanVien.getThucNhan();
+						}
+						if(min>luongNhanVien.getThucNhan())
+						{
+							min=luongNhanVien.getThucNhan();
+						}
 						
 					}
-					//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
-				}
-				else if(date.equals("Tất cả") && year.equals("Tất cả") && ma.equals("Tất cả"))
-				{
+	if (tongNhanVien != 0) {
+						
+					    m = soNgayLamTrungBinh / tongNhanVien;
+					    lbl_hienThuSoNgayLam.setText(String.valueOf(m));
+					} else {
+					    lbl_hienThuSoNgayLam.setText("0");
+					    // Hoặc có thể xử lý khác tùy thuộc vào yêu cầu của bạn
+					}
+					lbl_hienThiTongNV.setText(tongNhanVien+"");
+					lbl_hienThiLuongThapNhat.setText(min+"");
+					lbl_hienThiLuongCaoNhat.setText(max+"");
+					lbl_hienThiTongTienLuong.setText(tongLuong+"");
+				
 					
-//					DocDuLieuDBVaoTable();
-//					lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+					
 				}
+			
 					
 				else
 					{
@@ -477,15 +636,83 @@ public class Form_NV_ThongKe extends JPanel {
 									luongNhanVien.getTenNhanVien(),
 									luongNhanVien.getSoNgayDiLam(),
 									luongNhanVien.getThucNhan()  });
+
+							tongNhanVien++;
+							soNgayLamTrungBinh+=luongNhanVien.getSoNgayDiLam();
+							tongLuong+=luongNhanVien.getThucNhan();
+							if(max<luongNhanVien.getThucNhan())
+							{
+								max=luongNhanVien.getThucNhan();
+							}
+							if(min>luongNhanVien.getThucNhan())
+							{
+								min=luongNhanVien.getThucNhan();
+							}
 							
-						}						
-						//lbl_hienThiSoLuongHD.setText(tbl_c.getRowCount()+"");
+						}
+						if (tongNhanVien != 0) {
+							
+						    m = soNgayLamTrungBinh / tongNhanVien;
+						    lbl_hienThuSoNgayLam.setText(String.valueOf(m));
+						} else {
+						    lbl_hienThuSoNgayLam.setText("0");
+						    // Hoặc có thể xử lý khác tùy thuộc vào yêu cầu của bạn
+						}
+						lbl_hienThiTongNV.setText(tongNhanVien+"");
+						lbl_hienThiLuongThapNhat.setText(min+"");
+						lbl_hienThiLuongCaoNhat.setText(max+"");
+						lbl_hienThiTongTienLuong.setText(tongLuong+"");
+						
+											
+						
 					}
-				
+				 if(date.equals("Tất cả") && year.equals("Tất cả") && ma.equals("Tất cả"))
+				{
+					
+					List<LuongNhanVien> list_hd =lnv_dao.getAlltbCongCuaNhanVien();
+					for (LuongNhanVien luongNhanVien : list_hd) {
+						tableModel.addRow(new Object[] {luongNhanVien.getNhanVien().getMaNhanVien(),
+								luongNhanVien.getTenNhanVien(),
+								luongNhanVien.getSoNgayDiLam(),
+								luongNhanVien.getThucNhan()  });
+
+						tongNhanVien++;
+						soNgayLamTrungBinh+=luongNhanVien.getSoNgayDiLam();
+						tongLuong+=luongNhanVien.getThucNhan();
+						if(max<luongNhanVien.getThucNhan())
+						{
+							max=luongNhanVien.getThucNhan();
+						}
+						if(min>luongNhanVien.getThucNhan())
+						{
+							min=luongNhanVien.getThucNhan();
+						}
+						
+					}
+					if (tongNhanVien != 0) {
+						
+					    m = soNgayLamTrungBinh / tongNhanVien;
+					    lbl_hienThuSoNgayLam.setText(String.valueOf(m));
+					} else {
+					    lbl_hienThuSoNgayLam.setText("0");
+					    // Hoặc có thể xử lý khác tùy thuộc vào yêu cầu của bạn
+					}
+					lbl_hienThiTongNV.setText(tongNhanVien+"");
+					lbl_hienThiLuongThapNhat.setText(min+"");
+					lbl_hienThiLuongCaoNhat.setText(max+"");
+					lbl_hienThiTongTienLuong.setText(tongLuong+"");
+					
+					
+
+				}
 				
 			}
 		});
 	}
+	public static int laySoNgayTrongThang(int nam, int thang) {
+        YearMonth thangCuThe = YearMonth.of(nam, thang);
+        return thangCuThe.lengthOfMonth();
+    }
 	
 
 }

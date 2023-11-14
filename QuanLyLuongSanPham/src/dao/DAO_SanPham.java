@@ -185,7 +185,33 @@ public class DAO_SanPham {
 			}
 			return dssp;
 		}
-	
+		public List<SanPham> timKiem(String ma , String ten){
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<SanPham> dssp = new ArrayList<>();
+			
+			try {
+				stmt = con.prepareStatement("select * from SanPham where maSanPham = ? and tenSanPham = ?");
+				stmt.setString(1, ma);
+				stmt.setString(2, ten);
+				rs = stmt.executeQuery();
+				while(rs.next()) {
+					String maSanPham = rs.getString(1);
+					String tenSanPham = rs.getString(2);
+					String kieuDang = rs.getString(3);
+					String chatLieu = rs.getString(4);
+					int soLuong = rs.getInt(5);
+					SanPham sp = new SanPham(maSanPham, tenSanPham, kieuDang, chatLieu, soLuong);
+					dssp.add(sp);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dssp;
+		}
 	public int getSoLuong(String maSanPham) {
 	    int soLuong = 0;
 

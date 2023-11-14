@@ -193,7 +193,40 @@ public class DAO_HopDong {
 			}
 			return dsnv;
 		}
+		public List<HopDong> timKiemMaSP(String maSP) {
+			Conection_DB.getInstance();
+			Connection con = Conection_DB.getCon();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<HopDong> dsnv = new ArrayList<>();
 
+			try {
+				stmt = con.prepareStatement("select * from HopDong where maSanPham = ?");
+				stmt.setString(1, maSP);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					String maHD = rs.getString("maHopDong");
+		            String tenKH = rs.getString("TenKhachHang");
+		            String ngayLap = rs.getString("NgayLap");
+		            String ngayGiao = rs.getString("NgayGiao");
+		            int soLuong = rs.getInt("SoLuong");
+		            double donGia = rs.getDouble("DonGia");
+
+		            // Tạo các đối tượng SanPham và NhanVien và gán thông tin từ cơ sở dữ liệu
+		            SanPham maSP1 = new SanPham(rs.getString("maSanPham"));
+		            String tenSP = rs.getString("tenSanPham");
+		            NhanVien maNV = new NhanVien(rs.getString("maNhanVien"));
+		            String tenNV = rs.getString("tenNhanVien");
+
+		            HopDong hd = new HopDong(maHD, maSP1, tenSP, tenKH, maNV, tenNV, ngayLap, ngayGiao, soLuong, donGia);
+		            dsnv.add(hd);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return dsnv;
+		}
 		public List<HopDong> timKiemMaNhanVien(String ma) {
 			Conection_DB.getInstance();
 			Connection con = Conection_DB.getCon();
