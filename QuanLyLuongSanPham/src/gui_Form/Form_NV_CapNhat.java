@@ -592,7 +592,7 @@ public class Form_NV_CapNhat extends JPanel {
 	        return false;
 	    }
 	    
-	    if (!(txtHoTen.getText().matches("[A-Za-z' ]+"))) {
+	    if (!(txtHoTen.getText().matches("[\\p{L}' ]+"))) {
 	        JOptionPane.showMessageDialog(null, "Tên theo mẫu: Ho Nguyen Cong Hieu");
 	        txtHoTen.requestFocus();
 	        return false;
@@ -642,11 +642,12 @@ public class Form_NV_CapNhat extends JPanel {
 	        }
 
 
-	    if (!(txtDiaChi.getText().matches("[0-9/]*\\s*[a-zA-Z_0-9' ,]+"))) {
-	        JOptionPane.showMessageDialog(null, "Địa chỉ phải theo mẫu: 117/12 Nguyen Ba Tong, P11, Tan Binh");
-	        txtDiaChi.requestFocus();
-	        return false;
-	    }
+	        if (!(txtDiaChi.getText().matches("[\\p{L}0-9'/, ]+"))) {
+	            JOptionPane.showMessageDialog(null, "Địa chỉ theo mẫu: 79/12/21 Bùi Quang Là, Gò Vấp");
+	            txtDiaChi.requestFocus();
+	            return false;
+	        }
+
 	    
 	    // Kiểm tra số điện thoại theo mẫu
 	    String soDienThoaiPattern = "^\\d{10,11}$";

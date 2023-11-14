@@ -438,6 +438,17 @@ public class Form_NV_TinhLuong extends JPanel {
 			}
 		});
 	}
+	public boolean valid() {
+		if(table.getSelectedRow()<0) {
+			JOptionPane.showMessageDialog(null, "Cần chọn nhan vien để tính lương");
+			return false;
+		}
+		if(txtTenNV.getText().trim().equals("")) {
+			JOptionPane.showMessageDialog(null, "Chua chon nhan vien de tinh luong");
+			return false;
+		}
+		return true;
+	}
 
 	public void DocDuLieuDBVaoTable() {
 		List<NhanVien> list = DAO_NhanVien.getAlltbNhanVien();

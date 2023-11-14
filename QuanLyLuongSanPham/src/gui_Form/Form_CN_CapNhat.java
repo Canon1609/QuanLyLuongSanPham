@@ -589,20 +589,19 @@ public class Form_CN_CapNhat extends JPanel {
 		String soDienThoai =txtSoDienThoai.getText().trim();
 		double phuCap =Double.parseDouble(txtPhuCap.getText().trim());
 		
-		if(!hoTen.matches("[a-zA-Z' ]+"))
+		if(!hoTen.matches("[\\p{L}' ]+"))
 		{
 			JOptionPane.showMessageDialog(this, "Tên Công Nhân Không Hợp Lệ!!!");
 			txtHoTen.selectAll();
 			txtHoTen.requestFocus();
 			return false;
 		}
-		if(!diaChi.matches("[0-9/]*\\s*[a-zA-Z_0-9' ,]+"))
-		{
-			JOptionPane.showMessageDialog(this, "Địa Chỉ Không Hợp Lệ!!!");
-			txtDiaChi.selectAll();
-			txtDiaChi.requestFocus();
-			return false;
+		if (!(txtDiaChi.getText().matches("[\\p{L}0-9'/, ]+"))) {
+		    JOptionPane.showMessageDialog(null, "Địa chỉ theo mẫu: 79/12/21 Bùi Quang Là, Gò Vấp");
+		    txtDiaChi.requestFocus();
+		    return false;
 		}
+
 		if(!soDienThoai.matches("^0\\d{9}$"))
 		{
 			JOptionPane.showMessageDialog(this, "Số Điện Thoại Không Hợp Lệ!!!");

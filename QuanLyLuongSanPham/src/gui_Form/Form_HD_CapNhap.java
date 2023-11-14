@@ -65,6 +65,7 @@ public class Form_HD_CapNhap extends JPanel {
 	private JTextField txt_tenSanPham;
 	private JDateChooser dateChooser_ngayLap;
 	private JDateChooser dateChooser_ngayGiao;
+	private JSpinField jsfSoLuong;
 
 	/**
 	 * Create the panel.
@@ -254,8 +255,8 @@ public class Form_HD_CapNhap extends JPanel {
 		tbl_SanPham.setPreferredScrollableViewportSize(new Dimension(400, 400));
 		tbl_SanPham.setFont(new Font("Arial", Font.PLAIN, 11));
 		tbl_SanPham.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Mã Sản Phẩm",
-				"T\u00EAn S\u1EA3n Ph\u1EA9m", "Ki\u1EC3u D\u00E1ng", "Ch\u1EA5t Li\u1EC7u" }) {
-			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class };
+				"T\u00EAn S\u1EA3n Ph\u1EA9m", "Ki\u1EC3u D\u00E1ng", "Ch\u1EA5t Li\u1EC7u","Số lượng" }) {
+			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class,Integer.class };
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -267,7 +268,7 @@ public class Form_HD_CapNhap extends JPanel {
 		lblsoLuong.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_Center.add(lblsoLuong);
 
-		JSpinField jsfSoLuong = new JSpinField();
+		jsfSoLuong = new JSpinField();
 		jsfSoLuong.getSpinner().setPreferredSize(new Dimension(30, 40));
 		jsfSoLuong.setPreferredSize(new Dimension(100, 29));
 		panel_Center.add(jsfSoLuong);
@@ -401,7 +402,7 @@ public class Form_HD_CapNhap extends JPanel {
 				"Tên Nhân Viên", "Ngày Lập", "Ngày Giao", "Số Lượng", "Đơn Giá" };
 		tableModel.setColumnIdentifiers(columnNames);
 		tableModelSanPham = (DefaultTableModel) tbl_SanPham.getModel();
-		String[] columnNamesSanPham = { "Mã Sản Phẩm", "Tên Sản Phẩm", "Kiểu Dáng", "Chất Liệu" };
+		String[] columnNamesSanPham = { "Mã Sản Phẩm", "Tên Sản Phẩm", "Kiểu Dáng", "Chất Liệu","Số lượng" };
 		tableModelSanPham.setColumnIdentifiers(columnNamesSanPham);
 		hd_dao = new DAO_HopDong();
 		DocDuLieuDBVaoTable();
@@ -653,7 +654,7 @@ public class Form_HD_CapNhap extends JPanel {
 		for (SanPham sp : list) {
 
 			tableModelSanPham
-					.addRow(new Object[] { sp.getMaSanPham(), sp.getTenSanPham(), sp.getKieuDang(), sp.getChatLieu() });
+					.addRow(new Object[] { sp.getMaSanPham(), sp.getTenSanPham(), sp.getKieuDang(), sp.getChatLieu(),sp.getSoLuong() });
 		}
 	}
 
@@ -677,7 +678,7 @@ public class Form_HD_CapNhap extends JPanel {
 		Date ngayGiao =dateChooser_ngayGiao.getDate();
 		double donGia =Double.parseDouble(txtdonGia.getText().trim());
 
-		if (!tenKH.matches("[a-zA-Z' ]+")) {
+		if (!tenKH.matches("[\\p{L}' ]+")) {
 			JOptionPane.showMessageDialog(this, "Tên Khách Hàng Không Hợp Lệ!!!");
 			txtkhachHang.selectAll();
 			txtkhachHang.requestFocus();
@@ -690,6 +691,12 @@ public class Form_HD_CapNhap extends JPanel {
 			return false;
 					
 		}
+		int row = tbl_SanPham.getSelectedRow();
+		if(jsfSoLuong.getValue()>Integer.parseInt(tbl_SanPham.getValueAt(row, 4).toString())) {
+			JOptionPane.showMessageDialog(this, "Số lượng phải nhỏ hơn số lượng hiện có");
+			return false;
+		}
+		
 
 		if (donGia <= 0) {
 

@@ -469,6 +469,10 @@ public class Form_CN_TinhLuong extends JPanel {
 			JOptionPane.showMessageDialog(null, "Cần chọn công nhân để tính lương");
 			return false;
 		}
+		if(txtMaCongNhan.getText().trim().equals("")) {
+			JOptionPane.showMessageDialog(null, "Chua chon cong nhan de tinh luong");
+			return false;
+		}
 		return true;
 	}
 

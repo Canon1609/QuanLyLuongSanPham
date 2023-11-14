@@ -382,28 +382,34 @@ public class Form_SP_CapNhat extends JPanel {
 		}
 	}
 	public boolean valid() {
-	    if (txtTenSanPham.getText().equals("") || txtKieuDang.getText().equals("") || txtChatLieu.getText().equals("") 
-	        || jsfSoLuong.getValue() <= 0) 
+	    if (txtTenSanPham.getText().equals("") || txtKieuDang.getText().equals("") || txtChatLieu.getText().equals("") ) 
 	    {
 	        JOptionPane.showMessageDialog(null, "Không được rỗng !!!");
 	        return false;
 	    }
+	    if(jsfSoLuong.getValue() <= 0) {
+	    	JOptionPane.showMessageDialog(null, "Chưa nhập số lượng");
+	        return false;
+	    }
 	    
-	    if (!(txtTenSanPham.getText().matches("[A-Za-z0-9' ]+"))) {
-	        JOptionPane.showMessageDialog(null, "Tên sản phẩm theo mẫu: Air Force 1");
+	    if (!(txtTenSanPham.getText().matches("[\\p{L}' ]+"))) {
+	        JOptionPane.showMessageDialog(null, "Tên sản phẩm theo mẫu: Giày thể thao");
 	        txtTenSanPham.requestFocus();
 	        return false;
 	    }
-	    if (!(txtKieuDang.getText().matches("[A-Za-z' ,]+"))) {
+
+	    if (!(txtKieuDang.getText().matches("[\\p{L},' ]+"))) {
 	        JOptionPane.showMessageDialog(null, "Kiểu dáng sản phẩm theo mẫu: to");
 	        txtKieuDang.requestFocus();
 	        return false;
 	    }
-	    if (!(txtChatLieu.getText().matches("[A-Za-z0-9' ]+"))) {
-	        JOptionPane.showMessageDialog(null, "Chất liệu sản phẩm theo mẫu: vải 03");
+
+	    if (!(txtChatLieu.getText().matches("[\\p{L}0-9' ]+"))) {
+	        JOptionPane.showMessageDialog(null, "Chất liệu sản phẩm theo mẫu: vải cao cấp");
 	        txtChatLieu.requestFocus();
 	        return false;
 	    }
+
 	    return true;
 	}
 	//

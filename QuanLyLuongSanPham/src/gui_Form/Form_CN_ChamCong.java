@@ -625,6 +625,11 @@ public class Form_CN_ChamCong extends JPanel {
 	        JOptionPane.showMessageDialog(null, "Vui lòng chọn ngày chấm công.");
 	        return false;
 	    }
+	    if(txtMaCong.getText().trim().equals("")) {
+			JOptionPane.showMessageDialog(null, "Chua chon cong nhan de cham cong");
+			return false;
+		}
+	    
 
 	    // Kiểm tra xem ngày chấm có nhỏ hơn hoặc bằng ngày hiện tại hay không
 	    Date ngayHienTai = new Date(); // Ngày hiện tại

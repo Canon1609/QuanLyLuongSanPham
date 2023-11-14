@@ -212,6 +212,7 @@ public class DAO_SanPham {
 			}
 			return dssp;
 		}
+	
 	public int getSoLuong(String maSanPham) {
 	    int soLuong = 0;
 
